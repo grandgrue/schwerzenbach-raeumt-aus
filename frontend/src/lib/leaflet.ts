@@ -5,6 +5,9 @@ import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
 // Standard-Marker-Icons für Vite-Builds korrekt verdrahten.
+// Wichtig: _getIconUrl entfernen, sonst stellt Leaflet dem (absoluten)
+// Asset-Pfad den automatisch erkannten imagePath voran → kaputte Marker.
+delete (L.Icon.Default.prototype as unknown as { _getIconUrl?: unknown })._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: markerIcon2x,
   iconUrl: markerIcon,
