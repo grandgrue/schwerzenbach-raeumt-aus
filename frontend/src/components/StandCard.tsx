@@ -12,6 +12,7 @@ export default function StandCard({ stand }: { stand: PublicStand }) {
   return (
     <Link
       to={`/stand/${stand.id}`}
+      state={{ from: '/liste' }}
       className="block rounded-lg border border-gray-200 bg-white p-4 hover:border-brand-500 hover:shadow-sm transition"
     >
       <h3 className="font-semibold text-gray-900">{stand.title}</h3>
