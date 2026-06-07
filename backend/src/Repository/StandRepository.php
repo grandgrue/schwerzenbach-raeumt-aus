@@ -42,8 +42,13 @@ final class StandRepository
             $where[] = 's.`offers_drinks` = 1';
         }
         if (!empty($filters['q'])) {
-            $where[] = '(s.`title` LIKE :q OR s.`description` LIKE :q OR s.`address` LIKE :q)';
-            $params['q'] = '%' . $filters['q'] . '%';
+            // Eigene Platzhalter je Vorkommen: native Prepared Statements erlauben
+            // keine Wiederverwendung desselben benannten Parameters.
+            $where[] = '(s.`title` LIKE :q1 OR s.`description` LIKE :q2 OR s.`address` LIKE :q3)';
+            $like = '%' . $filters['q'] . '%';
+            $params['q1'] = $like;
+            $params['q2'] = $like;
+            $params['q3'] = $like;
         }
 
         $sql = 'SELECT * FROM `stand` s WHERE ' . implode(' AND ', $where)
@@ -198,6 +203,91 @@ final class StandRepository
              WHERE `edit_token_hash` = :h AND `status` <> 'withdrawn'"
         );
         $stmt->execute(['h' => $hash]);
+        return $stmt->rowCount() > 0;
+    }
+
+    // -- Admin / Organisationskomitee -----------------------------------------
+
+    /**
+     * Alle Stände (optional nach Status gefiltert) in PRIVATER Darstellung.
+     *
+     * @return array<int,array<string,mixed>>
+     */
+    public function adminList(?string $status = null): array
+    {
+        $sql = 'SELECT * FROM `stand`';
+        $params = [];
+        if ($status !== null && $status !== '') {
+            $sql .= ' WHERE `status` = :status';
+            $params['status'] = $status;
+        }
+        $sql .= ' ORDER BY `created_at` DESC';
+        $stmt = $this->pdo()->prepare($sql);
+        $stmt->execute($params);
+
+        return array_map(fn (array $row) => $this->toPrivate($row), $stmt->fetchAll());
+    }
+
+    /** @return array<string,mixed>|null */
+    public function findRawById(int $id): ?array
+    {
+        $stmt = $this->pdo()->prepare('SELECT * FROM `stand` WHERE `id` = :id');
+        $stmt->execute(['id' => $id]);
+        $row = $stmt->fetch();
+        return $row === false ? null : $row;
+    }
+
+    public function updateStatusById(int $id, string $status): bool
+    {
+        $stmt = $this->pdo()->prepare('UPDATE `stand` SET `status` = :s WHERE `id` = :id');
+        $stmt->execute(['s' => $status, 'id' => $id]);
+        return $stmt->rowCount() >= 0;
+    }
+
+    /**
+     * Admin-Bearbeitung der Stand-Felder (ohne edited_after_approval-Markierung).
+     *
+     * @param array<string,mixed> $fields
+     * @param int[]               $categoryIds
+     */
+    public function updateFieldsById(int $id, array $fields, array $categoryIds): void
+    {
+        $pdo = $this->pdo();
+        $pdo->beginTransaction();
+        try {
+            $sql = 'UPDATE `stand` SET
+                        `title` = :title,
+                        `description` = :description,
+                        `address` = :address,
+                        `lat` = :lat,
+                        `lng` = :lng,
+                        `provider_email` = :provider_email,
+                        `provider_mobile` = :provider_mobile,
+                        `public_contact_name` = :public_contact_name,
+                        `public_contact_phone` = :public_contact_phone,
+                        `show_public_contact` = :show_public_contact,
+                        `start_time` = :start_time,
+                        `end_time` = :end_time,
+                        `offers_food` = :offers_food,
+                        `offers_drinks` = :offers_drinks,
+                        `needs_public_spot` = :needs_public_spot
+                    WHERE `id` = :id';
+            $bind = $this->bindFields($fields);
+            unset($bind['event_id'], $bind['edit_token_hash']);
+            $bind['id'] = $id;
+            $pdo->prepare($sql)->execute($bind);
+            $this->syncCategories($id, $categoryIds);
+            $pdo->commit();
+        } catch (\Throwable $e) {
+            $pdo->rollBack();
+            throw $e;
+        }
+    }
+
+    public function deleteById(int $id): bool
+    {
+        $stmt = $this->pdo()->prepare('DELETE FROM `stand` WHERE `id` = :id');
+        $stmt->execute(['id' => $id]);
         return $stmt->rowCount() > 0;
     }
 

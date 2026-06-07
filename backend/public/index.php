@@ -10,6 +10,7 @@ declare(strict_types=1);
  */
 
 use App\Config;
+use App\Controller\AdminController;
 use App\Controller\CaptchaController;
 use App\Controller\CategoryController;
 use App\Controller\EventController;
@@ -60,7 +61,15 @@ $router->get('/stands/edit/{token}', [new ProviderStandController(), 'editShow']
 $router->put('/stands/edit/{token}', [new ProviderStandController(), 'editUpdate']);
 $router->delete('/stands/edit/{token}', [new ProviderStandController(), 'editDelete']);
 
-// Admin-Routen folgen in der nächsten Implementierungsphase.
+// Admin / Organisationskomitee (Session + CSRF)
+$admin = new AdminController();
+$router->post('/admin/login', [$admin, 'login']);
+$router->post('/admin/logout', [$admin, 'logout']);
+$router->get('/admin/session', [$admin, 'session']);
+$router->get('/admin/stands', [$admin, 'index']);
+$router->patch('/admin/stands/{id}', [$admin, 'update']);
+$router->delete('/admin/stands/{id}', [$admin, 'destroy']);
+$router->put('/admin/event', [$admin, 'updateEvent']);
 
 // --- Dispatch + zentrale Fehlerbehandlung ----------------------------------
 try {

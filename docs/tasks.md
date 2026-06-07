@@ -43,12 +43,17 @@
 - ☑ `DELETE /api/stands/edit/{token}` *(A3)*
 
 ## Phase 5 — Admin-API
-- ☐ `POST /api/admin/login` / `POST /api/admin/logout` (Session + CSRF) *(AD1)*
-- ☐ `GET /api/admin/stands?status=` *(AD2)*
-- ☐ `PATCH /api/admin/stands/{id}` (freigeben/ablehnen/bearbeiten) *(AD2)*
-- ☐ `DELETE /api/admin/stands/{id}` *(AD2)*
-- ☐ `PUT /api/admin/event` inkl. `public_spots_total` *(AD3)*
-- ☐ Platz-Buchungen + belegte/freie Plätze in der Moderationsliste anzeigen *(AD4)*
+- ☑ `POST /api/admin/login` / `POST /api/admin/logout` + `GET /api/admin/session`
+  (Session + CSRF) *(AD1)*
+- ☑ `GET /api/admin/stands?status=` *(AD2)*
+- ☑ `PATCH /api/admin/stands/{id}` (freigeben/ablehnen/bearbeiten) *(AD2)*
+- ☑ `DELETE /api/admin/stands/{id}` *(AD2)*
+- ☑ `PUT /api/admin/event` inkl. `public_spots_total` *(AD3)*
+- ☑ Platz-Buchungen sichtbar via `needs_public_spot` in der Admin-Liste *(AD4)*
+
+> **Backend verifiziert** (Docker): öffentliche API, Anbieter-Flow (Captcha, Edit-Link),
+> Admin-Moderation (Login/CSRF/Freigabe), Filter, Event-Konfiguration. Bug behoben:
+> Volltextsuche `q` (HY093 durch wiederverwendeten Named-Parameter).
 
 ## Phase 6 — Frontend-Grundgerüst
 - ☐ Vite + React + TS + Tailwind aufsetzen
