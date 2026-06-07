@@ -46,10 +46,12 @@ final class Config
 
     public static function get(string $key, ?string $default = null): ?string
     {
-        if (!self::$loaded) {
-            return $default;
-        }
+        // 1) Werte aus .env, 2) echte Umgebungsvariablen (z. B. via Docker), 3) Default.
         $value = self::$values[$key] ?? null;
+        if ($value === null || $value === '') {
+            $env = getenv($key);
+            $value = $env === false ? null : $env;
+        }
         return ($value === null || $value === '') ? $default : $value;
     }
 
