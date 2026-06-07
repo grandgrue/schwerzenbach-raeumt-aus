@@ -71,6 +71,8 @@ das Organisationskomitee gibt ihn frei, und Besucher:innen entdecken alle Ständ
   - **Kategorien** (Mehrfachauswahl)
   - **Verkaufszeiten** von–bis *(optional, sonst Event-Standard)*
   - Flags **„bietet Essen auf Spendenbasis"** / **„bietet Getränke auf Spendenbasis"**
+  - Option **„Ich benötige einen Platz auf dem Parkplatz am Gemeindehaus / an der Schule"**
+    *(siehe A1c — nur wählbar, solange freie Plätze verfügbar sind)*
   - **E-Mail** *(Pflicht, privat — nur für den Bearbeitungs-Link)*
   - **Mobiltelefonnummer** *(Pflicht, privat — nur für das Organisationskomitee)*
   - **Öffentliche Kontaktangaben** (Name und/oder Telefon) — **ich entscheide selbst**, ob
@@ -79,6 +81,23 @@ das Organisationskomitee gibt ihn frei, und Besucher:innen entdecken alle Ständ
   **nur für diesen Anlass** gespeichert werden, dass **E-Mail und Mobilnummer nicht
   veröffentlicht** werden und dass ich **selbst entscheide**, welche Kontaktangaben
   öffentlich sichtbar sind.
+- **A1c — Platz am Gemeindehaus / an der Schule (begrenzt):** Das Formular zeigt folgenden
+  Hinweistext und eine wählbare Option:
+
+  > Alle, die keine Möglichkeit haben bei sich zuhause einen Stand aufzustellen, können einen
+  > Platz auf dem Parkplatz des Gemeindehauses oder der Primarschule buchen. Es steht eine
+  > begrenzte Anzahl an Standflächen zur Verfügung. Die Plätze werden nach Anmelde-Eingang
+  > vergeben.
+
+  Option: **„Ich benötige einen Platz auf dem Parkplatz am Gemeindehaus / an der Schule"**
+
+  - Die Anzahl Plätze ist begrenzt (`public_spots_total`, vom OK konfigurierbar).
+  - Das System **zählt die Buchungen automatisch** (alle nicht abgelehnten/zurückgezogenen
+    Stände mit gesetzter Option) und zeigt die **verbleibenden freien Plätze** an.
+  - Sobald **alle Plätze vergeben** sind, ist die Option **nicht mehr wählbar**
+    („ausgebucht"); die Anmeldung eines Stands zuhause bleibt weiterhin möglich.
+  - Die Durchsetzung erfolgt **serverseitig**: Eine Buchung über das Limit hinaus wird
+    abgelehnt (verhindert Überbuchung bei gleichzeitigen Anmeldungen).
 - **A2 — Bestätigung:** Nach dem Absenden hat mein Stand den Status **„in Prüfung"**. Ich
   erhalte eine **E-Mail mit einem geheimen Bearbeitungs-Link**.
 - **A3 — Bearbeiten/Zurückziehen:** Über den Link kann ich meinen Stand **bearbeiten** oder
@@ -92,7 +111,10 @@ das Organisationskomitee gibt ihn frei, und Besucher:innen entdecken alle Ständ
   abgelehnt / zurückgezogen) und kann einzelne Stände **freigeben, ablehnen, bearbeiten
   oder löschen**. Ich sehe die privaten Felder (E-Mail, Mobilnummer) zur Kontaktaufnahme.
 - **AD3 — Event-Konfiguration:** Ich konfiguriere Name, **Datum**, **Verkaufszeitfenster**
-  (Standard), **Anmeldung offen/geschlossen** und einen öffentlichen **Infotext**.
+  (Standard), **Anmeldung offen/geschlossen**, die **Anzahl verfügbarer Plätze am
+  Gemeindehaus/an der Schule** (`public_spots_total`) und einen öffentlichen **Infotext**.
+- **AD4 — Platz-Buchungen sehen:** Ich sehe in der Moderationsliste, welche Stände einen
+  Platz am Gemeindehaus/an der Schule gebucht haben, sowie die Anzahl belegter/freier Plätze.
 
 ## 5. Nicht-funktionale Anforderungen
 

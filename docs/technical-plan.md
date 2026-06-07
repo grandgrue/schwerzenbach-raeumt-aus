@@ -55,6 +55,7 @@ Browser ───────▶ │  /            → React-SPA (statische Date
 | `default_start_time` | TIME | Standard-Verkaufsbeginn |
 | `default_end_time` | TIME | Standard-Verkaufsende |
 | `registration_open` | TINYINT(1) | Anmeldung offen/geschlossen |
+| `public_spots_total` | INT | Anzahl Plätze am Gemeindehaus/an der Schule (Kapazität) |
 | `info_text` | TEXT | öffentlicher Infotext (Startseite) |
 | `created_at`, `updated_at` | TIMESTAMP | |
 
@@ -77,6 +78,7 @@ Browser ───────▶ │  /            → React-SPA (statische Date
 | `end_time` | TIME NULL | öffentlich | Default = Event |
 | `offers_food` | TINYINT(1) | öffentlich | Essen auf Spendenbasis |
 | `offers_drinks` | TINYINT(1) | öffentlich | Getränke auf Spendenbasis |
+| `needs_public_spot` | TINYINT(1) | – | Platz am Gemeindehaus/an der Schule gebucht |
 | `status` | ENUM | – | `pending`,`approved`,`rejected`,`withdrawn` |
 | `edited_after_approval` | TINYINT(1) | – | Markierung „bearbeitet" fürs OK |
 | `edit_token_hash` | VARCHAR UNIQUE | – | Hash des Bearbeitungs-Tokens |
@@ -104,7 +106,7 @@ passendem HTTP-Status. Mutierende Admin-Requests erfordern Session + CSRF-Header
 ### Öffentlich
 | Methode | Pfad | Beschreibung |
 |---------|------|--------------|
-| GET | `/api/event` | aktive Event-Konfiguration |
+| GET | `/api/event` | aktive Event-Konfiguration inkl. `public_spots_total` und `public_spots_available` (berechnete freie Plätze) |
 | GET | `/api/categories` | Kategorienliste |
 | GET | `/api/stands` | **freigegebene** Stände, nur öffentliche Felder. Filter: `?category=`, `?food=1`, `?drinks=1`, `?q=` |
 | GET | `/api/stands/{id}` | einzelner freigegebener Stand (öffentlich) |
@@ -112,10 +114,14 @@ passendem HTTP-Status. Mutierende Admin-Requests erfordern Session + CSRF-Header
 > **Wichtig:** Öffentliche Endpunkte liefern **niemals** `provider_email` oder
 > `provider_mobile`. `public_contact_*` nur, wenn `show_public_contact = 1`.
 
+> **Platz-Kapazität:** `public_spots_available = public_spots_total − (Anzahl Stände mit
+> `needs_public_spot=1` und Status ≠ `rejected`/`withdrawn`)`. Dieser Wert steuert die
+> Anzeige der freien Plätze und die serverseitige Durchsetzung beim `POST`/`PUT` von Ständen.
+
 ### Anbieter:in (kontolos, Token)
 | Methode | Pfad | Beschreibung |
 |---------|------|--------------|
-| POST | `/api/stands` | Stand anmelden (Honeypot + Captcha + Rate-Limit). Setzt Status `pending`, sendet Edit-Link-Mail. Nur wenn `registration_open`. |
+| POST | `/api/stands` | Stand anmelden (Honeypot + Captcha + Rate-Limit). Setzt Status `pending`, sendet Edit-Link-Mail. Nur wenn `registration_open`. Bei `needs_public_spot=1` wird die Kapazität **serverseitig** geprüft; ist sie erschöpft, wird mit Fehler `public_spots_full` abgelehnt. |
 | GET | `/api/stands/edit/{token}` | eigenen Stand inkl. privater Felder laden |
 | PUT | `/api/stands/edit/{token}` | eigenen Stand aktualisieren (bei zuvor freigegebenem Stand → `edited_after_approval = 1`) |
 | DELETE | `/api/stands/edit/{token}` | Stand zurückziehen (`withdrawn`) |

@@ -23,7 +23,8 @@
 - ☐ JSON-Response-/Fehler-Helper + Validierungsschicht
 
 ## Phase 3 — Öffentliche API
-- ☐ `GET /api/event` *(B4)*
+- ☐ `GET /api/event` inkl. `public_spots_total` + berechnetem `public_spots_available`
+  *(B4, A1c)*
 - ☐ `GET /api/categories` *(B2)*
 - ☐ `GET /api/stands` inkl. Filter `category`/`food`/`drinks`/`q` *(B1, B2)* — **ohne**
   private Felder
@@ -31,7 +32,8 @@
 
 ## Phase 4 — Anbieter-API (kontolos)
 - ☐ `POST /api/stands` — Validierung, Honeypot, Captcha, Rate-Limit; Status `pending`;
-  Edit-Token erzeugen, Hash speichern *(A1, A1b, A2, A4)*
+  Edit-Token erzeugen, Hash speichern; **Platz-Kapazität serverseitig prüfen**
+  (`needs_public_spot`) *(A1, A1b, A1c, A2, A4)*
 - ☐ Edit-Link-E-Mail via PHPMailer *(A2)*
 - ☐ `GET /api/stands/edit/{token}` *(A3)*
 - ☐ `PUT /api/stands/edit/{token}` (+ `edited_after_approval`) *(A3)*
@@ -42,7 +44,8 @@
 - ☐ `GET /api/admin/stands?status=` *(AD2)*
 - ☐ `PATCH /api/admin/stands/{id}` (freigeben/ablehnen/bearbeiten) *(AD2)*
 - ☐ `DELETE /api/admin/stands/{id}` *(AD2)*
-- ☐ `PUT /api/admin/event` *(AD3)*
+- ☐ `PUT /api/admin/event` inkl. `public_spots_total` *(AD3)*
+- ☐ Platz-Buchungen + belegte/freie Plätze in der Moderationsliste anzeigen *(AD4)*
 
 ## Phase 6 — Frontend-Grundgerüst
 - ☐ Vite + React + TS + Tailwind aufsetzen
@@ -60,6 +63,8 @@
 ## Phase 8 — Anbieter-Features
 - ☐ `StandForm` + `PinPicker`, Pflicht-Mobilnummer, Wahl der öffentlichen Kontaktangaben,
   Datenschutz-Hinweise, Validierung (zod) *(A1, A1b)*
+- ☐ Platz-Option am Gemeindehaus/an der Schule inkl. Hinweistext + Anzeige freier Plätze;
+  Option deaktivieren wenn ausgebucht *(A1c)*
 - ☐ Bestätigungsseite nach Anmeldung *(A2)*
 - ☐ Bearbeiten/Zurückziehen über `/bearbeiten/:token` *(A3)*
 
