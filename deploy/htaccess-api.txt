@@ -1,0 +1,28 @@
+# .htaccess für den API-Ordner (public_html/api/)
+#
+# Erwartet, dass der GESAMTE backend/-Ordner nach public_html/api/ hochgeladen wurde,
+# d. h. der Front-Controller liegt unter public_html/api/public/index.php.
+# Diese Datei nach public_html/api/.htaccess kopieren.
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /api/
+
+    # Direkten Zugriff auf interne Verzeichnisse sperren
+    RewriteRule ^(src|config|sql|tests|bin|vendor)/ - [F,L]
+
+    # Existierende Dateien (z. B. public/-Assets) direkt ausliefern
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule ^ - [L]
+
+    # Alles andere an den Front-Controller
+    RewriteRule ^ public/index.php [L]
+</IfModule>
+
+# Sensible Dateien zusätzlich absichern
+<FilesMatch "\.(env|sql|md|lock)$">
+    Require all denied
+</FilesMatch>
+<Files "composer.json">
+    Require all denied
+</Files>

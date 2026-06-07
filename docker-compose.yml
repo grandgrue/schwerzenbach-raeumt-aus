@@ -1,0 +1,72 @@
+# Lokale Entwicklungsumgebung für «Schwerzenbach räumt aus».
+#
+# Start:   docker compose up --build
+#   - API:      http://localhost:8080        (PHP 8.2 + Apache)
+#   - Frontend: http://localhost:5173         (Vite Dev-Server, sobald frontend/ existiert)
+#   - DB:       localhost:3307                 (MySQL 8, Daten im Volume)
+#
+# Datenbank wird beim ersten Start automatisch aus backend/sql/*.sql initialisiert.
+# Admin anlegen (einmalig):
+#   docker compose exec api php bin/create-admin.php admin <passwort>
+
+services:
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: schwerzenbach_raeumt_aus
+      MYSQL_USER: app
+      MYSQL_PASSWORD: app
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      # Schema + Seed werden alphabetisch beim Erst-Start eingespielt
+      - ./backend/sql:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    environment:
+      APP_ENV: dev
+      APP_BASE_URL: http://localhost:5173
+      APP_SECRET: dev-secret-change-me
+      DB_HOST: db
+      DB_PORT: "3306"
+      DB_NAME: schwerzenbach_raeumt_aus
+      DB_USER: app
+      DB_PASS: app
+      MAIL_TRANSPORT: log          # im Dev nur protokollieren statt versenden
+    ports:
+      - "8080:80"
+    volumes:
+      - ./backend:/var/www/html
+    depends_on:
+      db:
+        condition: service_healthy
+
+  web:
+    image: node:20
+    working_dir: /app
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
+    environment:
+      # Vite-Proxy leitet /api an den api-Service weiter (siehe vite.config.ts)
+      VITE_API_PROXY_TARGET: http://api:80
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - api
+    profiles:
+      - frontend   # erst aktiv, sobald frontend/ existiert: `docker compose --profile frontend up`
+
+volumes:
+  db_data:

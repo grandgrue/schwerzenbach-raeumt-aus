@@ -26,7 +26,8 @@ das Organisationskomitee gibt ihn frei, und Besucher:innen entdecken alle Ständ
 - Stand-Detailseite mit Fuss-Navigations-Button (öffnet Karten-App des Geräts)
 - Kontolose Stand-Anmeldung per Formular + geheimer Bearbeitungs-Link via E-Mail
 - Bearbeiten / Zurückziehen eines Stands über den Bearbeitungs-Link
-- Admin-Bereich: Moderation der Stände + Konfiguration des Events
+- Admin-Bereich: Moderation und Bearbeitung der Stände, Verwaltung der Kategorien +
+  Konfiguration des Events
 - FAQ-Seite inkl. Datenschutz-Transparenz
 
 ### Out of Scope (MVP)
@@ -44,14 +45,16 @@ das Organisationskomitee gibt ihn frei, und Besucher:innen entdecken alle Ständ
 |------|-------------------|--------|
 | **Besucher:in** | keine (anonym) | Stände auf Karte/Liste ansehen, filtern, suchen, Details öffnen, zu Fuss hinnavigieren |
 | **Anbieter:in** | kontolos, geheimer Edit-Link | Stand anmelden, später bearbeiten oder zurückziehen |
-| **Admin / OK** | Login (Benutzer + Passwort) | Stände moderieren (freigeben/ablehnen/bearbeiten/löschen), Event konfigurieren |
+| **Admin / OK** | Login (Benutzer + Passwort) | Stände moderieren (freigeben/ablehnen/bearbeiten/löschen), Kategorien verwalten, Event konfigurieren |
 
 ## 4. User Stories & Akzeptanzkriterien
 
 ### Besucher:in
 - **B1 — Karte:** Als Besucher:in sehe ich alle **freigegebenen** Stände als Pins auf einer
-  Karte. Ein Klick auf einen Pin zeigt eine Kurzinfo (Titel, Adresse, Essen/Getränke) mit
-  Link zur Detailseite.
+  Karte. Ein Klick auf einen Pin zeigt eine Kurzinfo (Titel, Adresse, **Beschreibung,
+  Kategorien**, Essen/Getränke) mit Link zur Detailseite. Über diesen Link gelangt der
+  **Zurück-Knopf** auf der Detailseite wieder zur **Karte** (von der Liste entsprechend zur
+  Liste).
 - **B2 — Liste & Filter:** Ich sehe die Stände in einer Liste und kann nach **Kategorie**,
   nach **Essen** bzw. **Getränke** und per **Freitext** filtern sowie nach Name sortieren.
 - **B3 — Detailseite:** Ich öffne eine Stand-Detailseite mit Titel, Beschreibung, Adresse,
@@ -66,13 +69,12 @@ das Organisationskomitee gibt ihn frei, und Besucher:innen entdecken alle Ständ
 
 ### Anbieter:in
 - **A1 — Anmelden:** Ich melde über ein Formular einen Stand an mit:
-  - **Pin auf der Karte** (per Klick gesetzt) + **Adresse** *(Pflicht)*
+  - **Standort-Auswahl** *(Pflicht)* — entweder **„bei mir zuhause"** oder
+    **„beim Gemeindehaus / an der Schule"** (siehe A1c).
   - **Titel** und **Beschreibung** *(Pflicht / optional)*
   - **Kategorien** (Mehrfachauswahl)
-  - **Verkaufszeiten** von–bis *(optional, sonst Event-Standard)*
+  - **Verkaufszeiten** von–bis *(mit den Event-Standardzeiten **vorbelegt**, überschreibbar)*
   - Flags **„bietet Essen auf Spendenbasis"** / **„bietet Getränke auf Spendenbasis"**
-  - Option **„Ich benötige einen Platz auf dem Parkplatz am Gemeindehaus / an der Schule"**
-    *(siehe A1c — nur wählbar, solange freie Plätze verfügbar sind)*
   - **E-Mail** *(Pflicht, privat — nur für den Bearbeitungs-Link)*
   - **Mobiltelefonnummer** *(Pflicht, privat — nur für das Organisationskomitee)*
   - **Öffentliche Kontaktangaben** (Name und/oder Telefon) — **ich entscheide selbst**, ob
@@ -81,23 +83,22 @@ das Organisationskomitee gibt ihn frei, und Besucher:innen entdecken alle Ständ
   **nur für diesen Anlass** gespeichert werden, dass **E-Mail und Mobilnummer nicht
   veröffentlicht** werden und dass ich **selbst entscheide**, welche Kontaktangaben
   öffentlich sichtbar sind.
-- **A1c — Platz am Gemeindehaus / an der Schule (begrenzt):** Das Formular zeigt folgenden
-  Hinweistext und eine wählbare Option:
+- **A1c — Standort-Auswahl (kombinierte Platz-Frage):** Das Formular stellt **eine Auswahl**
+  zwischen zwei Optionen:
+  - **„Bei mir zuhause"** → ich gebe die **Adresse** ein; der **Pin wird automatisch
+    gesetzt** (Geocoding mit Suffix „8603 Schwerzenbach") und ist **manuell verschiebbar**.
+  - **„Beim Gemeindehaus / an der Schule"** → der **Standort wird automatisch beim
+    Gemeindehaus gesetzt** (keine Adresseingabe nötig). Hierfür gilt:
+    - Die Anzahl Plätze ist begrenzt (`public_spots_total`, vom OK konfigurierbar).
+    - Das System **zählt die Buchungen automatisch** (alle nicht abgelehnten/zurückgezogenen
+      Stände mit dieser Option) und zeigt die **verbleibenden freien Plätze** an.
+    - Sobald **alle Plätze vergeben** sind, ist diese Option **nicht mehr wählbar**
+      („ausgebucht"); „bei mir zuhause" bleibt möglich.
+    - Die Durchsetzung erfolgt **serverseitig** (verhindert Überbuchung).
 
-  > Alle, die keine Möglichkeit haben bei sich zuhause einen Stand aufzustellen, können einen
-  > Platz auf dem Parkplatz des Gemeindehauses oder der Primarschule buchen. Es steht eine
-  > begrenzte Anzahl an Standflächen zur Verfügung. Die Plätze werden nach Anmelde-Eingang
-  > vergeben.
-
-  Option: **„Ich benötige einen Platz auf dem Parkplatz am Gemeindehaus / an der Schule"**
-
-  - Die Anzahl Plätze ist begrenzt (`public_spots_total`, vom OK konfigurierbar).
-  - Das System **zählt die Buchungen automatisch** (alle nicht abgelehnten/zurückgezogenen
-    Stände mit gesetzter Option) und zeigt die **verbleibenden freien Plätze** an.
-  - Sobald **alle Plätze vergeben** sind, ist die Option **nicht mehr wählbar**
-    („ausgebucht"); die Anmeldung eines Stands zuhause bleibt weiterhin möglich.
-  - Die Durchsetzung erfolgt **serverseitig**: Eine Buchung über das Limit hinaus wird
-    abgelehnt (verhindert Überbuchung bei gleichzeitigen Anmeldungen).
+  Hinweistext im Formular: *„Alle, die keine Möglichkeit haben bei sich zuhause einen Stand
+  aufzustellen, können einen Platz beim Gemeindehaus oder der Primarschule buchen. Die Plätze
+  werden nach Anmelde-Eingang vergeben."*
 - **A2 — Bestätigung:** Nach dem Absenden hat mein Stand den Status **„in Prüfung"**. Ich
   erhalte eine **E-Mail mit einem geheimen Bearbeitungs-Link**.
 - **A3 — Bearbeiten/Zurückziehen:** Über den Link kann ich meinen Stand **bearbeiten** oder
@@ -115,6 +116,11 @@ das Organisationskomitee gibt ihn frei, und Besucher:innen entdecken alle Ständ
   Gemeindehaus/an der Schule** (`public_spots_total`) und einen öffentlichen **Infotext**.
 - **AD4 — Platz-Buchungen sehen:** Ich sehe in der Moderationsliste, welche Stände einen
   Platz am Gemeindehaus/an der Schule gebucht haben, sowie die Anzahl belegter/freier Plätze.
+- **AD5 — Stände bearbeiten:** Ich kann **alle bestehenden Stände** vollständig bearbeiten
+  (gleiche Felder wie das Anmeldeformular).
+- **AD6 — Kategorien verwalten:** Ich kann Kategorien **anlegen, umbenennen und löschen**.
+  Eine Kategorie, die bereits von mindestens einem Stand genutzt wird, **kann nicht gelöscht**
+  werden (Hinweis mit Anzahl betroffener Stände).
 
 ## 5. Nicht-funktionale Anforderungen
 
@@ -154,8 +160,8 @@ das Organisationskomitee gibt ihn frei, und Besucher:innen entdecken alle Ständ
 
 - **Bearbeitung eines bereits freigegebenen Stands:** Der Stand bleibt sichtbar, wird aber
   für das OK als **„bearbeitet"** markiert (statt automatisch zurück in „in Prüfung").
-- **Pin:** frei setzbar; Karte ist standardmässig auf Schwerzenbach
-  (≈ `47.366, 8.643`) zentriert. Keine harte geografische Grenze.
+- **Pin:** frei setzbar; Karte ist standardmässig auf das Gemeindehaus Schwerzenbach
+  (≈ `47.38239, 8.65643`) zentriert. Keine harte geografische Grenze.
 - **Captcha:** einfache Rechenfrage, ergänzt durch Honeypot + Rate-Limit.
 - **Verkaufszeiten pro Stand:** optional; ohne Angabe gilt das Event-Standardzeitfenster.
 
