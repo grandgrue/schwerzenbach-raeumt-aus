@@ -154,8 +154,8 @@ das Organisationskomitee gibt ihn frei, und Besucher:innen entdecken alle Ständ
 
 - **Bearbeitung eines bereits freigegebenen Stands:** Der Stand bleibt sichtbar, wird aber
   für das OK als **„bearbeitet"** markiert (statt automatisch zurück in „in Prüfung").
-- **Pin:** frei setzbar; Karte ist standardmässig auf Schwerzenbach
-  (≈ `47.366, 8.643`) zentriert. Keine harte geografische Grenze.
+- **Pin:** frei setzbar; Karte ist standardmässig auf das Gemeindehaus Schwerzenbach
+  (≈ `47.38239, 8.65643`) zentriert. Keine harte geografische Grenze.
 - **Captcha:** einfache Rechenfrage, ergänzt durch Honeypot + Rate-Limit.
 - **Verkaufszeiten pro Stand:** optional; ohne Angabe gilt das Event-Standardzeitfenster.
 

@@ -11,6 +11,6 @@ L.Icon.Default.mergeOptions({
   shadowUrl: markerShadow,
 });
 
-/** Ungefährer Mittelpunkt von Schwerzenbach (ZH). */
-export const SCHWERZENBACH_CENTER: [number, number] = [47.366, 8.643];
+/** Gemeindehaus Schwerzenbach (ZH) als Karten-Mittelpunkt. */
+export const SCHWERZENBACH_CENTER: [number, number] = [47.38239, 8.65643];
 export const DEFAULT_ZOOM = 15;
