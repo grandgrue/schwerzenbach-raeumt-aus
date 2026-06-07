@@ -19,10 +19,11 @@ interface Props {
   stands: PrivateStand[];
   busyId: number | null;
   onSetStatus: (id: number, status: string) => void;
+  onEdit: (stand: PrivateStand) => void;
   onDelete: (id: number) => void;
 }
 
-export default function AdminStandTable({ stands, busyId, onSetStatus, onDelete }: Props) {
+export default function AdminStandTable({ stands, busyId, onSetStatus, onEdit, onDelete }: Props) {
   if (stands.length === 0) {
     return <p className="text-sm text-gray-500 py-6">Keine Stände in dieser Ansicht.</p>;
   }
@@ -77,6 +78,12 @@ export default function AdminStandTable({ stands, busyId, onSetStatus, onDelete 
                 Ablehnen
               </button>
             )}
+            <button
+              onClick={() => onEdit(s)}
+              className="text-sm rounded-md border border-gray-300 px-3 py-1.5 hover:bg-gray-50"
+            >
+              Bearbeiten
+            </button>
             <Link
               to={`/stand/${s.id}`}
               className="text-sm rounded-md border border-gray-300 px-3 py-1.5 hover:bg-gray-50"

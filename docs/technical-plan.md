@@ -134,7 +134,12 @@ passendem HTTP-Status. Mutierende Admin-Requests erfordern Session + CSRF-Header
 | GET | `/api/admin/stands?status=` | alle Stände inkl. privater Felder |
 | PATCH | `/api/admin/stands/{id}` | freigeben/ablehnen/bearbeiten |
 | DELETE | `/api/admin/stands/{id}` | löschen |
+| PATCH | `/api/admin/stands/{id}` | Stand vollständig bearbeiten (Felder ohne `status`) |
 | PUT | `/api/admin/event` | Event-Konfiguration speichern |
+| GET | `/api/admin/categories` | Kategorien inkl. `stand_count` |
+| POST | `/api/admin/categories` | Kategorie anlegen (Name eindeutig) |
+| PATCH | `/api/admin/categories/{id}` | Kategorie umbenennen / Reihenfolge |
+| DELETE | `/api/admin/categories/{id}` | Kategorie löschen — **nur wenn `stand_count = 0`** (sonst `409 category_in_use`) |
 
 ## 5. Frontend — Seiten & Komponenten
 
@@ -160,6 +165,13 @@ passendem HTTP-Status. Mutierende Admin-Requests erfordern Session + CSRF-Header
   Fussgänger-Modus und öffnet die Karten-App des Geräts
 - **`AdminStandTable`** — Moderationsliste mit Status-Aktionen
 - **`EventConfigForm`** — Event-Konfiguration
+
+### Adress-Geocoding (Anmeldeformular)
+Beim Anmelden/Bearbeiten wird der Pin **automatisch gesetzt**: Die eingegebene Adresse wird
+mit Suffix „8603 Schwerzenbach, Schweiz" über **Nominatim (OpenStreetMap)** geocodiert
+(`https://nominatim.openstreetmap.org/search`). Treffer setzt `lat`/`lng`; der Marker bleibt
+**verschiebbar** (manuelle Korrektur). Auslösung per Button und automatisch beim Verlassen
+des Adressfelds.
 
 ### Fuss-Navigation (Detail)
 `NavigateButton` erzeugt eine plattformfreundliche URL aus `lat`/`lng`, z. B.

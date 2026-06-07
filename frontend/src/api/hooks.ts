@@ -4,6 +4,7 @@ import type {
   AdminSession,
   CaptchaChallenge,
   Category,
+  CategoryWithCount,
   EventInfo,
   PrivateStand,
   PublicStand,
@@ -158,5 +159,44 @@ export function useAdminUpdateEvent() {
     mutationFn: (body: Record<string, unknown>) =>
       api.put<{ ok: boolean }>('/admin/event', body, true),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['event'] }),
+  });
+}
+
+// --- Admin: Kategorien -----------------------------------------------------
+
+export function useAdminCategories() {
+  return useQuery({
+    queryKey: ['admin-categories'],
+    queryFn: () => api.get<CategoryWithCount[]>('/admin/categories'),
+  });
+}
+
+function invalidateCategories(qc: ReturnType<typeof useQueryClient>) {
+  qc.invalidateQueries({ queryKey: ['admin-categories'] });
+  qc.invalidateQueries({ queryKey: ['categories'] });
+}
+
+export function useCreateCategory() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (name: string) => api.post<{ id: number }>('/admin/categories', { name }, true),
+    onSuccess: () => invalidateCategories(qc),
+  });
+}
+
+export function useUpdateCategory() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, name }: { id: number; name: string }) =>
+      api.patch<{ ok: boolean }>(`/admin/categories/${id}`, { name }, true),
+    onSuccess: () => invalidateCategories(qc),
+  });
+}
+
+export function useDeleteCategory() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: number) => api.delete<void>(`/admin/categories/${id}`, true),
+    onSuccess: () => invalidateCategories(qc),
   });
 }

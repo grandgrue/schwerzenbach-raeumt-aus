@@ -14,6 +14,13 @@ export interface Category {
   name: string;
 }
 
+export interface CategoryWithCount {
+  id: number;
+  name: string;
+  sort_order: number;
+  stand_count: number;
+}
+
 export interface StandContact {
   name: string | null;
   phone: string | null;

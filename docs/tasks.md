@@ -90,6 +90,15 @@
 - ☐ Vitest/RTL: Formularvalidierung, Filterlogik, `NavigateButton`-URL, Rendering
 - ☐ (optional) Playwright-E2E: Anmeldung → Freigabe → Sichtbarkeit
 
+## Erweiterungen nach Feedback
+- ☑ **Auto-Geocoding** des Pins aus der Adresse (Nominatim/OSM, Suffix „8603 Schwerzenbach";
+  Button + onBlur), Pin bleibt verschiebbar *(A1)* — `frontend/src/lib/geocode.ts`,
+  `StandForm`
+- ☑ **Admin-Kategorienverwaltung** (anlegen/umbenennen/löschen; Löschen gesperrt wenn genutzt)
+  *(AD6)* — `AdminCategoryController`, `CategoryManager`; per curl verifiziert
+- ☑ **Admin bearbeitet bestehende Stände** (Modal mit `StandForm`, Status bleibt erhalten)
+  *(AD5)* — `PATCH /admin/stands/{id}` Feld-Edit; per curl verifiziert
+
 ## Phase 11 — Deployment-Artefakte
 - ☐ `deploy/htaccess-root.txt`, `deploy/htaccess-api.txt`
 - ☐ `deploy/README-deploy.md` (hoststar-Anleitung)

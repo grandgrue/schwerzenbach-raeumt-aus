@@ -10,6 +10,7 @@ declare(strict_types=1);
  */
 
 use App\Config;
+use App\Controller\AdminCategoryController;
 use App\Controller\AdminController;
 use App\Controller\CaptchaController;
 use App\Controller\CategoryController;
@@ -70,6 +71,12 @@ $router->get('/admin/stands', [$admin, 'index']);
 $router->patch('/admin/stands/{id}', [$admin, 'update']);
 $router->delete('/admin/stands/{id}', [$admin, 'destroy']);
 $router->put('/admin/event', [$admin, 'updateEvent']);
+
+$adminCategories = new AdminCategoryController();
+$router->get('/admin/categories', [$adminCategories, 'index']);
+$router->post('/admin/categories', [$adminCategories, 'store']);
+$router->patch('/admin/categories/{id}', [$adminCategories, 'update']);
+$router->delete('/admin/categories/{id}', [$adminCategories, 'destroy']);
 
 // --- Dispatch + zentrale Fehlerbehandlung ----------------------------------
 try {

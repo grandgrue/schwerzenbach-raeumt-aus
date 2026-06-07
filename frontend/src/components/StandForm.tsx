@@ -1,9 +1,12 @@
-import { useEffect, type ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import type { Category, EventInfo, StandPayload } from '../api/types';
+import { geocodeAddress } from '../lib/geocode';
 import PinPicker from './PinPicker';
+
+type GeoStatus = 'idle' | 'loading' | 'found' | 'notfound' | 'error';
 
 const timeRegex = /^([01]\d|2[0-3]):[0-5]\d$/;
 const optionalTime = z.union([z.literal(''), z.string().regex(timeRegex, 'Zeit als HH:MM')]);
@@ -56,6 +59,7 @@ export default function StandForm({
     watch,
     setValue,
     setError,
+    getValues,
     formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -95,6 +99,29 @@ export default function StandForm({
 
   const spotsAvailable = event?.public_spots_available ?? 0;
   const spotDisabled = !needsSpot && spotsAvailable <= 0;
+
+  const [geoStatus, setGeoStatus] = useState<GeoStatus>('idle');
+
+  async function doGeocode() {
+    const address = (getValues('address') || '').trim();
+    if (address === '') return;
+    setGeoStatus('loading');
+    try {
+      const result = await geocodeAddress(address);
+      if (result) {
+        setValue('lat', result.lat, { shouldValidate: true });
+        setValue('lng', result.lng, { shouldValidate: true });
+        setGeoStatus('found');
+      } else {
+        setGeoStatus('notfound');
+      }
+    } catch {
+      setGeoStatus('error');
+    }
+  }
+
+  const addressField = register('address');
+  const hasPin = Number.isFinite(lat) && Number.isFinite(lng);
 
   function toggleCategory(id: number, checked: boolean) {
     const next = checked
@@ -145,8 +172,36 @@ export default function StandForm({
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700">Adresse *</label>
-        <input {...register('address')} className={inputClass} placeholder="Strasse, Nr., PLZ Ort" />
+        <label className="block text-sm font-medium text-gray-700">Adresse * (in Schwerzenbach)</label>
+        <div className="flex gap-2 mt-1">
+          <input
+            {...addressField}
+            onBlur={(e) => {
+              addressField.onBlur(e);
+              if (!hasPin) void doGeocode();
+            }}
+            className={inputClass + ' !mt-0 flex-1'}
+            placeholder="z. B. Bahnhofstrasse 1"
+          />
+          <button
+            type="button"
+            onClick={() => void doGeocode()}
+            className="shrink-0 rounded-md border border-brand-500 text-brand-600 px-3 py-2 text-sm hover:bg-brand-50"
+          >
+            📍 Pin setzen
+          </button>
+        </div>
+        <p className="text-xs text-gray-500 mt-1">
+          Der Ort «8603 Schwerzenbach» wird automatisch ergänzt.
+        </p>
+        {geoStatus === 'loading' && <p className="text-xs text-gray-500">Adresse wird gesucht …</p>}
+        {geoStatus === 'found' && <p className="text-xs text-brand-600">Pin anhand der Adresse gesetzt – du kannst ihn unten noch verschieben.</p>}
+        {geoStatus === 'notfound' && (
+          <p className="text-xs text-amber-600">Adresse nicht gefunden – bitte setze den Pin unten von Hand.</p>
+        )}
+        {geoStatus === 'error' && (
+          <p className="text-xs text-amber-600">Adresssuche nicht möglich – bitte setze den Pin unten von Hand.</p>
+        )}
         {err('address')}
       </div>
 
@@ -154,7 +209,7 @@ export default function StandForm({
         <label className="block text-sm font-medium text-gray-700">Standort auf der Karte *</label>
         <div className="mt-1">
           <PinPicker
-            value={Number.isFinite(lat) && Number.isFinite(lng) ? { lat, lng } : null}
+            value={hasPin ? { lat, lng } : null}
             onChange={(v) => {
               setValue('lat', v.lat, { shouldValidate: true });
               setValue('lng', v.lng, { shouldValidate: true });

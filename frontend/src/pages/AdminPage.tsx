@@ -7,12 +7,37 @@ import {
   useAdminStands,
   useAdminUpdateEvent,
   useAdminUpdateStand,
+  useCategories,
   useEvent,
 } from '../api/hooks';
 import { ApiError } from '../api/client';
+import type { PrivateStand, StandPayload } from '../api/types';
 import AdminStandTable from '../components/AdminStandTable';
+import CategoryManager from '../components/CategoryManager';
 import EventConfigForm from '../components/EventConfigForm';
+import StandForm from '../components/StandForm';
 import { ErrorNote, Loading } from '../components/StatusViews';
+
+function privateToPayload(s: PrivateStand): Partial<StandPayload> {
+  return {
+    title: s.title,
+    description: s.description,
+    address: s.address,
+    lat: s.lat,
+    lng: s.lng,
+    provider_email: s.provider_email,
+    provider_mobile: s.provider_mobile,
+    show_public_contact: s.show_public_contact,
+    public_contact_name: s.public_contact_name,
+    public_contact_phone: s.public_contact_phone,
+    start_time: s.start_time,
+    end_time: s.end_time,
+    offers_food: s.offers_food,
+    offers_drinks: s.offers_drinks,
+    needs_public_spot: s.needs_public_spot,
+    categories: s.category_ids,
+  };
+}
 
 const statusTabs = [
   { value: 'pending', label: 'In Prüfung' },
@@ -78,7 +103,23 @@ function Dashboard({ username }: { username?: string }) {
   const updateStand = useAdminUpdateStand();
   const deleteStand = useAdminDeleteStand();
   const { data: event } = useEvent();
+  const { data: categories = [] } = useCategories();
   const updateEvent = useAdminUpdateEvent();
+
+  const [editStand, setEditStand] = useState<PrivateStand | null>(null);
+  const [editError, setEditError] = useState<string | null>(null);
+
+  function saveStandEdit(payload: StandPayload) {
+    if (!editStand) return;
+    setEditError(null);
+    updateStand.mutate(
+      { id: editStand.id, body: payload as unknown as Record<string, unknown> },
+      {
+        onSuccess: () => setEditStand(null),
+        onError: (e) => setEditError(e instanceof ApiError ? e.message : 'Speichern fehlgeschlagen'),
+      },
+    );
+  }
 
   function setStandStatus(id: number, newStatus: string) {
     setBusyId(id);
@@ -125,10 +166,13 @@ function Dashboard({ username }: { username?: string }) {
             stands={stands}
             busyId={busyId}
             onSetStatus={setStandStatus}
+            onEdit={setEditStand}
             onDelete={removeStand}
           />
         )}
       </div>
+
+      <CategoryManager />
 
       {event && (
         <EventConfigForm
@@ -142,6 +186,31 @@ function Dashboard({ username }: { username?: string }) {
             });
           }}
         />
+      )}
+
+      {editStand && (
+        <div className="fixed inset-0 z-[2000] bg-black/40 overflow-y-auto" onClick={() => setEditStand(null)}>
+          <div
+            className="max-w-2xl mx-auto my-8 bg-white rounded-lg shadow-xl p-5"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold">Stand bearbeiten</h2>
+              <button onClick={() => setEditStand(null)} className="text-gray-500 hover:text-gray-800" aria-label="Schliessen">
+                ✕
+              </button>
+            </div>
+            {editError && <div className="mb-3"><ErrorNote text={editError} /></div>}
+            <StandForm
+              categories={categories}
+              event={event}
+              defaultValues={privateToPayload(editStand)}
+              submitLabel="Änderungen speichern"
+              busy={updateStand.isPending}
+              onSubmit={saveStandEdit}
+            />
+          </div>
+        </div>
       )}
     </div>
   );

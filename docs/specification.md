@@ -66,7 +66,9 @@ das Organisationskomitee gibt ihn frei, und Besucher:innen entdecken alle Ständ
 
 ### Anbieter:in
 - **A1 — Anmelden:** Ich melde über ein Formular einen Stand an mit:
-  - **Pin auf der Karte** (per Klick gesetzt) + **Adresse** *(Pflicht)*
+  - **Pin auf der Karte** + **Adresse** *(Pflicht)*. Der Pin wird **automatisch anhand der
+    Adresse gesetzt** (Geocoding; Ort „8603 Schwerzenbach" wird automatisch ergänzt) und
+    kann anschliessend weiterhin **manuell verschoben** werden.
   - **Titel** und **Beschreibung** *(Pflicht / optional)*
   - **Kategorien** (Mehrfachauswahl)
   - **Verkaufszeiten** von–bis *(optional, sonst Event-Standard)*
@@ -115,6 +117,11 @@ das Organisationskomitee gibt ihn frei, und Besucher:innen entdecken alle Ständ
   Gemeindehaus/an der Schule** (`public_spots_total`) und einen öffentlichen **Infotext**.
 - **AD4 — Platz-Buchungen sehen:** Ich sehe in der Moderationsliste, welche Stände einen
   Platz am Gemeindehaus/an der Schule gebucht haben, sowie die Anzahl belegter/freier Plätze.
+- **AD5 — Stände bearbeiten:** Ich kann **alle bestehenden Stände** vollständig bearbeiten
+  (gleiche Felder wie das Anmeldeformular).
+- **AD6 — Kategorien verwalten:** Ich kann Kategorien **anlegen, umbenennen und löschen**.
+  Eine Kategorie, die bereits von mindestens einem Stand genutzt wird, **kann nicht gelöscht**
+  werden (Hinweis mit Anzahl betroffener Stände).
 
 ## 5. Nicht-funktionale Anforderungen
 
