@@ -11,3 +11,4 @@
 
 # Logs / Caches
 *.log
+/backend/.phpunit.cache/

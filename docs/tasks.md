@@ -86,20 +86,27 @@
 > Prüfung** im Browser unter http://localhost:5173 noch ausstehend (kein Browser angebunden).
 
 ## Phase 10 — Tests
-- ☐ PHPUnit: Validierung, Auth/CSRF, Stand-Lifecycle, Sichtbarkeit privater Felder
-- ☐ Vitest/RTL: Formularvalidierung, Filterlogik, `NavigateButton`-URL, Rendering
-- ☐ (optional) Playwright-E2E: Anmeldung → Freigabe → Sichtbarkeit
+- ☑ PHPUnit: Captcha, Token, Validator, Rate-Limit, Router (19 Tests grün)
+- ☑ Vitest/RTL: `buildStandsQuery`-Filterlogik, `NavigateButton`-URL, `StandCard`-Rendering
+  (8 Tests grün)
+- ☐ (optional) Playwright-E2E: Anmeldung → Freigabe → Sichtbarkeit — bewusst zurückgestellt
+  (manuell/curl bereits durchgespielt)
 
 ## Erweiterungen nach Feedback
 - ☑ **Auto-Geocoding** des Pins aus der Adresse (Nominatim/OSM, Suffix „8603 Schwerzenbach";
   Button + onBlur), Pin bleibt verschiebbar *(A1)* — `frontend/src/lib/geocode.ts`,
   `StandForm`
+- ☑ **Standort-Auswahl** „zuhause" vs. „Gemeindehaus/Schule" als kombinierte Frage *(A1c)*
+- ☑ **Verkaufszeiten** mit Event-Standard vorbelegt (überschreibbar)
 - ☑ **Admin-Kategorienverwaltung** (anlegen/umbenennen/löschen; Löschen gesperrt wenn genutzt)
   *(AD6)* — `AdminCategoryController`, `CategoryManager`; per curl verifiziert
 - ☑ **Admin bearbeitet bestehende Stände** (Modal mit `StandForm`, Status bleibt erhalten)
   *(AD5)* — `PATCH /admin/stands/{id}` Feld-Edit; per curl verifiziert
+- ☑ **Admin-Dashboard in drei Tabs** (Moderation / Kategorien / Event)
+- ☑ **Logo/Favicon:** Fahne von Schwerzenbach; **Karten-Popup** mit Beschreibung/Kategorien;
+  kontextsensitiver Zurück-Knopf (Karte/Liste)
 
 ## Phase 11 — Deployment-Artefakte
-- ☐ `deploy/htaccess-root.txt`, `deploy/htaccess-api.txt`
-- ☐ `deploy/README-deploy.md` (hoststar-Anleitung)
-- ☐ Live-Smoke-Test (nach Bereitstellung der Zugangsdaten)
+- ☑ `deploy/htaccess-root.txt`, `deploy/htaccess-api.txt` (an reale Serverstruktur angepasst)
+- ☑ `deploy/README-deploy.md` (vollständige hoststar-Anleitung)
+- ☐ Live-Smoke-Test (nach Bereitstellung der hoststar-Zugangsdaten)
