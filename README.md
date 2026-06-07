@@ -36,7 +36,7 @@ backend/             PHP-REST-API (Deploy-Ziel: public_html/api)
   ├── sql/           schema.sql + seed.sql
   ├── bin/           CLI-Skripte (create-admin.php)
   └── Dockerfile     PHP + Apache (Dev)
-frontend/            React-SPA (Build → Web-Root)  — folgt
+frontend/            React-SPA (Vite, Build → Web-Root)
 deploy/              .htaccess-Vorlagen + hoststar-Deploy-Anleitung
 docker-compose.yml   Lokale Dev-Umgebung (API + DB + Frontend)
 ```
@@ -52,7 +52,7 @@ docker compose up --build
 # Admin-Benutzer einmalig anlegen
 docker compose exec api php bin/create-admin.php admin <passwort>
 
-# Frontend zusätzlich starten (sobald frontend/ existiert)
+# Frontend zusätzlich starten (Vite-Dev-Server mit /api-Proxy)
 docker compose --profile frontend up --build
 ```
 

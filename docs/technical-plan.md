@@ -34,11 +34,13 @@ Browser ───────▶ │  /            → React-SPA (statische Date
 - **PHP 8.x** mit **PDO** (MySQL, ausschliesslich Prepared Statements)
 - Schlanker eigener **Front-Controller + Router** (keine schwere Framework-Abhängigkeit →
   deployment-freundlich auf Shared Hosting). Alternative bei Bedarf: Slim Framework.
+- Konfiguration: **eigener schlanker `.env`-Parser** (`App\Config`) mit Fallback auf echte
+  Umgebungsvariablen (Docker) — keine externe Abhängigkeit
 - **Composer**-Abhängigkeiten:
   - **PHPMailer** — E-Mail-Versand (Bearbeitungs-Link) über hoststar-SMTP
-  - **vlucas/phpdotenv** — Konfiguration aus `.env`
   - **phpunit** — Tests (Dev)
-  - `vendor/` wird mit deployt (kein Composer auf dem Server nötig)
+  - `vendor/` wird mit deployt; der Front-Controller hat zudem einen **Fallback-Autoloader**,
+    sodass der Kern auch ohne `composer install` läuft
 - Admin-Auth: **PHP-Session** (httpOnly-Cookie) + **CSRF-Token** für mutierende Requests
 
 ### Datenbank
@@ -132,9 +134,8 @@ passendem HTTP-Status. Mutierende Admin-Requests erfordern Session + CSRF-Header
 | POST | `/api/admin/login` | Login (Benutzer + Passwort) → Session |
 | POST | `/api/admin/logout` | Logout |
 | GET | `/api/admin/stands?status=` | alle Stände inkl. privater Felder |
-| PATCH | `/api/admin/stands/{id}` | freigeben/ablehnen/bearbeiten |
+| PATCH | `/api/admin/stands/{id}` | Body mit `status` → freigeben/ablehnen; Body mit Feldern (ohne `status`) → Stand vollständig bearbeiten |
 | DELETE | `/api/admin/stands/{id}` | löschen |
-| PATCH | `/api/admin/stands/{id}` | Stand vollständig bearbeiten (Felder ohne `status`) |
 | PUT | `/api/admin/event` | Event-Konfiguration speichern |
 | GET | `/api/admin/categories` | Kategorien inkl. `stand_count` |
 | POST | `/api/admin/categories` | Kategorie anlegen (Name eindeutig) |
@@ -153,17 +154,19 @@ passendem HTTP-Status. Mutierende Admin-Requests erfordern Session + CSRF-Header
 | `/anmelden` | Anmeldeformular mit Pin-Picker + Datenschutz-Hinweise |
 | `/bearbeiten/:token` | Stand bearbeiten / zurückziehen |
 | `/faq` | FAQ inkl. Datenschutz |
-| `/admin` | Admin-Login + Moderations-Dashboard + Event-Konfiguration |
+| `/admin` | Admin-Login + Moderations-Dashboard (inkl. Stand-Bearbeitung im Modal) + Kategorien- und Event-Konfiguration |
 
 ### Kern-Komponenten
 - **`MapView`** — Leaflet-Karte, lädt freigegebene Stände, rendert Marker
 - **`PinPicker`** — Klick auf Karte setzt/verschiebt den Stand-Pin (im Formular)
 - **`FilterBar`** — Kategorie-, Essen-/Getränke- und Freitextfilter
 - **`StandCard`** — Listen-/Popup-Darstellung eines Stands
-- **`StandForm`** — Anmelde-/Bearbeitungsformular (react-hook-form + zod)
-- **`NavigateButton`** — baut aus Koordinaten eine `geo:`- bzw. Maps-URL im
-  Fussgänger-Modus und öffnet die Karten-App des Geräts
-- **`AdminStandTable`** — Moderationsliste mit Status-Aktionen
+- **`StandForm`** — Anmelde-/Bearbeitungsformular (react-hook-form + zod) inkl.
+  Auto-Geocoding des Pins (`lib/geocode.ts`)
+- **`NavigateButton`** — baut aus Koordinaten eine Google-Maps-Directions-URL im
+  Fussgänger-Modus (`travelmode=walking`) und öffnet die Karten-App des Geräts
+- **`AdminStandTable`** — Moderationsliste mit Status-Aktionen + „Bearbeiten"
+- **`CategoryManager`** — Admin-Verwaltung der Kategorien (anlegen/umbenennen/löschen)
 - **`EventConfigForm`** — Event-Konfiguration
 
 ### Adress-Geocoding (Anmeldeformular)
@@ -174,10 +177,9 @@ mit Suffix „8603 Schwerzenbach, Schweiz" über **Nominatim (OpenStreetMap)** g
 des Adressfelds.
 
 ### Fuss-Navigation (Detail)
-`NavigateButton` erzeugt eine plattformfreundliche URL aus `lat`/`lng`, z. B.
-`https://www.google.com/maps/dir/?api=1&destination=<lat>,<lng>&travelmode=walking`
-(bzw. `geo:`-URI als Fallback). Die eigentliche Turn-by-turn-Navigation übernimmt die
-Karten-App des Geräts.
+`NavigateButton` erzeugt eine plattformfreundliche URL aus `lat`/`lng`:
+`https://www.google.com/maps/dir/?api=1&destination=<lat>,<lng>&travelmode=walking`.
+Die eigentliche Turn-by-turn-Navigation übernimmt die Karten-App des Geräts.
 
 ## 6. Sicherheit
 
@@ -235,9 +237,15 @@ Karten-App des Geräts.
 
 ## 9. Lokale Entwicklung
 
-- **Backend:** `php -S localhost:8000 -t backend/public` + lokale MySQL (oder Docker);
-  `schema.sql` + `seed.sql` einspielen.
-- **Frontend:** `npm run dev` (Vite-Dev-Server) mit Proxy `/api` → `http://localhost:8000`.
+**Empfohlen: Docker** (`docker-compose.yml`, siehe README):
+- `docker compose up --build` → API (PHP 8.2 + Apache, `:8080`) + MySQL 8 (`:3307`, Auto-Init
+  aus `backend/sql/*.sql`).
+- `docker compose --profile frontend up` → zusätzlich Vite-Dev-Server (`:5173`) mit Proxy
+  `/api` → API-Container.
+- Admin anlegen: `docker compose exec api php bin/create-admin.php <user> <passwort>`.
+
+**Ohne Docker (alternativ):** `php -S localhost:8000 -t backend/public` + lokale MySQL;
+Frontend `npm run dev` mit Proxy `/api` → `http://localhost:8000`.
 
 ## 10. Tests
 

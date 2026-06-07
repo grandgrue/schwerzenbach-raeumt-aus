@@ -26,7 +26,8 @@ das Organisationskomitee gibt ihn frei, und Besucher:innen entdecken alle Ständ
 - Stand-Detailseite mit Fuss-Navigations-Button (öffnet Karten-App des Geräts)
 - Kontolose Stand-Anmeldung per Formular + geheimer Bearbeitungs-Link via E-Mail
 - Bearbeiten / Zurückziehen eines Stands über den Bearbeitungs-Link
-- Admin-Bereich: Moderation der Stände + Konfiguration des Events
+- Admin-Bereich: Moderation und Bearbeitung der Stände, Verwaltung der Kategorien +
+  Konfiguration des Events
 - FAQ-Seite inkl. Datenschutz-Transparenz
 
 ### Out of Scope (MVP)
@@ -44,7 +45,7 @@ das Organisationskomitee gibt ihn frei, und Besucher:innen entdecken alle Ständ
 |------|-------------------|--------|
 | **Besucher:in** | keine (anonym) | Stände auf Karte/Liste ansehen, filtern, suchen, Details öffnen, zu Fuss hinnavigieren |
 | **Anbieter:in** | kontolos, geheimer Edit-Link | Stand anmelden, später bearbeiten oder zurückziehen |
-| **Admin / OK** | Login (Benutzer + Passwort) | Stände moderieren (freigeben/ablehnen/bearbeiten/löschen), Event konfigurieren |
+| **Admin / OK** | Login (Benutzer + Passwort) | Stände moderieren (freigeben/ablehnen/bearbeiten/löschen), Kategorien verwalten, Event konfigurieren |
 
 ## 4. User Stories & Akzeptanzkriterien
 
