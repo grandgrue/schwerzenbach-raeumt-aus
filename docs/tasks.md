@@ -23,7 +23,7 @@
 - ☑ Front-Controller `public/index.php` + Router (`src/Http/Router.php`) inkl.
   Fallback-Autoloader (läuft auch ohne Composer)
 - ☑ JSON-Response-/Fehler-Helper (`src/Http/Response.php`, `HttpException.php`)
-- ☐ Validierungsschicht (`src/Support/Validator.php`) — folgt mit Phase 4
+- ☑ Validierungsschicht (`src/Support/Validator.php`)
 
 ## Phase 3 — Öffentliche API
 - ☑ `GET /api/event` inkl. `public_spots_total` + berechnetem `public_spots_available`
@@ -34,13 +34,13 @@
 - ☑ `GET /api/stands/{id}` *(B3)*
 
 ## Phase 4 — Anbieter-API (kontolos)
-- ☐ `POST /api/stands` — Validierung, Honeypot, Captcha, Rate-Limit; Status `pending`;
-  Edit-Token erzeugen, Hash speichern; **Platz-Kapazität serverseitig prüfen**
-  (`needs_public_spot`) *(A1, A1b, A1c, A2, A4)*
-- ☐ Edit-Link-E-Mail via PHPMailer *(A2)*
-- ☐ `GET /api/stands/edit/{token}` *(A3)*
-- ☐ `PUT /api/stands/edit/{token}` (+ `edited_after_approval`) *(A3)*
-- ☐ `DELETE /api/stands/edit/{token}` *(A3)*
+- ☑ `POST /api/stands` — Validierung, Honeypot, Captcha (`GET /captcha`), Rate-Limit;
+  Status `pending`; Edit-Token erzeugen, Hash speichern; **Platz-Kapazität serverseitig
+  prüfen** (`needs_public_spot`) *(A1, A1b, A1c, A2, A4)*
+- ☑ Edit-Link-E-Mail via Mailer (PHPMailer/mail/log-Transport) *(A2)*
+- ☑ `GET /api/stands/edit/{token}` *(A3)*
+- ☑ `PUT /api/stands/edit/{token}` (+ `edited_after_approval`) *(A3)*
+- ☑ `DELETE /api/stands/edit/{token}` *(A3)*
 
 ## Phase 5 — Admin-API
 - ☐ `POST /api/admin/login` / `POST /api/admin/logout` (Session + CSRF) *(AD1)*

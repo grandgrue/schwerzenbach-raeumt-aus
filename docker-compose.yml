@@ -36,6 +36,7 @@ services:
     environment:
       APP_ENV: dev
       APP_BASE_URL: http://localhost:5173
+      APP_SECRET: dev-secret-change-me
       DB_HOST: db
       DB_PORT: "3306"
       DB_NAME: schwerzenbach_raeumt_aus

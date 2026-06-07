@@ -10,8 +10,10 @@ declare(strict_types=1);
  */
 
 use App\Config;
+use App\Controller\CaptchaController;
 use App\Controller\CategoryController;
 use App\Controller\EventController;
+use App\Controller\ProviderStandController;
 use App\Controller\StandController;
 use App\Http\HttpException;
 use App\Http\Request;
@@ -48,10 +50,17 @@ $router = new Router();
 // Öffentlich
 $router->get('/event', [new EventController(), 'show']);
 $router->get('/categories', [new CategoryController(), 'index']);
+$router->get('/captcha', [new CaptchaController(), 'show']);
 $router->get('/stands', [new StandController(), 'index']);
 $router->get('/stands/{id}', [new StandController(), 'show']);
 
-// Anbieter- und Admin-Routen folgen in den nächsten Implementierungsphasen.
+// Anbieter:in (kontolos, Edit-Token)
+$router->post('/stands', [new ProviderStandController(), 'store']);
+$router->get('/stands/edit/{token}', [new ProviderStandController(), 'editShow']);
+$router->put('/stands/edit/{token}', [new ProviderStandController(), 'editUpdate']);
+$router->delete('/stands/edit/{token}', [new ProviderStandController(), 'editDelete']);
+
+// Admin-Routen folgen in der nächsten Implementierungsphase.
 
 // --- Dispatch + zentrale Fehlerbehandlung ----------------------------------
 try {
