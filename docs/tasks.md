@@ -56,30 +56,34 @@
 > Volltextsuche `q` (HY093 durch wiederverwendeten Named-Parameter).
 
 ## Phase 6 — Frontend-Grundgerüst
-- ☐ Vite + React + TS + Tailwind aufsetzen
-- ☐ React Router + TanStack Query + API-Client
-- ☐ Layout/Navigation (Start, Karte, Liste, Anmelden, FAQ)
+- ☑ Vite + React + TS + Tailwind aufsetzen
+- ☑ React Router + TanStack Query + API-Client (`src/api/`)
+- ☑ Layout/Navigation (Start, Karte, Liste, Anmelden, FAQ)
 
 ## Phase 7 — Besucher-Features
-- ☐ Startseite mit Event-Info *(B4)*
-- ☐ `MapView` mit Pins + Popup *(B1)*
-- ☐ `/liste` mit `FilterBar` (Kategorie/Essen/Getränke/Suche) *(B2)*
-- ☐ Detailseite `/stand/:id` *(B3)*
-- ☐ `NavigateButton` (Fuss-Navigation via Karten-App) *(B5)*
-- ☐ FAQ-Seite inkl. Datenschutz *(B6)*
+- ☑ Startseite mit Event-Info *(B4)*
+- ☑ `MapView` mit Pins + Popup *(B1)*
+- ☑ `/liste` mit `FilterBar` (Kategorie/Essen/Getränke/Suche) *(B2)*
+- ☑ Detailseite `/stand/:id` *(B3)*
+- ☑ `NavigateButton` (Fuss-Navigation via Karten-App) *(B5)*
+- ☑ FAQ-Seite inkl. Datenschutz *(B6)*
 
 ## Phase 8 — Anbieter-Features
-- ☐ `StandForm` + `PinPicker`, Pflicht-Mobilnummer, Wahl der öffentlichen Kontaktangaben,
+- ☑ `StandForm` + `PinPicker`, Pflicht-Mobilnummer, Wahl der öffentlichen Kontaktangaben,
   Datenschutz-Hinweise, Validierung (zod) *(A1, A1b)*
-- ☐ Platz-Option am Gemeindehaus/an der Schule inkl. Hinweistext + Anzeige freier Plätze;
+- ☑ Platz-Option am Gemeindehaus/an der Schule inkl. Hinweistext + Anzeige freier Plätze;
   Option deaktivieren wenn ausgebucht *(A1c)*
-- ☐ Bestätigungsseite nach Anmeldung *(A2)*
-- ☐ Bearbeiten/Zurückziehen über `/bearbeiten/:token` *(A3)*
+- ☑ Bestätigungsseite nach Anmeldung *(A2)*; Honeypot + Captcha im Formular
+- ☑ Bearbeiten/Zurückziehen über `/bearbeiten/:token` *(A3)*
 
 ## Phase 9 — Admin-Features
-- ☐ Admin-Login *(AD1)*
-- ☐ `AdminStandTable` mit Status-Aktionen *(AD2)*
-- ☐ `EventConfigForm` *(AD3)*
+- ☑ Admin-Login *(AD1)*
+- ☑ `AdminStandTable` mit Status-Aktionen *(AD2)*
+- ☑ `EventConfigForm` *(AD3)*
+
+> **Frontend verifiziert (Compile):** `npm run build` (tsc --noEmit + Vite) erfolgreich,
+> 163 Module, keine Typfehler; API-Proxy `/api` → Backend funktioniert. **Visuelle/Laufzeit-
+> Prüfung** im Browser unter http://localhost:5173 noch ausstehend (kein Browser angebunden).
 
 ## Phase 10 — Tests
 - ☐ PHPUnit: Validierung, Auth/CSRF, Stand-Lifecycle, Sichtbarkeit privater Felder
