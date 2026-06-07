@@ -154,7 +154,7 @@ passendem HTTP-Status. Mutierende Admin-Requests erfordern Session + CSRF-Header
 | `/anmelden` | Anmeldeformular mit Pin-Picker + Datenschutz-Hinweise |
 | `/bearbeiten/:token` | Stand bearbeiten / zurückziehen |
 | `/faq` | FAQ inkl. Datenschutz |
-| `/admin` | Admin-Login + Moderations-Dashboard (inkl. Stand-Bearbeitung im Modal) + Kategorien- und Event-Konfiguration |
+| `/admin` | Admin-Login + Dashboard mit **drei Tabs**: Moderation (inkl. Stand-Bearbeitung im Modal), Kategorien-Verwaltung, Event-Konfiguration — jeweils mit eigener Speicherfunktion |
 
 ### Kern-Komponenten
 - **`MapView`** — Leaflet-Karte, lädt freigegebene Stände, rendert Marker

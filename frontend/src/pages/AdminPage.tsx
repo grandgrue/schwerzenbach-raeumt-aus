@@ -47,6 +47,14 @@ const statusTabs = [
   { value: '', label: 'Alle' },
 ];
 
+type AdminSection = 'moderation' | 'categories' | 'event';
+
+const sectionTabs: { value: AdminSection; label: string }[] = [
+  { value: 'moderation', label: 'Moderation' },
+  { value: 'categories', label: 'Kategorien' },
+  { value: 'event', label: 'Event-Konfiguration' },
+];
+
 function LoginForm() {
   const login = useAdminLogin();
   const [username, setUsername] = useState('');
@@ -106,6 +114,7 @@ function Dashboard({ username }: { username?: string }) {
   const { data: categories = [] } = useCategories();
   const updateEvent = useAdminUpdateEvent();
 
+  const [section, setSection] = useState<AdminSection>('moderation');
   const [editStand, setEditStand] = useState<PrivateStand | null>(null);
   const [editError, setEditError] = useState<string | null>(null);
 
@@ -135,7 +144,7 @@ function Dashboard({ username }: { username?: string }) {
   return (
     <div className="max-w-5xl mx-auto px-4 py-6 space-y-8">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Moderation</h1>
+        <h1 className="text-2xl font-bold">Administration</h1>
         <div className="text-sm text-gray-600">
           {username && <span className="mr-3">Angemeldet als {username}</span>}
           <button onClick={() => logout.mutate()} className="text-brand-600 hover:underline">
@@ -144,6 +153,23 @@ function Dashboard({ username }: { username?: string }) {
         </div>
       </div>
 
+      <nav className="flex flex-wrap gap-1 border-b border-gray-200">
+        {sectionTabs.map((t) => (
+          <button
+            key={t.value}
+            onClick={() => setSection(t.value)}
+            className={`px-4 py-2 text-sm font-medium -mb-px border-b-2 ${
+              section === t.value
+                ? 'border-brand-600 text-brand-700'
+                : 'border-transparent text-gray-500 hover:text-gray-700'
+            }`}
+          >
+            {t.label}
+          </button>
+        ))}
+      </nav>
+
+      {section === 'moderation' && (
       <div>
         <div className="flex flex-wrap gap-2 mb-4">
           {statusTabs.map((tab) => (
@@ -171,10 +197,11 @@ function Dashboard({ username }: { username?: string }) {
           />
         )}
       </div>
+      )}
 
-      <CategoryManager />
+      {section === 'categories' && <CategoryManager />}
 
-      {event && (
+      {section === 'event' && event && (
         <EventConfigForm
           event={event}
           busy={updateEvent.isPending}
