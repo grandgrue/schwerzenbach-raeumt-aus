@@ -28,7 +28,7 @@ INSERT INTO `event`
    `registration_open`, `public_spots_total`, `info_text`)
 SELECT
   'Schwerzenbach räumt aus',
-  NULL,            -- Datum vom OK im Admin-Bereich setzen
+  '2026-09-05',    -- Event-Tag (vom OK im Admin-Bereich änderbar)
   '09:00:00',
   '16:00:00',
   1,               -- Anmeldung offen

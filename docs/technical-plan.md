@@ -169,12 +169,18 @@ passendem HTTP-Status. Mutierende Admin-Requests erfordern Session + CSRF-Header
 - **`CategoryManager`** — Admin-Verwaltung der Kategorien (anlegen/umbenennen/löschen)
 - **`EventConfigForm`** — Event-Konfiguration
 
-### Adress-Geocoding (Anmeldeformular)
-Beim Anmelden/Bearbeiten wird der Pin **automatisch gesetzt**: Die eingegebene Adresse wird
-mit Suffix „8603 Schwerzenbach, Schweiz" über **Nominatim (OpenStreetMap)** geocodiert
-(`https://nominatim.openstreetmap.org/search`). Treffer setzt `lat`/`lng`; der Marker bleibt
-**verschiebbar** (manuelle Korrektur). Auslösung per Button und automatisch beim Verlassen
-des Adressfelds.
+### Standort-Auswahl & Adress-Geocoding (Anmeldeformular)
+Das Formular bietet eine **Auswahl** (`StandForm`):
+- **„Bei mir zuhause"** → Adressfeld + Pin. Der Pin wird **automatisch gesetzt**: die Adresse
+  wird mit Suffix „8603 Schwerzenbach, Schweiz" über **Nominatim (OpenStreetMap)** geocodiert
+  (`https://nominatim.openstreetmap.org/search`, ausgelöst per Button und beim Verlassen des
+  Adressfelds). Treffer setzt `lat`/`lng`; der Marker bleibt **verschiebbar**.
+- **„Beim Gemeindehaus / an der Schule"** → `needs_public_spot=true`, `lat`/`lng` werden
+  automatisch auf das Gemeindehaus (`SCHWERZENBACH_CENTER`) und die Adresse auf einen festen
+  Text gesetzt; Adress-/Pin-Eingabe entfällt. Auswahl nur möglich, solange Plätze frei sind.
+
+Die **Verkaufszeiten** werden im Anmeldeformular mit den Event-Standardzeiten vorbelegt
+(überschreibbar).
 
 ### Fuss-Navigation (Detail)
 `NavigateButton` erzeugt eine plattformfreundliche URL aus `lat`/`lng`:
@@ -211,6 +217,7 @@ Die eigentliche Turn-by-turn-Navigation übernimmt die Karten-App des Geräts.
 │   ├── tests/                # PHPUnit
 │   └── composer.json
 ├── frontend/
+│   ├── public/               # statische Assets (z. B. schwerzenbach-flag.svg = Logo/Favicon)
 │   ├── src/                  # React-App (pages, components, api-client, hooks)
 │   ├── index.html
 │   ├── package.json

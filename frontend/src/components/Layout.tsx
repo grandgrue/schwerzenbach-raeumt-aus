@@ -23,7 +23,11 @@ export default function Layout() {
         <nav className="max-w-5xl mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             <Link to="/" className="flex items-center gap-2 font-bold text-brand-700">
-              <span className="text-xl">♻️</span>
+              <img
+                src="/schwerzenbach-flag.svg"
+                alt="Fahne Schwerzenbach"
+                className="h-7 w-7 rounded-sm shadow-sm"
+              />
               <span>Schwerzenbach räumt aus</span>
             </Link>
             <div className="hidden md:flex items-center gap-1">

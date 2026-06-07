@@ -4,9 +4,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import type { Category, EventInfo, StandPayload } from '../api/types';
 import { geocodeAddress } from '../lib/geocode';
+import { SCHWERZENBACH_CENTER } from '../lib/leaflet';
 import PinPicker from './PinPicker';
 
 type GeoStatus = 'idle' | 'loading' | 'found' | 'notfound' | 'error';
+
+/** Adresse/Standort für Stände beim Gemeindehaus / an der Schule. */
+const PUBLIC_SPOT_ADDRESS = 'Parkplatz Gemeindehaus / Primarschule, 8603 Schwerzenbach';
 
 const timeRegex = /^([01]\d|2[0-3]):[0-5]\d$/;
 const optionalTime = z.union([z.literal(''), z.string().regex(timeRegex, 'Zeit als HH:MM')]);
@@ -120,6 +124,24 @@ export default function StandForm({
     }
   }
 
+  function chooseLocation(type: 'home' | 'public') {
+    if (type === 'public') {
+      setValue('needs_public_spot', true, { shouldValidate: true });
+      setValue('address', PUBLIC_SPOT_ADDRESS, { shouldValidate: true });
+      setValue('lat', SCHWERZENBACH_CENTER[0], { shouldValidate: true });
+      setValue('lng', SCHWERZENBACH_CENTER[1], { shouldValidate: true });
+      setGeoStatus('idle');
+    } else {
+      setValue('needs_public_spot', false, { shouldValidate: true });
+      // Falls zuvor der Gemeindehaus-Platz aktiv war, Standortfelder leeren.
+      if (getValues('address') === PUBLIC_SPOT_ADDRESS) {
+        setValue('address', '', { shouldValidate: true });
+        setValue('lat', undefined as unknown as number, { shouldValidate: false });
+        setValue('lng', undefined as unknown as number, { shouldValidate: false });
+      }
+    }
+  }
+
   const addressField = register('address');
   const hasPin = Number.isFinite(lat) && Number.isFinite(lng);
 
@@ -171,53 +193,105 @@ export default function StandForm({
         {err('description')}
       </div>
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700">Adresse * (in Schwerzenbach)</label>
-        <div className="flex gap-2 mt-1">
+      <fieldset className="space-y-2">
+        <legend className="block text-sm font-medium text-gray-700">Wo bietest du an? *</legend>
+        <label className="flex items-start gap-2 text-sm">
           <input
-            {...addressField}
-            onBlur={(e) => {
-              addressField.onBlur(e);
-              if (!hasPin) void doGeocode();
-            }}
-            className={inputClass + ' !mt-0 flex-1'}
-            placeholder="z. B. Bahnhofstrasse 1"
+            type="radio"
+            name="location_type"
+            checked={!needsSpot}
+            onChange={() => chooseLocation('home')}
+            className="mt-1"
           />
-          <button
-            type="button"
-            onClick={() => void doGeocode()}
-            className="shrink-0 rounded-md border border-brand-500 text-brand-600 px-3 py-2 text-sm hover:bg-brand-50"
-          >
-            📍 Pin setzen
-          </button>
-        </div>
-        <p className="text-xs text-gray-500 mt-1">
-          Der Ort «8603 Schwerzenbach» wird automatisch ergänzt.
+          <span>
+            <strong>Bei mir zuhause</strong> (Garage, Vorplatz …) – du gibst die Adresse an,
+            der Pin wird automatisch gesetzt und ist verschiebbar.
+          </span>
+        </label>
+        <label className={`flex items-start gap-2 text-sm ${spotDisabled ? 'opacity-50' : ''}`}>
+          <input
+            type="radio"
+            name="location_type"
+            checked={needsSpot}
+            disabled={spotDisabled}
+            onChange={() => chooseLocation('public')}
+            className="mt-1"
+          />
+          <span>
+            <strong>Beim Gemeindehaus / an der Schule</strong> – begrenzte Plätze, der Standort
+            wird automatisch dort gesetzt.{' '}
+            <span className="text-xs text-gray-500">
+              {spotsAvailable > 0
+                ? `Noch ${spotsAvailable} Platz/Plätze verfügbar.`
+                : 'Aktuell ausgebucht.'}
+            </span>
+          </span>
+        </label>
+        <p className="text-xs text-gray-500">
+          Alle, die keine Möglichkeit haben bei sich zuhause einen Stand aufzustellen, können
+          einen Platz beim Gemeindehaus oder der Primarschule buchen. Die Plätze werden nach
+          Anmelde-Eingang vergeben.
         </p>
-        {geoStatus === 'loading' && <p className="text-xs text-gray-500">Adresse wird gesucht …</p>}
-        {geoStatus === 'found' && <p className="text-xs text-brand-600">Pin anhand der Adresse gesetzt – du kannst ihn unten noch verschieben.</p>}
-        {geoStatus === 'notfound' && (
-          <p className="text-xs text-amber-600">Adresse nicht gefunden – bitte setze den Pin unten von Hand.</p>
-        )}
-        {geoStatus === 'error' && (
-          <p className="text-xs text-amber-600">Adresssuche nicht möglich – bitte setze den Pin unten von Hand.</p>
-        )}
-        {err('address')}
-      </div>
+      </fieldset>
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700">Standort auf der Karte *</label>
-        <div className="mt-1">
-          <PinPicker
-            value={hasPin ? { lat, lng } : null}
-            onChange={(v) => {
-              setValue('lat', v.lat, { shouldValidate: true });
-              setValue('lng', v.lng, { shouldValidate: true });
-            }}
-          />
+      {!needsSpot && (
+        <>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Adresse * (in Schwerzenbach)</label>
+            <div className="flex gap-2 mt-1">
+              <input
+                {...addressField}
+                onBlur={(e) => {
+                  addressField.onBlur(e);
+                  if (!hasPin) void doGeocode();
+                }}
+                className={inputClass + ' !mt-0 flex-1'}
+                placeholder="z. B. Bahnhofstrasse 1"
+              />
+              <button
+                type="button"
+                onClick={() => void doGeocode()}
+                className="shrink-0 rounded-md border border-brand-500 text-brand-600 px-3 py-2 text-sm hover:bg-brand-50"
+              >
+                📍 Pin setzen
+              </button>
+            </div>
+            <p className="text-xs text-gray-500 mt-1">
+              Der Ort «8603 Schwerzenbach» wird automatisch ergänzt.
+            </p>
+            {geoStatus === 'loading' && <p className="text-xs text-gray-500">Adresse wird gesucht …</p>}
+            {geoStatus === 'found' && <p className="text-xs text-brand-600">Pin anhand der Adresse gesetzt – du kannst ihn unten noch verschieben.</p>}
+            {geoStatus === 'notfound' && (
+              <p className="text-xs text-amber-600">Adresse nicht gefunden – bitte setze den Pin unten von Hand.</p>
+            )}
+            {geoStatus === 'error' && (
+              <p className="text-xs text-amber-600">Adresssuche nicht möglich – bitte setze den Pin unten von Hand.</p>
+            )}
+            {err('address')}
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Standort auf der Karte *</label>
+            <div className="mt-1">
+              <PinPicker
+                value={hasPin ? { lat, lng } : null}
+                onChange={(v) => {
+                  setValue('lat', v.lat, { shouldValidate: true });
+                  setValue('lng', v.lng, { shouldValidate: true });
+                }}
+              />
+            </div>
+            {err('lat')}
+          </div>
+        </>
+      )}
+
+      {needsSpot && (
+        <div className="rounded-md bg-brand-50 p-3 text-sm text-gray-700">
+          Dein Standplatz wird beim <strong>Gemeindehaus / an der Schule</strong> zugeteilt –
+          du musst keine eigene Adresse angeben.
         </div>
-        {err('lat')}
-      </div>
+      )}
 
       <fieldset>
         <legend className="text-sm font-medium text-gray-700">Kategorien</legend>
@@ -259,30 +333,6 @@ export default function StandForm({
           <input type="checkbox" {...register('offers_drinks')} className="rounded border-gray-300" />
           Ich biete Getränke auf Spendenbasis an
         </label>
-      </fieldset>
-
-      <fieldset className="rounded-md bg-brand-50 p-3">
-        <legend className="sr-only">Platz am Gemeindehaus / an der Schule</legend>
-        <p className="text-sm text-gray-700">
-          Alle, die keine Möglichkeit haben bei sich zuhause einen Stand aufzustellen, können
-          einen Platz auf dem Parkplatz des Gemeindehauses oder der Primarschule buchen. Es steht
-          eine begrenzte Anzahl an Standflächen zur Verfügung. Die Plätze werden nach
-          Anmelde-Eingang vergeben.
-        </p>
-        <label className="flex items-center gap-2 text-sm mt-2">
-          <input
-            type="checkbox"
-            {...register('needs_public_spot')}
-            disabled={spotDisabled}
-            className="rounded border-gray-300"
-          />
-          Ich benötige einen Platz auf dem Parkplatz am Gemeindehaus / an der Schule
-        </label>
-        <p className="text-xs text-gray-500 mt-1">
-          {spotsAvailable > 0
-            ? `Noch ${spotsAvailable} Platz/Plätze verfügbar.`
-            : 'Aktuell sind alle Plätze vergeben (ausgebucht).'}
-        </p>
       </fieldset>
 
       <div className="border-t pt-4 space-y-4">

@@ -67,15 +67,12 @@ das Organisationskomitee gibt ihn frei, und Besucher:innen entdecken alle Ständ
 
 ### Anbieter:in
 - **A1 — Anmelden:** Ich melde über ein Formular einen Stand an mit:
-  - **Pin auf der Karte** + **Adresse** *(Pflicht)*. Der Pin wird **automatisch anhand der
-    Adresse gesetzt** (Geocoding; Ort „8603 Schwerzenbach" wird automatisch ergänzt) und
-    kann anschliessend weiterhin **manuell verschoben** werden.
+  - **Standort-Auswahl** *(Pflicht)* — entweder **„bei mir zuhause"** oder
+    **„beim Gemeindehaus / an der Schule"** (siehe A1c).
   - **Titel** und **Beschreibung** *(Pflicht / optional)*
   - **Kategorien** (Mehrfachauswahl)
-  - **Verkaufszeiten** von–bis *(optional, sonst Event-Standard)*
+  - **Verkaufszeiten** von–bis *(mit den Event-Standardzeiten **vorbelegt**, überschreibbar)*
   - Flags **„bietet Essen auf Spendenbasis"** / **„bietet Getränke auf Spendenbasis"**
-  - Option **„Ich benötige einen Platz auf dem Parkplatz am Gemeindehaus / an der Schule"**
-    *(siehe A1c — nur wählbar, solange freie Plätze verfügbar sind)*
   - **E-Mail** *(Pflicht, privat — nur für den Bearbeitungs-Link)*
   - **Mobiltelefonnummer** *(Pflicht, privat — nur für das Organisationskomitee)*
   - **Öffentliche Kontaktangaben** (Name und/oder Telefon) — **ich entscheide selbst**, ob
@@ -84,23 +81,22 @@ das Organisationskomitee gibt ihn frei, und Besucher:innen entdecken alle Ständ
   **nur für diesen Anlass** gespeichert werden, dass **E-Mail und Mobilnummer nicht
   veröffentlicht** werden und dass ich **selbst entscheide**, welche Kontaktangaben
   öffentlich sichtbar sind.
-- **A1c — Platz am Gemeindehaus / an der Schule (begrenzt):** Das Formular zeigt folgenden
-  Hinweistext und eine wählbare Option:
+- **A1c — Standort-Auswahl (kombinierte Platz-Frage):** Das Formular stellt **eine Auswahl**
+  zwischen zwei Optionen:
+  - **„Bei mir zuhause"** → ich gebe die **Adresse** ein; der **Pin wird automatisch
+    gesetzt** (Geocoding mit Suffix „8603 Schwerzenbach") und ist **manuell verschiebbar**.
+  - **„Beim Gemeindehaus / an der Schule"** → der **Standort wird automatisch beim
+    Gemeindehaus gesetzt** (keine Adresseingabe nötig). Hierfür gilt:
+    - Die Anzahl Plätze ist begrenzt (`public_spots_total`, vom OK konfigurierbar).
+    - Das System **zählt die Buchungen automatisch** (alle nicht abgelehnten/zurückgezogenen
+      Stände mit dieser Option) und zeigt die **verbleibenden freien Plätze** an.
+    - Sobald **alle Plätze vergeben** sind, ist diese Option **nicht mehr wählbar**
+      („ausgebucht"); „bei mir zuhause" bleibt möglich.
+    - Die Durchsetzung erfolgt **serverseitig** (verhindert Überbuchung).
 
-  > Alle, die keine Möglichkeit haben bei sich zuhause einen Stand aufzustellen, können einen
-  > Platz auf dem Parkplatz des Gemeindehauses oder der Primarschule buchen. Es steht eine
-  > begrenzte Anzahl an Standflächen zur Verfügung. Die Plätze werden nach Anmelde-Eingang
-  > vergeben.
-
-  Option: **„Ich benötige einen Platz auf dem Parkplatz am Gemeindehaus / an der Schule"**
-
-  - Die Anzahl Plätze ist begrenzt (`public_spots_total`, vom OK konfigurierbar).
-  - Das System **zählt die Buchungen automatisch** (alle nicht abgelehnten/zurückgezogenen
-    Stände mit gesetzter Option) und zeigt die **verbleibenden freien Plätze** an.
-  - Sobald **alle Plätze vergeben** sind, ist die Option **nicht mehr wählbar**
-    („ausgebucht"); die Anmeldung eines Stands zuhause bleibt weiterhin möglich.
-  - Die Durchsetzung erfolgt **serverseitig**: Eine Buchung über das Limit hinaus wird
-    abgelehnt (verhindert Überbuchung bei gleichzeitigen Anmeldungen).
+  Hinweistext im Formular: *„Alle, die keine Möglichkeit haben bei sich zuhause einen Stand
+  aufzustellen, können einen Platz beim Gemeindehaus oder der Primarschule buchen. Die Plätze
+  werden nach Anmelde-Eingang vergeben."*
 - **A2 — Bestätigung:** Nach dem Absenden hat mein Stand den Status **„in Prüfung"**. Ich
   erhalte eine **E-Mail mit einem geheimen Bearbeitungs-Link**.
 - **A3 — Bearbeiten/Zurückziehen:** Über den Link kann ich meinen Stand **bearbeiten** oder

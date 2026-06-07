@@ -94,6 +94,10 @@ export default function RegisterPage() {
       <StandForm
         categories={categories}
         event={event}
+        defaultValues={{
+          start_time: event?.default_start_time ?? '',
+          end_time: event?.default_end_time ?? '',
+        }}
         submitLabel="Stand anmelden"
         busy={createStand.isPending}
         serverFieldErrors={serverFieldErrors}
