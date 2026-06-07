@@ -1,0 +1,22 @@
+# .htaccess für den API-Ordner (public_html/api/)
+#
+# Leitet alle Anfragen an den PHP-Front-Controller (index.php) weiter.
+# Diese Datei nach public_html/api/.htaccess kopieren.
+# Hinweis: Der Ordner backend/public/ wird als public_html/api/ deployt,
+# d. h. index.php liegt direkt in public_html/api/.
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Existierende Dateien direkt ausliefern
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule ^ - [L]
+
+    # Alles andere an den Front-Controller
+    RewriteRule ^ index.php [L]
+</IfModule>
+
+# Sensible Dateien nicht ausliefern
+<FilesMatch "\.(env|sql)$">
+    Require all denied
+</FilesMatch>

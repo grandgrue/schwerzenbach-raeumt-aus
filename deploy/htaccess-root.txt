@@ -1,0 +1,20 @@
+# .htaccess für den Web-Root (public_html/) — SPA-Fallback
+#
+# Liefert statische Dateien direkt aus; alle übrigen Pfade (ausser /api)
+# werden an index.html der React-App weitergereicht (Client-seitiges Routing).
+# Diese Datei nach public_html/.htaccess kopieren.
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # /api unangetastet lassen (eigene .htaccess im Unterordner)
+    RewriteRule ^api(/.*)?$ - [L]
+
+    # Existierende Dateien/Verzeichnisse direkt ausliefern
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # Alles andere auf die SPA umleiten
+    RewriteRule ^ index.html [L]
+</IfModule>

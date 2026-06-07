@@ -11,24 +11,27 @@
 - ☑ `README.md` mit Projektüberblick & Verweisen aktualisieren
 
 ## Phase 1 — Datenbank
-- ☐ `backend/sql/schema.sql`: Tabellen `event`, `stand`, `category`, `stand_category`,
+- ☑ `backend/sql/schema.sql`: Tabellen `event`, `stand`, `category`, `stand_category`,
   `admin_user` (siehe Datenmodell §3)
-- ☐ `backend/sql/seed.sql`: Kategorien, Demo-Event, Admin-User (gehashtes Passwort)
+- ☑ `backend/sql/seed.sql`: Kategorien + Demo-Event (Admin-User via
+  `backend/bin/create-admin.php`, kein Hash im Repo)
 
 ## Phase 2 — Backend-Grundgerüst
-- ☐ `composer.json` + Abhängigkeiten (PHPMailer, phpdotenv, phpunit)
-- ☐ Konfig-Loader + `config/.env.example`
-- ☐ PDO-Verbindung (Prepared Statements)
-- ☐ Front-Controller `public/index.php` + Router
-- ☐ JSON-Response-/Fehler-Helper + Validierungsschicht
+- ☑ `composer.json` + Abhängigkeiten (PHPMailer, phpunit)
+- ☑ Konfig-Loader (`src/Config.php`) + `config/.env.example`
+- ☑ PDO-Verbindung (`src/Database.php`, Prepared Statements)
+- ☑ Front-Controller `public/index.php` + Router (`src/Http/Router.php`) inkl.
+  Fallback-Autoloader (läuft auch ohne Composer)
+- ☑ JSON-Response-/Fehler-Helper (`src/Http/Response.php`, `HttpException.php`)
+- ☐ Validierungsschicht (`src/Support/Validator.php`) — folgt mit Phase 4
 
 ## Phase 3 — Öffentliche API
-- ☐ `GET /api/event` inkl. `public_spots_total` + berechnetem `public_spots_available`
+- ☑ `GET /api/event` inkl. `public_spots_total` + berechnetem `public_spots_available`
   *(B4, A1c)*
-- ☐ `GET /api/categories` *(B2)*
-- ☐ `GET /api/stands` inkl. Filter `category`/`food`/`drinks`/`q` *(B1, B2)* — **ohne**
+- ☑ `GET /api/categories` *(B2)*
+- ☑ `GET /api/stands` inkl. Filter `category`/`food`/`drinks`/`q` *(B1, B2)* — **ohne**
   private Felder
-- ☐ `GET /api/stands/{id}` *(B3)*
+- ☑ `GET /api/stands/{id}` *(B3)*
 
 ## Phase 4 — Anbieter-API (kontolos)
 - ☐ `POST /api/stands` — Validierung, Honeypot, Captcha, Rate-Limit; Status `pending`;
