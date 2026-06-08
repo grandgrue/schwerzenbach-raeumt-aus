@@ -88,6 +88,12 @@ export default function RegisterPage() {
         Eintrag. Details zum Datenschutz findest du auch in den{' '}
         <Link to="/faq" className="text-brand-600 hover:underline">FAQ</Link>.
       </p>
+      <p className="text-sm text-gray-500">
+        Bereits angemeldet?{' '}
+        <Link to="/link-anfordern" className="text-brand-600 hover:underline">
+          Bearbeitungs-Link erneut anfordern
+        </Link>
+      </p>
 
       {generalError && <ErrorNote text={generalError} />}
 

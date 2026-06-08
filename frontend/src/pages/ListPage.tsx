@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useCategories, useStands } from '../api/hooks';
 import type { StandFilters } from '../api/types';
 import FilterBar from '../components/FilterBar';
@@ -6,7 +7,9 @@ import StandCard from '../components/StandCard';
 import { EmptyNote, ErrorNote, Loading } from '../components/StatusViews';
 
 export default function ListPage() {
-  const [filters, setFilters] = useState<StandFilters>({});
+  const location = useLocation();
+  const initialQ = (location.state as { q?: string } | null)?.q ?? '';
+  const [filters, setFilters] = useState<StandFilters>(initialQ ? { q: initialQ } : {});
   const { data: categories = [] } = useCategories();
   const { data: stands, isLoading, isError } = useStands(filters);
 

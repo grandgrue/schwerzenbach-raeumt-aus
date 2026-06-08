@@ -114,6 +114,15 @@ oder den Datensatz in `admin_user` mit einem `password_hash()`-Wert manuell einf
 - Testanmeldung über `/anmelden` → E-Mail mit Bearbeitungs-Link kommt an
 - `/admin` → Login → Stand freigeben → erscheint öffentlich
 
+## 7a. Datenbank-Migrationen (bei Updates bestehender DB)
+
+Bei Funktionserweiterungen können Schemaänderungen nötig sein. Migrationsskripte liegen unter
+`backend/sql/migrations/` und werden via phpMyAdmin auf der **bestehenden** DB ausgeführt
+(frische Installationen erhalten alles bereits über `schema.sql`):
+
+- `001_organizer_emails.sql` — fügt `event.organizer_emails` hinzu (Organisator-Benachrichtigungen).
+  Danach im Admin-Bereich unter **Event-Konfiguration** die Organisator-E-Mail-Adressen eintragen.
+
 ## 8. Aktualisierungen (späteres Re-Deploy)
 
 - **Frontend:** `npm run build` → Inhalt von `dist/` erneut nach `public_html/` hochladen.

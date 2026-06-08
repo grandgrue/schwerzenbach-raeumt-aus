@@ -13,6 +13,7 @@ use App\Repository\EventRepository;
 use App\Repository\StandRepository;
 use App\Service\Mailer;
 use App\Support\Captcha;
+use App\Support\OrganizerEmails;
 use App\Support\RateLimiter;
 use App\Support\StandInput;
 use App\Support\Token;
@@ -77,7 +78,53 @@ final class ProviderStandController
         // 8) Bearbeitungs-Link per E-Mail
         $this->sendEditLink((string) $fields['provider_email'], (string) $fields['title'], $token);
 
+        // 9) Organisator:innen benachrichtigen
+        $this->notifyOrganizers('neu angemeldet', (string) $fields['title'], !empty($fields['needs_public_spot']));
+
         Response::json(['id' => $id, 'status' => 'pending'], 201);
+    }
+
+    /** POST /stands/resend-link — Bearbeitungs-Link(s) erneut zusenden. */
+    public function resendLink(Request $request, array $params): void
+    {
+        // Honeypot
+        if (trim((string) $request->input('website', '')) !== '') {
+            Response::json(['ok' => true]);
+            return;
+        }
+        // Rate-Limit
+        $limiter = new RateLimiter(Config::int('RATE_LIMIT_PER_HOUR', 10));
+        if (!$limiter->allow('resend:' . $request->clientIp())) {
+            throw new HttpException(429, 'rate_limited', 'Zu viele Anfragen. Bitte später erneut versuchen.');
+        }
+        // Captcha
+        if (!Captcha::verify($request->input('captcha_token'), $request->input('captcha_answer'))) {
+            throw HttpException::badRequest('Bitte Eingaben prüfen', ['captcha_answer' => 'Antwort stimmt nicht']);
+        }
+
+        $email = trim((string) $request->input('email', ''));
+        if ($email !== '' && filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $stands = $this->stands->findActiveByProviderEmail($email);
+            if ($stands !== []) {
+                $base = rtrim((string) Config::get('APP_BASE_URL', ''), '/');
+                $lines = [];
+                foreach ($stands as $s) {
+                    $token = Token::generate(); // neuer Token (alter wird ungültig)
+                    $this->stands->setEditTokenHashById($s['id'], Token::hash($token));
+                    $lines[] = "• «{$s['title']}»:\n  {$base}/bearbeiten/{$token}";
+                }
+                $body = "Hallo\n\n"
+                    . "hier sind deine aktuellen Bearbeitungs-Links für «Schwerzenbach räumt aus»:\n\n"
+                    . implode("\n\n", $lines)
+                    . "\n\nHinweis: Früher erhaltene Links sind ab jetzt ungültig.\n"
+                    . "Bitte bewahre diese Nachricht sicher auf und teile die Links nicht weiter.\n\n"
+                    . "Herzliche Grüsse\nDein Organisationskomitee";
+                $this->mailer->send($email, 'Deine Bearbeitungs-Links für «Schwerzenbach räumt aus»', $body);
+            }
+        }
+
+        // Immer generische Antwort (keine Auskunft, ob die Adresse existiert).
+        Response::json(['ok' => true]);
     }
 
     /** GET /stands/edit/{token} — eigenen Stand laden (inkl. privater Felder). */
@@ -104,6 +151,8 @@ final class ProviderStandController
 
         $this->stands->updateByEditTokenHash(Token::hash($token), $fields, $categoryIds);
 
+        $this->notifyOrganizers('bearbeitet', (string) $fields['title'], !empty($fields['needs_public_spot']));
+
         $row = $this->findByTokenOrFail($token);
         Response::json($this->stands->toPrivate($row));
     }
@@ -111,10 +160,10 @@ final class ProviderStandController
     /** DELETE /stands/edit/{token} — Stand zurückziehen. */
     public function editDelete(Request $request, array $params): void
     {
-        $ok = $this->stands->withdrawByEditTokenHash(Token::hash((string) ($params['token'] ?? '')));
-        if (!$ok) {
-            throw HttpException::notFound('Stand nicht gefunden');
-        }
+        $token = (string) ($params['token'] ?? '');
+        $row = $this->findByTokenOrFail($token); // vor dem Zurückziehen laden (für die Benachrichtigung)
+        $this->stands->withdrawByEditTokenHash(Token::hash($token));
+        $this->notifyOrganizers('zurückgezogen', (string) $row['title'], (bool) $row['needs_public_spot']);
         Response::noContent();
     }
 
@@ -168,5 +217,36 @@ final class ProviderStandController
             . "Herzliche Grüsse\nDein Organisationskomitee";
 
         $this->mailer->send($email, 'Dein Stand bei «Schwerzenbach räumt aus»', $body);
+    }
+
+    /**
+     * Benachrichtigt alle hinterlegten Organisator-Adressen über eine Anbieter-Aktion.
+     * $action z. B. «neu angemeldet», «bearbeitet», «zurückgezogen».
+     */
+    private function notifyOrganizers(string $action, string $title, bool $needsPublicSpot): void
+    {
+        $event = $this->events->getActive();
+        if ($event === null) {
+            return;
+        }
+        $recipients = OrganizerEmails::parse($event['organizer_emails'] ?? null);
+        if ($recipients === []) {
+            return;
+        }
+
+        $adminUrl = rtrim((string) Config::get('APP_BASE_URL', ''), '/') . '/admin';
+        $ort = $needsPublicSpot ? 'Platz beim Gemeindehaus / an der Schule' : 'bei sich zuhause';
+
+        $subject = "Flohmarkt: Stand {$action} – «{$title}»";
+        $body = "Hallo Organisationskomitee\n\n"
+            . "Ein Stand wurde {$action}:\n"
+            . "• Titel: {$title}\n"
+            . "• Standort: {$ort}\n\n"
+            . "Zur Übersicht / Moderation: {$adminUrl}\n\n"
+            . "Diese Nachricht wurde automatisch erstellt.";
+
+        foreach ($recipients as $to) {
+            $this->mailer->send($to, $subject, $body);
+        }
     }
 }

@@ -59,6 +59,13 @@ export default function StandDetailPage() {
       <div className="rounded-lg overflow-hidden border border-gray-200">
         <MapView stands={[stand]} center={[stand.lat, stand.lng]} zoom={16} height="320px" />
       </div>
+
+      <p className="text-xs text-gray-400 pt-2 border-t">
+        Ist das Ihr Stand und möchten Sie ihn anpassen?{' '}
+        <Link to="/link-anfordern" className="text-brand-600 hover:underline">
+          Bearbeitungs-Link anfordern
+        </Link>
+      </p>
     </div>
   );
 }

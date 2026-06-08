@@ -11,6 +11,7 @@ use App\Http\Response;
 use App\Repository\CategoryRepository;
 use App\Repository\EventRepository;
 use App\Repository\StandRepository;
+use App\Support\OrganizerEmails;
 use App\Support\StandInput;
 use App\Support\Validator;
 
@@ -122,6 +123,26 @@ final class AdminController
         Response::noContent();
     }
 
+    /** GET /admin/event — vollständige Event-Konfiguration inkl. Organisator-Adressen. */
+    public function showEvent(Request $request, array $params): void
+    {
+        $this->auth->requireAuth();
+        $event = $this->events->getActive();
+        if ($event === null) {
+            throw HttpException::notFound('Kein Event konfiguriert');
+        }
+        Response::json([
+            'name'               => $event['name'],
+            'event_date'         => $event['event_date'],
+            'default_start_time' => $event['default_start_time'] ? substr((string) $event['default_start_time'], 0, 5) : null,
+            'default_end_time'   => $event['default_end_time'] ? substr((string) $event['default_end_time'], 0, 5) : null,
+            'registration_open'  => (bool) $event['registration_open'],
+            'public_spots_total' => (int) $event['public_spots_total'],
+            'info_text'          => $event['info_text'],
+            'organizer_emails'   => $event['organizer_emails'] ?? '',
+        ]);
+    }
+
     /** PUT /admin/event — Event-Konfiguration speichern. */
     public function updateEvent(Request $request, array $params): void
     {
@@ -140,6 +161,8 @@ final class AdminController
         $end       = $request->input('default_end_time');
         $spots     = $request->input('public_spots_total', 0);
         $infoText  = $request->input('info_text');
+        $organizerRaw = $request->input('organizer_emails');
+        $organizerRaw = is_string($organizerRaw) ? $organizerRaw : '';
 
         $v->required('name', $name)->maxLength('name', $name, 150);
         if ($date !== null && $date !== '' && (!is_string($date) || !preg_match('/^\d{4}-\d{2}-\d{2}$/', $date))) {
@@ -150,7 +173,14 @@ final class AdminController
         if (!is_numeric($spots) || (int) $spots < 0) {
             $v->add('public_spots_total', 'Muss eine Zahl ≥ 0 sein');
         }
+        $invalidEmails = OrganizerEmails::invalid($organizerRaw);
+        if ($invalidEmails !== []) {
+            $v->add('organizer_emails', 'Ungültige Adresse(n): ' . implode(', ', $invalidEmails));
+        }
         $v->throwIfFails();
+
+        // Normalisiert speichern: eine Adresse pro Zeile.
+        $organizerNormalized = implode("\n", OrganizerEmails::parse($organizerRaw));
 
         $this->events->update($eventId, [
             'name'               => $name,
@@ -160,6 +190,7 @@ final class AdminController
             'registration_open'  => (bool) $request->input('registration_open', false),
             'public_spots_total' => (int) $spots,
             'info_text'          => is_string($infoText) ? $infoText : null,
+            'organizer_emails'   => $organizerNormalized !== '' ? $organizerNormalized : null,
         ]);
 
         Response::json(['ok' => true]);

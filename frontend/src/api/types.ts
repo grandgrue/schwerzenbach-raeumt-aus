@@ -104,3 +104,15 @@ export interface AdminSession {
   username?: string;
   csrf_token?: string;
 }
+
+/** Vollständige Event-Konfiguration für den Admin (inkl. privater Organisator-Adressen). */
+export interface AdminEvent {
+  name: string;
+  event_date: string | null;
+  default_start_time: string | null;
+  default_end_time: string | null;
+  registration_open: boolean;
+  public_spots_total: number;
+  info_text: string | null;
+  organizer_emails: string;
+}

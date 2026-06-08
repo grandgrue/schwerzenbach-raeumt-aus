@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import {
   useAdminDeleteStand,
+  useAdminEvent,
   useAdminLogin,
   useAdminLogout,
   useAdminSession,
@@ -111,6 +112,7 @@ function Dashboard({ username }: { username?: string }) {
   const updateStand = useAdminUpdateStand();
   const deleteStand = useAdminDeleteStand();
   const { data: event } = useEvent();
+  const { data: adminEvent } = useAdminEvent();
   const { data: categories = [] } = useCategories();
   const updateEvent = useAdminUpdateEvent();
 
@@ -201,9 +203,9 @@ function Dashboard({ username }: { username?: string }) {
 
       {section === 'categories' && <CategoryManager />}
 
-      {section === 'event' && event && (
+      {section === 'event' && adminEvent && (
         <EventConfigForm
-          event={event}
+          event={adminEvent}
           busy={updateEvent.isPending}
           message={eventMessage}
           onSave={(body) => {

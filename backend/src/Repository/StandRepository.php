@@ -206,6 +206,33 @@ final class StandRepository
         return $stmt->rowCount() > 0;
     }
 
+    /**
+     * Aktive (nicht zurückgezogene) Stände einer Anbieter-E-Mail.
+     *
+     * @return array<int,array{id:int,title:string}>
+     */
+    public function findActiveByProviderEmail(string $email): array
+    {
+        $stmt = $this->pdo()->prepare(
+            "SELECT `id`, `title` FROM `stand`
+             WHERE `provider_email` = :e AND `status` <> 'withdrawn'
+             ORDER BY `id`"
+        );
+        $stmt->execute(['e' => $email]);
+        $out = [];
+        foreach ($stmt->fetchAll() as $row) {
+            $out[] = ['id' => (int) $row['id'], 'title' => $row['title']];
+        }
+        return $out;
+    }
+
+    /** Setzt einen neuen Edit-Token-Hash (Token-Rotation beim erneuten Zusenden). */
+    public function setEditTokenHashById(int $id, string $hash): void
+    {
+        $stmt = $this->pdo()->prepare('UPDATE `stand` SET `edit_token_hash` = :h WHERE `id` = :id');
+        $stmt->execute(['h' => $hash, 'id' => $id]);
+    }
+
     // -- Admin / Organisationskomitee -----------------------------------------
 
     /**

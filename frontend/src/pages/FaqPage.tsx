@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 interface QA {
   q: string;
   a: string;
@@ -41,6 +43,20 @@ export default function FaqPage() {
             <p className="mt-2 text-gray-700 whitespace-pre-line">{item.a}</p>
           </details>
         ))}
+
+        <details className="rounded-lg border border-gray-200 bg-white p-4">
+          <summary className="font-medium cursor-pointer text-gray-900">
+            Ich habe meinen Bearbeitungs-Link verloren
+          </summary>
+          <p className="mt-2 text-gray-700">
+            Kein Problem: Gib auf der Seite{' '}
+            <Link to="/link-anfordern" className="text-brand-600 hover:underline">
+              Bearbeitungs-Link anfordern
+            </Link>{' '}
+            die E-Mail-Adresse ein, mit der du dich angemeldet hast. Du erhältst einen neuen Link
+            für alle deine Einträge (frühere Links werden dabei ungültig).
+          </p>
+        </details>
       </div>
     </div>
   );

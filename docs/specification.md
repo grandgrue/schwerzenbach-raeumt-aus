@@ -66,6 +66,10 @@ das Organisationskomitee gibt ihn frei, und Besucher:innen entdecken alle Ständ
   **„Zu Fuss hinnavigieren"**, der die Karten-App meines Geräts im Fussgänger-Modus mit den
   Koordinaten des Stands öffnet.
 - **B6 — FAQ:** Ich rufe eine FAQ-Seite mit häufigen Fragen und Datenschutz-Informationen auf.
+- **B7 — Markttag-Startseite:** Sobald die Anmeldung **geschlossen** ist, wird die Startseite
+  zur Such-/Entdeckungs-App: such-orientierter Hero-Text, ein **Suchfeld** (springt vorbefüllt
+  in die Liste), eine **eingebettete Karte** aller Stände und prominente Buttons zu Karte/Liste;
+  „Stand anmelden" entfällt. Bei offener Anmeldung bleibt die werbende Vorlauf-Ansicht.
 
 ### Anbieter:in
 - **A1 — Anmelden:** Ich melde über ein Formular einen Stand an mit:
@@ -105,6 +109,12 @@ das Organisationskomitee gibt ihn frei, und Besucher:innen entdecken alle Ständ
   **zurückziehen**.
 - **A4 — Anmeldefenster:** Eine Anmeldung ist nur möglich, solange das OK die Anmeldung
   **offen** hat.
+- **A5 — Bearbeitungs-Link erneut anfordern:** Habe ich meinen Link verloren, gebe ich auf
+  einer eigenen Seite (`/link-anfordern`) meine E-Mail-Adresse ein und erhalte für **alle**
+  meine (nicht zurückgezogenen) Stände einen neuen Link. *Aus Sicherheitsgründen werden dabei
+  neue Tokens erzeugt; frühere Links werden ungültig.* Einstieg dezent auf Anmelden-Seite,
+  in der FAQ und auf der Stand-Detailseite. Schutz: Honeypot + Captcha + Rate-Limit; die
+  Antwort ist immer generisch (keine Auskunft, ob die Adresse existiert).
 
 ### Admin / Organisationskomitee
 - **AD1 — Login:** Ich melde mich mit Benutzername und Passwort an.
@@ -121,6 +131,10 @@ das Organisationskomitee gibt ihn frei, und Besucher:innen entdecken alle Ständ
 - **AD6 — Kategorien verwalten:** Ich kann Kategorien **anlegen, umbenennen und löschen**.
   Eine Kategorie, die bereits von mindestens einem Stand genutzt wird, **kann nicht gelöscht**
   werden (Hinweis mit Anzahl betroffener Stände).
+- **AD7 — Organisator-Benachrichtigungen:** In der Event-Konfiguration hinterlege ich
+  **mehrere Organisator-E-Mail-Adressen** (eine pro Zeile). Diese werden automatisch
+  benachrichtigt, sobald ein Stand von Anbieter:innen **neu angemeldet, bearbeitet oder
+  zurückgezogen** wird. Die Adressen sind **privat** (nie über die öffentliche API sichtbar).
 
 ## 5. Nicht-funktionale Anforderungen
 
