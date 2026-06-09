@@ -87,7 +87,7 @@ export default function HomePage() {
               </>
             ) : (
               <>
-                <Link to="/anmelden" className="btn-primary">🎪 Stand anmelden</Link>
+                <Link to="/anmelden" className="btn-primary">🧺 Stand anmelden</Link>
                 <Link to="/karte" className="btn-ghost">Stände entdecken</Link>
               </>
             )}
@@ -161,9 +161,11 @@ export default function HomePage() {
           <p className="eyebrow">Was ist das?</p>
           <h2 className="text-3xl sm:text-4xl mt-1">Der grosse Quartier-Flohmarkt</h2>
           <p className="mt-4 text-ink leading-relaxed">
-            Einmal im Jahr räumt Schwerzenbach aus: Einwohner:innen verkaufen vor der eigenen
-            Haustür, in der Garage oder auf dem Vorplatz, was sie nicht mehr brauchen — und finden
-            beim Stöbern durchs Dorf vielleicht genau das, wonach sie gesucht haben.
+            Schwerzenbach räumt aus — zum ersten Mal! Bei dieser Premiere verkaufen
+            Einwohner:innen vor der eigenen Haustür, in der Garage oder auf dem Vorplatz, was sie
+            nicht mehr brauchen — und finden beim Stöbern durchs Dorf vielleicht genau das, wonach
+            sie gesucht haben. Ob es eine Wiederholung gibt, wird sich zeigen: umso schöner, beim
+            Auftakt dabei zu sein.
           </p>
           <p className="mt-3 text-ink leading-relaxed">
             Ob Möbel, Kleider, Bücher oder Spielzeug: Hier bekommt alles eine zweite Chance.
@@ -179,8 +181,9 @@ export default function HomePage() {
           <div className="text-3xl" aria-hidden>🏡</div>
           <h3 className="text-2xl mt-2">Bei mir zuhause</h3>
           <p className="text-ink mt-2 text-sm leading-relaxed">
-            Du gibst deine Adresse an, der Standort wird automatisch auf der Karte gesetzt — und
-            ist verschiebbar. Ideal für Garage, Vorplatz oder Vorgarten.
+            Mitmachen ist kinderleicht: kurzes Formular ausfüllen, Adresse angeben — fertig. Kein
+            Konto nötig, die Teilnahme ist kostenlos. Verkauft wird direkt vor der Garage, auf dem
+            Vorplatz oder im Vorgarten.
           </p>
         </div>
         <div className="card card-hover p-6">
