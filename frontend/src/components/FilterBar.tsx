@@ -8,7 +8,7 @@ interface Props {
 
 export default function FilterBar({ categories, filters, onChange }: Props) {
   return (
-    <div className="flex flex-wrap items-end gap-3 rounded-lg bg-white border border-gray-200 p-3">
+    <div className="card flex flex-wrap items-end gap-3 p-3">
       <label className="flex flex-col text-sm flex-1 min-w-[160px]">
         <span className="text-gray-600 mb-1">Suche</span>
         <input
@@ -16,7 +16,7 @@ export default function FilterBar({ categories, filters, onChange }: Props) {
           value={filters.q ?? ''}
           onChange={(e) => onChange({ ...filters, q: e.target.value })}
           placeholder="Titel, Beschreibung, Adresse …"
-          className="rounded-md border-gray-300 border px-3 py-1.5 focus:border-brand-500 focus:outline-none"
+          className="rounded-md border border-gold px-3 py-1.5 focus:border-accent focus:outline-none"
         />
       </label>
 
@@ -27,7 +27,7 @@ export default function FilterBar({ categories, filters, onChange }: Props) {
           onChange={(e) =>
             onChange({ ...filters, category: e.target.value ? Number(e.target.value) : null })
           }
-          className="rounded-md border-gray-300 border px-3 py-1.5 focus:border-brand-500 focus:outline-none"
+          className="rounded-md border border-gold px-3 py-1.5 focus:border-accent focus:outline-none"
         >
           <option value="">Alle</option>
           {categories.map((c) => (

@@ -31,7 +31,7 @@ export default function AdminStandTable({ stands, busyId, onSetStatus, onEdit, o
   return (
     <div className="space-y-3">
       {stands.map((s) => (
-        <div key={s.id} className="rounded-lg border border-gray-200 bg-white p-4">
+        <div key={s.id} className="card p-4">
           <div className="flex flex-wrap items-start justify-between gap-2">
             <div>
               <div className="flex items-center gap-2">

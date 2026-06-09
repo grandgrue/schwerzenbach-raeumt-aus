@@ -38,13 +38,13 @@ export default function FaqPage() {
       <h1 className="text-2xl font-bold">Häufige Fragen &amp; Datenschutz</h1>
       <div className="space-y-4">
         {faqs.map((item) => (
-          <details key={item.q} className="rounded-lg border border-gray-200 bg-white p-4">
+          <details key={item.q} className="card p-4">
             <summary className="font-medium cursor-pointer text-gray-900">{item.q}</summary>
             <p className="mt-2 text-gray-700 whitespace-pre-line">{item.a}</p>
           </details>
         ))}
 
-        <details className="rounded-lg border border-gray-200 bg-white p-4">
+        <details className="card p-4">
           <summary className="font-medium cursor-pointer text-gray-900">
             Ich habe meinen Bearbeitungs-Link verloren
           </summary>

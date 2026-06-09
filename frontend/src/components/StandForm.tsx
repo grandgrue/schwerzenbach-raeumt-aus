@@ -177,7 +177,7 @@ export default function StandForm({
     errors[name] ? <p className="text-sm text-red-600 mt-1">{errors[name]?.message as string}</p> : null;
 
   const inputClass =
-    'mt-1 w-full rounded-md border border-gray-300 px-3 py-2 focus:border-brand-500 focus:outline-none';
+    'mt-1 w-full rounded-md border border-gold px-3 py-2 focus:border-accent focus:outline-none';
 
   return (
     <form onSubmit={handleSubmit(submit)} className="space-y-6">
@@ -380,7 +380,7 @@ export default function StandForm({
       <button
         type="submit"
         disabled={busy}
-        className="w-full sm:w-auto rounded-md bg-brand-600 px-6 py-2.5 text-white font-medium hover:bg-brand-700 disabled:opacity-50"
+        className="w-full sm:w-auto rounded-pill bg-accent px-6 py-2.5 text-white font-medium hover:bg-accent-dark disabled:opacity-50"
       >
         {busy ? 'Wird gespeichert …' : submitLabel}
       </button>

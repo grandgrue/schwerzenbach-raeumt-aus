@@ -49,7 +49,7 @@ export default function CategoryManager() {
   }
 
   return (
-    <section className="rounded-lg border border-gray-200 bg-white p-4 space-y-4">
+    <section className="card p-4 space-y-4">
       <h2 className="text-lg font-semibold">Kategorien verwalten</h2>
       {error && <ErrorNote text={error} />}
       {isError && <ErrorNote text="Kategorien konnten nicht geladen werden." />}
@@ -62,7 +62,7 @@ export default function CategoryManager() {
               <input
                 value={edited[c.id] ?? c.name}
                 onChange={(e) => setEdited((s) => ({ ...s, [c.id]: e.target.value }))}
-                className="flex-1 min-w-[160px] rounded-md border border-gray-300 px-3 py-1.5 text-sm focus:border-brand-500 focus:outline-none"
+                className="flex-1 min-w-[160px] rounded-md border border-gold px-3 py-1.5 text-sm focus:border-accent focus:outline-none"
               />
               <span className="text-xs text-gray-500 w-24">
                 {c.stand_count} Stand/Stände
@@ -92,12 +92,12 @@ export default function CategoryManager() {
           value={newName}
           onChange={(e) => setNewName(e.target.value)}
           placeholder="Neue Kategorie"
-          className="flex-1 rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none"
+          className="flex-1 rounded-md border border-gold px-3 py-2 text-sm focus:border-accent focus:outline-none"
         />
         <button
           onClick={add}
           disabled={createCategory.isPending || newName.trim() === ''}
-          className="rounded-md bg-brand-600 px-4 py-2 text-sm text-white hover:bg-brand-700 disabled:opacity-50"
+          className="rounded-pill bg-accent px-4 py-2 text-sm text-white hover:bg-accent-dark disabled:opacity-50"
         >
           Hinzufügen
         </button>

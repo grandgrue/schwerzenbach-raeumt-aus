@@ -19,7 +19,7 @@ export default function EventConfigForm({ event, busy, message, onSave }: Props)
   const [organizers, setOrganizers] = useState(event.organizer_emails ?? '');
 
   const inputClass =
-    'mt-1 w-full rounded-md border border-gray-300 px-3 py-2 focus:border-brand-500 focus:outline-none';
+    'mt-1 w-full rounded-md border border-gold px-3 py-2 focus:border-accent focus:outline-none';
 
   function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -36,7 +36,7 @@ export default function EventConfigForm({ event, busy, message, onSave }: Props)
   }
 
   return (
-    <form onSubmit={submit} className="space-y-4 rounded-lg border border-gray-200 bg-white p-4">
+    <form onSubmit={submit} className="space-y-4 card p-4">
       <h2 className="text-lg font-semibold">Event-Konfiguration</h2>
       {message && (
         <div className="rounded-md bg-brand-50 border border-brand-100 px-3 py-2 text-sm text-brand-700">
@@ -108,7 +108,7 @@ export default function EventConfigForm({ event, busy, message, onSave }: Props)
       <button
         type="submit"
         disabled={busy}
-        className="rounded-md bg-brand-600 px-5 py-2 text-white font-medium hover:bg-brand-700 disabled:opacity-50"
+        className="rounded-pill bg-accent px-5 py-2 text-white font-medium hover:bg-accent-dark disabled:opacity-50"
       >
         {busy ? 'Wird gespeichert …' : 'Speichern'}
       </button>

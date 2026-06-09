@@ -131,7 +131,7 @@ export default function RegisterPage() {
               inputMode="numeric"
               value={captchaAnswer}
               onChange={(e) => setCaptchaAnswer(e.target.value)}
-              className="w-28 rounded-md border border-gray-300 px-3 py-2 focus:border-brand-500 focus:outline-none"
+              className="w-28 rounded-md border border-gold px-3 py-2 focus:border-accent focus:outline-none"
             />
             <button type="button" onClick={refreshCaptcha} className="text-sm text-brand-600 hover:underline">
               Neue Frage

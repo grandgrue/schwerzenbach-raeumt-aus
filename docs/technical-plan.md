@@ -24,7 +24,12 @@ Browser ───────▶ │  /            → React-SPA (statische Date
 
 ### Frontend
 - **React 18** + **TypeScript**, Build mit **Vite**
-- **Tailwind CSS** für Styling
+- **Tailwind CSS** für Styling, konfiguriert mit dem Design-System **„Sonnig & Warm"**:
+  Farb-Tokens (`primary` Marktgelb, `accent` Korall, `ink`, `gold`, …), Display-Schrift
+  **Bebas Neue** + Body-Schrift **Nunito** (beide **selbst gehostet** unter
+  `frontend/public/fonts/`, DSGVO-konform), Komponenten-Utilities in `src/index.css`
+  (`.btn-primary`, `.card`, `.pill`, `.field`, `.eyebrow`). Logo: rundes Badge
+  (`public/logo.png`). Referenz/Design-Brief: `design-idee/`.
 - **React Router v6** (SPA-Routing; Server-Fallback via `.htaccess`)
 - **TanStack Query** (Daten-Fetching/Caching gegen die API)
 - **react-leaflet** + **Leaflet** (Karte/Pins, OpenStreetMap-Tiles)

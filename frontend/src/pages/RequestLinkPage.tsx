@@ -58,7 +58,7 @@ export default function RequestLinkPage() {
   }
 
   const inputClass =
-    'mt-1 w-full rounded-md border border-gray-300 px-3 py-2 focus:border-brand-500 focus:outline-none';
+    'mt-1 w-full rounded-md border border-gold px-3 py-2 focus:border-accent focus:outline-none';
 
   return (
     <div className="max-w-md mx-auto px-4 py-8 space-y-5">
@@ -104,7 +104,7 @@ export default function RequestLinkPage() {
               required
               value={captchaAnswer}
               onChange={(e) => setCaptchaAnswer(e.target.value)}
-              className="w-28 rounded-md border border-gray-300 px-3 py-2 focus:border-brand-500 focus:outline-none"
+              className="w-28 rounded-md border border-gold px-3 py-2 focus:border-accent focus:outline-none"
             />
             <button type="button" onClick={refreshCaptcha} className="text-sm text-brand-600 hover:underline">
               Neue Frage
@@ -115,7 +115,7 @@ export default function RequestLinkPage() {
         <button
           type="submit"
           disabled={resend.isPending}
-          className="w-full rounded-md bg-brand-600 px-6 py-2.5 text-white font-medium hover:bg-brand-700 disabled:opacity-50"
+          className="w-full rounded-pill bg-accent px-6 py-2.5 text-white font-medium hover:bg-accent-dark disabled:opacity-50"
         >
           {resend.isPending ? 'Wird gesendet …' : 'Link zusenden'}
         </button>
