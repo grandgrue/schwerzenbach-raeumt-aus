@@ -84,7 +84,11 @@ export default function Layout() {
             Schwerzenbach räumt aus
           </div>
           <div className="text-sm">Der Quartier-Flohmarkt von Schwerzenbach</div>
-          <div className="text-lg" aria-hidden>🐟</div>
+          <div className="text-sm text-white/70 max-w-md mx-auto pt-1">
+            Organisiert von <span className="text-primary font-bold">Grüne Schwerzenbach</span> &amp;{' '}
+            <span className="text-primary font-bold">GLP Schwerzenbach</span> · unterstützt von der
+            Gemeinde Schwerzenbach.
+          </div>
           <div className="flex justify-center gap-5 text-sm pt-2">
             <Link to="/faq" className="text-white/70 hover:text-primary">FAQ &amp; Datenschutz</Link>
             <Link to="/anmelden" className="text-white/70 hover:text-primary">Stand anmelden</Link>

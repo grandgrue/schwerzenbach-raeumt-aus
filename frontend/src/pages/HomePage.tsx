@@ -10,15 +10,6 @@ function formatDate(date: string | null): string | null {
   return d.toLocaleDateString('de-CH', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 }
 
-const infoCards = [
-  { icon: '📍', title: 'Wo findet es statt?', text: 'Verteilt im ganzen Dorf — vor den Häusern der Anbieter:innen sowie beim Gemeindehaus / an der Schule. Alle Stände findest du auf der Karte.' },
-  { icon: '🗓', title: 'Wann?', text: 'Das Datum und die Verkaufszeiten stehen oben. Bei jedem Wetter — ausser Gewitter.' },
-  { icon: '🎫', title: 'Was kostet es?', text: 'Besuch und Teilnahme sind kostenlos. Du brauchst kein Konto, um einen Stand anzumelden.' },
-  { icon: '🚶', title: 'Anreise & Navigation', text: 'Am besten zu Fuss oder mit dem ÖV. Auf jeder Stand-Detailseite gibt es einen «Zu Fuss hinnavigieren»-Button.' },
-  { icon: '🍰', title: 'Verpflegung', text: 'An einzelnen Ständen gibt es Kaffee, Kuchen und Snacks auf Spendenbasis. Diese sind speziell gekennzeichnet.' },
-  { icon: '🐟', title: 'Wieso ein Fisch?', text: 'Der Greifensee liegt gleich nebenan — Schwerzenbach liegt am Wasser. Der Fisch ist unser Maskottchen!' },
-];
-
 export default function HomePage() {
   const { data: event, isLoading } = useEvent();
   const { data: categories = [] } = useCategories();
@@ -35,6 +26,20 @@ export default function HomePage() {
       : null;
   const subtitleParts = [dateLabel, timeLabel].filter(Boolean);
 
+  const wannText =
+    subtitleParts.length > 0
+      ? `${subtitleParts.join(' · ')}. Bei jedem Wetter — ausser Gewitter.`
+      : '5. September 2026. Bei jedem Wetter — ausser Gewitter.';
+
+  const infoCards = [
+    { icon: '📍', title: 'Wo findet es statt?', text: 'Verteilt im ganzen Dorf — vor den Häusern der Anbieter:innen sowie beim Gemeindehaus / an der Schule. Alle Stände findest du auf der Karte.' },
+    { icon: '🗓', title: 'Wann?', text: wannText },
+    { icon: '🎫', title: 'Was kostet es?', text: 'Besuch und Teilnahme sind kostenlos. Du brauchst kein Konto, um einen Stand anzumelden.' },
+    { icon: '🚲', title: 'Anreise & Navigation', text: 'Am besten zu Fuss oder mit dem Velo. Auf jeder Stand-Detailseite gibt es einen «Zu Fuss hinnavigieren»-Button.' },
+    { icon: '🍰', title: 'Verpflegung', text: 'An einzelnen Ständen gibt es Kaffee, Kuchen und Snacks auf Spendenbasis. Diese sind speziell gekennzeichnet.' },
+    { icon: '♻️', title: 'Gut für die Umwelt', text: 'Wiederverwenden statt wegwerfen: Jeder verkaufte Gegenstand bekommt ein zweites Leben, spart Ressourcen und reduziert Abfall. Ein Flohmarkt ist gelebte Kreislaufwirtschaft — gut für die Umwelt, das Portemonnaie und die Nachbarschaft.' },
+  ];
+
   function submitSearch(e: React.FormEvent) {
     e.preventDefault();
     navigate('/liste', { state: { q: search } });
@@ -50,7 +55,7 @@ export default function HomePage() {
             alt="Logo Schwerzenbach räumt aus"
             className="mx-auto h-32 w-32 sm:h-40 sm:w-40 rounded-full ring-4 ring-white shadow-lg"
           />
-          <p className="eyebrow mt-6">Der Quartier-Flohmarkt · Schwerzenbach</p>
+          <p className="eyebrow !text-white mt-6">Der Quartier-Flohmarkt · Schwerzenbach</p>
           <h1
             className="mt-2 font-display text-ink-dark leading-[0.95]"
             style={{ fontSize: 'clamp(3rem, 10vw, 6rem)' }}
@@ -114,7 +119,7 @@ export default function HomePage() {
       )}
 
       {/* INFO-STRIP */}
-      <div className="max-w-5xl mx-auto px-4 -mt-6 grid grid-cols-2 lg:grid-cols-4 gap-3 relative z-10">
+      <div className="max-w-5xl mx-auto px-4 mt-10 grid grid-cols-2 lg:grid-cols-4 gap-3">
         {[
           { icon: '📍', label: 'Ort', value: 'Haustür & Gemeindehaus' },
           { icon: '🕘', label: 'Öffnungszeiten', value: timeLabel ?? 'folgt' },
@@ -135,7 +140,7 @@ export default function HomePage() {
       {marketMode && stands && stands.length > 0 && (
         <section className="max-w-5xl mx-auto px-4 py-10 space-y-3">
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl">Stände auf der Karte ({stands.length})</h2>
+            <h2 className="text-2xl">Stände auf der Karte</h2>
             <Link to="/karte" className="text-accent font-bold hover:text-accent-dark">Vollbild →</Link>
           </div>
           <div className="card overflow-hidden">
@@ -164,7 +169,7 @@ export default function HomePage() {
             Ob Möbel, Kleider, Bücher oder Spielzeug: Hier bekommt alles eine zweite Chance.
             Wer keinen Platz vor dem Haus hat, kann einen Stand beim Gemeindehaus reservieren.
           </p>
-          <span className="pill mt-4">🐟 Schwerzenbach räumt aus{event?.event_date ? ` ${new Date(event.event_date).getFullYear()}` : ''}</span>
+          <span className="pill mt-4">♻️ Wiederverwenden statt wegwerfen</span>
         </div>
       </section>
 
