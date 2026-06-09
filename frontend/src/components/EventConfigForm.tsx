@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import type { EventInfo } from '../api/types';
+import type { AdminEvent } from '../api/types';
 
 interface Props {
-  event: EventInfo;
+  event: AdminEvent;
   busy?: boolean;
   message?: string | null;
   onSave: (body: Record<string, unknown>) => void;
@@ -16,9 +16,10 @@ export default function EventConfigForm({ event, busy, message, onSave }: Props)
   const [open, setOpen] = useState(event.registration_open);
   const [spots, setSpots] = useState(String(event.public_spots_total));
   const [info, setInfo] = useState(event.info_text ?? '');
+  const [organizers, setOrganizers] = useState(event.organizer_emails ?? '');
 
   const inputClass =
-    'mt-1 w-full rounded-md border border-gray-300 px-3 py-2 focus:border-brand-500 focus:outline-none';
+    'mt-1 w-full rounded-md border border-gold px-3 py-2 focus:border-accent focus:outline-none';
 
   function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -30,11 +31,12 @@ export default function EventConfigForm({ event, busy, message, onSave }: Props)
       registration_open: open,
       public_spots_total: Number(spots),
       info_text: info || null,
+      organizer_emails: organizers,
     });
   }
 
   return (
-    <form onSubmit={submit} className="space-y-4 rounded-lg border border-gray-200 bg-white p-4">
+    <form onSubmit={submit} className="space-y-4 card p-4">
       <h2 className="text-lg font-semibold">Event-Konfiguration</h2>
       {message && (
         <div className="rounded-md bg-brand-50 border border-brand-100 px-3 py-2 text-sm text-brand-700">
@@ -86,10 +88,27 @@ export default function EventConfigForm({ event, busy, message, onSave }: Props)
         <textarea value={info} onChange={(e) => setInfo(e.target.value)} rows={4} className={inputClass} />
       </div>
 
+      <div>
+        <label className="block text-sm font-medium text-gray-700">
+          Organisator-E-Mail-Adressen
+        </label>
+        <textarea
+          value={organizers}
+          onChange={(e) => setOrganizers(e.target.value)}
+          rows={3}
+          className={inputClass}
+          placeholder="eine Adresse pro Zeile"
+        />
+        <p className="text-xs text-gray-500 mt-1">
+          Diese Adressen werden bei jeder Anmeldung, Bearbeitung oder Zurückziehung eines Stands
+          benachrichtigt. Eine Adresse pro Zeile (oder mit Komma getrennt).
+        </p>
+      </div>
+
       <button
         type="submit"
         disabled={busy}
-        className="rounded-md bg-brand-600 px-5 py-2 text-white font-medium hover:bg-brand-700 disabled:opacity-50"
+        className="rounded-pill bg-accent px-5 py-2 text-white font-medium hover:bg-accent-dark disabled:opacity-50"
       >
         {busy ? 'Wird gespeichert …' : 'Speichern'}
       </button>

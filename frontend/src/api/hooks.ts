@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { api, buildStandsQuery, setCsrfToken } from './client';
 import type {
+  AdminEvent,
   AdminSession,
   CaptchaChallenge,
   Category,
@@ -87,6 +88,19 @@ export function useWithdrawStand(token: string) {
   });
 }
 
+export interface ResendLinkInput {
+  email: string;
+  captcha_token: string;
+  captcha_answer: number;
+  website?: string; // Honeypot
+}
+
+export function useResendLink() {
+  return useMutation({
+    mutationFn: (input: ResendLinkInput) => api.post<{ ok: boolean }>('/stands/resend-link', input),
+  });
+}
+
 // --- Admin -----------------------------------------------------------------
 
 export function useAdminSession() {
@@ -153,12 +167,22 @@ export function useAdminDeleteStand() {
   });
 }
 
+export function useAdminEvent() {
+  return useQuery({
+    queryKey: ['admin-event'],
+    queryFn: () => api.get<AdminEvent>('/admin/event'),
+  });
+}
+
 export function useAdminUpdateEvent() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: (body: Record<string, unknown>) =>
       api.put<{ ok: boolean }>('/admin/event', body, true),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['event'] }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['event'] });
+      qc.invalidateQueries({ queryKey: ['admin-event'] });
+    },
   });
 }
 

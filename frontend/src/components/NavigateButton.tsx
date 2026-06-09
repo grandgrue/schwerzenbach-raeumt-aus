@@ -22,7 +22,7 @@ export default function NavigateButton({ lat, lng, label = 'Zu Fuss hinnavigiere
       href={buildWalkingUrl(lat, lng)}
       target="_blank"
       rel="noopener noreferrer"
-      className="inline-flex items-center gap-2 rounded-md bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700"
+      className="btn-primary text-sm"
     >
       <span aria-hidden>🚶</span>
       {label}

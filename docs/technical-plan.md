@@ -24,7 +24,12 @@ Browser ───────▶ │  /            → React-SPA (statische Date
 
 ### Frontend
 - **React 18** + **TypeScript**, Build mit **Vite**
-- **Tailwind CSS** für Styling
+- **Tailwind CSS** für Styling, konfiguriert mit dem Design-System **„Sonnig & Warm"**:
+  Farb-Tokens (`primary` Marktgelb, `accent` Korall, `ink`, `gold`, …), Display-Schrift
+  **Bebas Neue** + Body-Schrift **Nunito** (beide **selbst gehostet** unter
+  `frontend/public/fonts/`, DSGVO-konform), Komponenten-Utilities in `src/index.css`
+  (`.btn-primary`, `.card`, `.pill`, `.field`, `.eyebrow`). Logo: rundes Badge
+  (`public/logo.png`). Referenz/Design-Brief: `design-idee/`.
 - **React Router v6** (SPA-Routing; Server-Fallback via `.htaccess`)
 - **TanStack Query** (Daten-Fetching/Caching gegen die API)
 - **react-leaflet** + **Leaflet** (Karte/Pins, OpenStreetMap-Tiles)
@@ -34,8 +39,9 @@ Browser ───────▶ │  /            → React-SPA (statische Date
 - **PHP 8.x** mit **PDO** (MySQL, ausschliesslich Prepared Statements)
 - Schlanker eigener **Front-Controller + Router** (keine schwere Framework-Abhängigkeit →
   deployment-freundlich auf Shared Hosting). Alternative bei Bedarf: Slim Framework.
-- Konfiguration: **eigener schlanker `.env`-Parser** (`App\Config`) mit Fallback auf echte
-  Umgebungsvariablen (Docker) — keine externe Abhängigkeit
+- Konfiguration: **eigener schlanker `.env`-Parser** (`App\Config`); Reihenfolge
+  **echte Umgebungsvariablen (z. B. Docker) > `.env`-Datei > Default** — keine externe
+  Abhängigkeit. (So überschreiben Container-Variablen eine lokal vorhandene Produktions-`.env`.)
 - **Composer**-Abhängigkeiten:
   - **PHPMailer** — E-Mail-Versand (Bearbeitungs-Link) über hoststar-SMTP
   - **phpunit** — Tests (Dev)
@@ -59,6 +65,7 @@ Browser ───────▶ │  /            → React-SPA (statische Date
 | `registration_open` | TINYINT(1) | Anmeldung offen/geschlossen |
 | `public_spots_total` | INT | Anzahl Plätze am Gemeindehaus/an der Schule (Kapazität) |
 | `info_text` | TEXT | öffentlicher Infotext (Startseite) |
+| `organizer_emails` | TEXT NULL | **privat** — OK-Adressen (eine pro Zeile) für Benachrichtigungen |
 | `created_at`, `updated_at` | TIMESTAMP | |
 
 ### Tabelle `stand`
@@ -123,7 +130,8 @@ passendem HTTP-Status. Mutierende Admin-Requests erfordern Session + CSRF-Header
 ### Anbieter:in (kontolos, Token)
 | Methode | Pfad | Beschreibung |
 |---------|------|--------------|
-| POST | `/api/stands` | Stand anmelden (Honeypot + Captcha + Rate-Limit). Setzt Status `pending`, sendet Edit-Link-Mail. Nur wenn `registration_open`. Bei `needs_public_spot=1` wird die Kapazität **serverseitig** geprüft; ist sie erschöpft, wird mit Fehler `public_spots_full` abgelehnt. |
+| POST | `/api/stands` | Stand anmelden (Honeypot + Captcha + Rate-Limit). Setzt Status `pending`, sendet Edit-Link-Mail + benachrichtigt Organisator:innen. Nur wenn `registration_open`. Bei `needs_public_spot=1` wird die Kapazität **serverseitig** geprüft; ist sie erschöpft, wird mit Fehler `public_spots_full` abgelehnt. |
+| POST | `/api/stands/resend-link` | Bearbeitungs-Link(s) erneut zusenden: rotiert die Tokens aller nicht zurückgezogenen Stände der E-Mail und mailt sie. Honeypot + Captcha + Rate-Limit; **immer generische Antwort** (Anti-Enumeration). |
 | GET | `/api/stands/edit/{token}` | eigenen Stand inkl. privater Felder laden |
 | PUT | `/api/stands/edit/{token}` | eigenen Stand aktualisieren (bei zuvor freigegebenem Stand → `edited_after_approval = 1`) |
 | DELETE | `/api/stands/edit/{token}` | Stand zurückziehen (`withdrawn`) |
@@ -133,6 +141,7 @@ passendem HTTP-Status. Mutierende Admin-Requests erfordern Session + CSRF-Header
 |---------|------|--------------|
 | POST | `/api/admin/login` | Login (Benutzer + Passwort) → Session |
 | POST | `/api/admin/logout` | Logout |
+| GET | `/api/admin/event` | vollständige Event-Konfig inkl. (privater) `organizer_emails` für das Formular |
 | GET | `/api/admin/stands?status=` | alle Stände inkl. privater Felder |
 | PATCH | `/api/admin/stands/{id}` | Body mit `status` → freigeben/ablehnen; Body mit Feldern (ohne `status`) → Stand vollständig bearbeiten |
 | DELETE | `/api/admin/stands/{id}` | löschen |
@@ -147,12 +156,13 @@ passendem HTTP-Status. Mutierende Admin-Requests erfordern Session + CSRF-Header
 ### Seiten (Routes)
 | Route | Inhalt |
 |-------|--------|
-| `/` | Startseite: Event-Datum, Verkaufszeiten, Infotext, CTAs |
+| `/` | Startseite: Event-Info + CTAs. **Zwei Modi:** Vorlauf (Anmeldung bewerben) bzw. Markttag (Anmeldung geschlossen → Suchfeld + eingebettete Karte) |
 | `/karte` | Leaflet-Karte mit Pins + Filterleiste |
 | `/liste` | filter-/sortierbare Liste der Stände |
 | `/stand/:id` | Detailseite inkl. „Zu Fuss hinnavigieren"-Button |
 | `/anmelden` | Anmeldeformular mit Pin-Picker + Datenschutz-Hinweise |
 | `/bearbeiten/:token` | Stand bearbeiten / zurückziehen |
+| `/link-anfordern` | Bearbeitungs-Link per E-Mail erneut anfordern |
 | `/faq` | FAQ inkl. Datenschutz |
 | `/admin` | Admin-Login + Dashboard mit **drei Tabs**: Moderation (inkl. Stand-Bearbeitung im Modal), Kategorien-Verwaltung, Event-Konfiguration — jeweils mit eigener Speicherfunktion |
 
@@ -195,7 +205,12 @@ Die eigentliche Turn-by-turn-Navigation übernimmt die Karten-App des Geräts.
   Vergleich per konstantzeitigem Hash-Lookup.
 - **Admin-Auth:** PHP-Session (httpOnly, `SameSite=Lax`), Passwörter via `password_hash()`
   (bcrypt). CSRF-Token für alle mutierenden Admin-Requests.
-- **Spam:** Honeypot-Feld + serverseitige Rechenfrage + Rate-Limit pro IP.
+- **Spam:** Honeypot-Feld + serverseitige Rechenfrage + Rate-Limit pro IP (Anmeldung **und**
+  Link-Resend).
+- **Link-Resend:** rotiert den Token (alter Link wird ungültig); Antwort immer generisch
+  (keine E-Mail-Enumeration).
+- **Benachrichtigungen:** nur bei **Anbieter-Aktionen** (neu/bearbeitet/zurückgezogen), nicht
+  bei Admin-Moderation. `organizer_emails` werden nie öffentlich ausgeliefert.
 - **Datensparsamkeit:** private Felder werden nur in Anbieter-/Admin-Kontext serialisiert.
 
 ## 7. Projektstruktur (Repository)

@@ -41,7 +41,8 @@ final class EventRepository
                     `default_end_time` = :default_end_time,
                     `registration_open` = :registration_open,
                     `public_spots_total` = :public_spots_total,
-                    `info_text` = :info_text
+                    `info_text` = :info_text,
+                    `organizer_emails` = :organizer_emails
                 WHERE `id` = :id';
         $stmt = $this->pdo()->prepare($sql);
         $stmt->execute([
@@ -52,6 +53,7 @@ final class EventRepository
             'registration_open'  => $data['registration_open'] ? 1 : 0,
             'public_spots_total' => $data['public_spots_total'],
             'info_text'          => $data['info_text'],
+            'organizer_emails'   => $data['organizer_emails'],
             'id'                 => $id,
         ]);
     }

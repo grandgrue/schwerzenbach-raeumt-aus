@@ -106,6 +106,19 @@
 - ☑ **Logo/Favicon:** Fahne von Schwerzenbach; **Karten-Popup** mit Beschreibung/Kategorien;
   kontextsensitiver Zurück-Knopf (Karte/Liste)
 
+## Anpassungen v2 (Branch `feature/notifications-resend-marketmode`)
+- ☑ **Organisator-Benachrichtigung** *(AD7)* — `event.organizer_emails`, `GET/PUT /admin/event`,
+  Mails bei neu/bearbeitet/zurückgezogen (`ProviderStandController::notifyOrganizers`,
+  `OrganizerEmails`); per curl verifiziert.
+- ☑ **Bearbeitungs-Link erneut anfordern** *(A5)* — `POST /stands/resend-link` (Token-Rotation,
+  generische Antwort), Seite `/link-anfordern`, Einstiege Anmelden/FAQ/Detailseite; verifiziert.
+- ☑ **Markttag-Startseite** *(B7)* — `HomePage` mit Modus bei geschlossener Anmeldung
+  (Suchfeld → vorbefüllte Liste, eingebettete Karte).
+- ☑ **Config-Reihenfolge** korrigiert (Umgebungsvariablen > `.env`), damit eine lokale
+  Produktions-`.env` die Docker-Dev-DB nicht überschreibt.
+- ☑ Tests: `OrganizerEmailsTest` (PHPUnit, 24 grün); Frontend-Build + Vitest (8) grün.
+- ☐ Live-Deployment: Migration `001_organizer_emails.sql` einspielen, Organisator-Adressen setzen.
+
 ## Phase 11 — Deployment-Artefakte
 - ☑ `deploy/htaccess-root.txt`, `deploy/htaccess-api.txt` (an reale Serverstruktur angepasst)
 - ☑ `deploy/README-deploy.md` (vollständige hoststar-Anleitung)

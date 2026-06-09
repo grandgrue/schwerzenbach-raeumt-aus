@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import {
   useAdminDeleteStand,
+  useAdminEvent,
   useAdminLogin,
   useAdminLogout,
   useAdminSession,
@@ -74,7 +75,7 @@ function LoginForm() {
   }
 
   const inputClass =
-    'mt-1 w-full rounded-md border border-gray-300 px-3 py-2 focus:border-brand-500 focus:outline-none';
+    'mt-1 w-full rounded-md border border-gold px-3 py-2 focus:border-accent focus:outline-none';
 
   return (
     <div className="max-w-sm mx-auto px-4 py-12">
@@ -92,7 +93,7 @@ function LoginForm() {
         <button
           type="submit"
           disabled={login.isPending}
-          className="w-full rounded-md bg-brand-600 px-5 py-2.5 text-white font-medium hover:bg-brand-700 disabled:opacity-50"
+          className="w-full rounded-pill bg-accent px-5 py-2.5 text-white font-medium hover:bg-accent-dark disabled:opacity-50"
         >
           {login.isPending ? 'Anmelden …' : 'Anmelden'}
         </button>
@@ -111,6 +112,7 @@ function Dashboard({ username }: { username?: string }) {
   const updateStand = useAdminUpdateStand();
   const deleteStand = useAdminDeleteStand();
   const { data: event } = useEvent();
+  const { data: adminEvent } = useAdminEvent();
   const { data: categories = [] } = useCategories();
   const updateEvent = useAdminUpdateEvent();
 
@@ -201,9 +203,9 @@ function Dashboard({ username }: { username?: string }) {
 
       {section === 'categories' && <CategoryManager />}
 
-      {section === 'event' && event && (
+      {section === 'event' && adminEvent && (
         <EventConfigForm
-          event={event}
+          event={adminEvent}
           busy={updateEvent.isPending}
           message={eventMessage}
           onSave={(body) => {

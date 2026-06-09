@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS `event` (
   `registration_open`  TINYINT(1)      NOT NULL DEFAULT 0,
   `public_spots_total` INT UNSIGNED    NOT NULL DEFAULT 0,
   `info_text`          TEXT            NULL,
+  `organizer_emails`   TEXT            NULL,
   `created_at`         TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at`         TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP
                                        ON UPDATE CURRENT_TIMESTAMP,

@@ -7,7 +7,7 @@ export default function CategoryBadges({ categories }: { categories: Category[] 
       {categories.map((c) => (
         <span
           key={c.id}
-          className="inline-block rounded-full bg-brand-50 text-brand-700 text-xs px-2 py-0.5"
+          className="inline-block rounded-pill bg-primary-light text-ink-dark text-xs font-bold px-2.5 py-0.5"
         >
           {c.name}
         </span>
@@ -21,12 +21,12 @@ export function OfferBadges({ food, drinks }: { food: boolean; drinks: boolean }
   return (
     <div className="flex flex-wrap gap-1">
       {food && (
-        <span className="inline-block rounded-full bg-amber-50 text-amber-700 text-xs px-2 py-0.5">
+        <span className="inline-block rounded-pill bg-accent/15 text-accent-dark text-xs font-bold px-2.5 py-0.5">
           🍰 Essen (Spende)
         </span>
       )}
       {drinks && (
-        <span className="inline-block rounded-full bg-sky-50 text-sky-700 text-xs px-2 py-0.5">
+        <span className="inline-block rounded-pill bg-ink-dark/10 text-ink-dark text-xs font-bold px-2.5 py-0.5">
           ☕ Getränke (Spende)
         </span>
       )}

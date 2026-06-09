@@ -5,7 +5,6 @@ const navItems = [
   { to: '/', label: 'Start', end: true },
   { to: '/karte', label: 'Karte' },
   { to: '/liste', label: 'Liste' },
-  { to: '/anmelden', label: 'Stand anmelden' },
   { to: '/faq', label: 'FAQ' },
 ];
 
@@ -13,32 +12,39 @@ export default function Layout() {
   const [open, setOpen] = useState(false);
 
   const linkClass = ({ isActive }: { isActive: boolean }) =>
-    `block px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-      isActive ? 'bg-brand-600 text-white' : 'text-gray-700 hover:bg-brand-50'
+    `block px-3 py-2 rounded-md text-sm font-bold transition-colors ${
+      isActive ? 'text-primary' : 'text-white/90 hover:text-primary'
     }`;
 
   return (
     <div className="min-h-full flex flex-col">
-      <header className="bg-white shadow-sm sticky top-0 z-[1000]">
+      <header className="bg-ink-dark sticky top-0 z-[1000] shadow-md">
         <nav className="max-w-5xl mx-auto px-4">
           <div className="flex items-center justify-between h-16">
-            <Link to="/" className="flex items-center gap-2 font-bold text-brand-700">
+            <Link to="/" className="flex items-center gap-3">
               <img
-                src="/schwerzenbach-flag.svg"
-                alt="Fahne Schwerzenbach"
-                className="h-7 w-7 rounded-sm shadow-sm"
+                src="/logo.png"
+                alt="Logo Schwerzenbach räumt aus"
+                className="h-11 w-11 rounded-full ring-2 ring-primary object-cover"
               />
-              <span>Schwerzenbach räumt aus</span>
+              <span className="font-display text-primary text-xl sm:text-2xl leading-none tracking-wide">
+                Schwerzenbach räumt aus
+              </span>
             </Link>
+
             <div className="hidden md:flex items-center gap-1">
               {navItems.map((item) => (
                 <NavLink key={item.to} to={item.to} end={item.end} className={linkClass}>
                   {item.label}
                 </NavLink>
               ))}
+              <Link to="/anmelden" className="btn-primary ml-2 !py-2 !px-4 text-sm">
+                Stand anmelden
+              </Link>
             </div>
+
             <button
-              className="md:hidden p-2 text-gray-700"
+              className="md:hidden p-2 text-white"
               onClick={() => setOpen((v) => !v)}
               aria-label="Menü"
               aria-expanded={open}
@@ -46,6 +52,7 @@ export default function Layout() {
               ☰
             </button>
           </div>
+
           {open && (
             <div className="md:hidden pb-3 space-y-1" onClick={() => setOpen(false)}>
               {navItems.map((item) => (
@@ -53,6 +60,9 @@ export default function Layout() {
                   {item.label}
                 </NavLink>
               ))}
+              <Link to="/anmelden" className="btn-primary mt-2 w-full !py-2 text-sm">
+                Stand anmelden
+              </Link>
             </div>
           )}
         </nav>
@@ -62,12 +72,35 @@ export default function Layout() {
         <Outlet />
       </main>
 
-      <footer className="bg-white border-t mt-8">
-        <div className="max-w-5xl mx-auto px-4 py-6 text-sm text-gray-500 flex flex-col sm:flex-row justify-between gap-2">
-          <span>© {new Date().getFullYear()} Schwerzenbach räumt aus</span>
-          <div className="flex gap-4">
-            <Link to="/faq" className="hover:text-brand-600">FAQ &amp; Datenschutz</Link>
-            <Link to="/admin" className="hover:text-brand-600">Organisator:innen</Link>
+      <footer className="bg-ink-dark text-white/60 mt-12">
+        <div className="max-w-5xl mx-auto px-4 py-10 text-center space-y-3">
+          <img
+            src="/logo.png"
+            alt=""
+            aria-hidden
+            className="mx-auto h-20 w-20 rounded-full ring-2 ring-primary/70 opacity-90"
+          />
+          <div className="font-display text-primary text-2xl tracking-wide">
+            Schwerzenbach räumt aus
+          </div>
+          <div className="text-sm">Der Quartier-Flohmarkt von Schwerzenbach</div>
+          <div className="text-sm text-white/70 max-w-md mx-auto pt-1">
+            Organisiert von <span className="text-primary font-bold">Grüne Schwerzenbach</span> &amp;{' '}
+            <span className="text-primary font-bold">GLP Schwerzenbach</span> · unterstützt von der
+            Gemeinde Schwerzenbach.
+          </div>
+          <div className="text-sm pt-1">
+            <a href="mailto:info@schwerzenbach-raeumt-aus.ch" className="text-primary hover:underline">
+              info@schwerzenbach-raeumt-aus.ch
+            </a>
+          </div>
+          <div className="flex justify-center gap-5 text-sm pt-2">
+            <Link to="/faq" className="text-white/70 hover:text-primary">FAQ &amp; Datenschutz</Link>
+            <Link to="/anmelden" className="text-white/70 hover:text-primary">Stand anmelden</Link>
+            <Link to="/admin" className="text-white/70 hover:text-primary">Organisator:innen</Link>
+          </div>
+          <div className="text-xs text-white/40 pt-2">
+            © {new Date().getFullYear()} Schwerzenbach räumt aus
           </div>
         </div>
       </footer>

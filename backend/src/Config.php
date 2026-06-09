@@ -46,11 +46,14 @@ final class Config
 
     public static function get(string $key, ?string $default = null): ?string
     {
-        // 1) Werte aus .env, 2) echte Umgebungsvariablen (z. B. via Docker), 3) Default.
-        $value = self::$values[$key] ?? null;
+        // Reihenfolge: 1) echte Umgebungsvariablen (z. B. via Docker), 2) .env-Datei,
+        // 3) Default. So überschreiben Container-Variablen eine (für die Produktion
+        // gedachte) lokale .env, und auf dem Server greift mangels Umgebungsvariablen
+        // weiterhin die .env-Datei.
+        $env = getenv($key);
+        $value = $env === false ? null : $env;
         if ($value === null || $value === '') {
-            $env = getenv($key);
-            $value = $env === false ? null : $env;
+            $value = self::$values[$key] ?? null;
         }
         return ($value === null || $value === '') ? $default : $value;
     }

@@ -13,13 +13,13 @@ export default function StandCard({ stand }: { stand: PublicStand }) {
     <Link
       to={`/stand/${stand.id}`}
       state={{ from: '/liste' }}
-      className="block rounded-lg border border-gray-200 bg-white p-4 hover:border-brand-500 hover:shadow-sm transition"
+      className="card card-hover block p-4"
     >
-      <h3 className="font-semibold text-gray-900">{stand.title}</h3>
-      <p className="text-sm text-gray-500 mt-0.5">{stand.address}</p>
-      {time && <p className="text-sm text-gray-500">{time}</p>}
+      <h3 className="text-xl text-ink-dark">{stand.title}</h3>
+      <p className="text-sm text-ink-light mt-0.5">{stand.address}</p>
+      {time && <p className="text-sm text-ink-light">{time}</p>}
       {stand.description && (
-        <p className="text-sm text-gray-700 mt-2 line-clamp-2">{stand.description}</p>
+        <p className="text-sm text-ink mt-2 line-clamp-2">{stand.description}</p>
       )}
       <div className="mt-3 space-y-1">
         <CategoryBadges categories={stand.categories} />

@@ -88,6 +88,26 @@ export default function RegisterPage() {
         Eintrag. Details zum Datenschutz findest du auch in den{' '}
         <Link to="/faq" className="text-brand-600 hover:underline">FAQ</Link>.
       </p>
+      <p className="text-sm text-gray-500">
+        Bereits angemeldet?{' '}
+        <Link to="/link-anfordern" className="text-brand-600 hover:underline">
+          Bearbeitungs-Link erneut anfordern
+        </Link>
+      </p>
+
+      <div className="card p-4 text-sm text-ink space-y-1.5">
+        <p className="font-bold text-ink-dark">Gut zu wissen — Teilnahmebedingungen</p>
+        <ul className="list-disc list-inside space-y-1">
+          <li>Nur für <strong>private Haushalte</strong> — keine gewerblichen Verkäufer:innen, keine Neu-/Handelsware.</li>
+          <li>Verkauf nur auf <strong>eigenem Privatgrund</strong> (Garage, Hof, Vorplatz) — nicht auf dem Gehweg oder öffentlichen Flächen.</li>
+          <li>Essen/Getränke nur auf <strong>Spendenbasis</strong> — kein Verkauf.</li>
+          <li>Teilnahme auf eigene Verantwortung; Mieter:innen holen die Zustimmung der Eigentümerschaft ein.</li>
+        </ul>
+        <p className="pt-1">
+          Alle Details in den{' '}
+          <Link to="/faq" className="text-accent font-bold hover:text-accent-dark">FAQ</Link>.
+        </p>
+      </div>
 
       {generalError && <ErrorNote text={generalError} />}
 
@@ -125,7 +145,7 @@ export default function RegisterPage() {
               inputMode="numeric"
               value={captchaAnswer}
               onChange={(e) => setCaptchaAnswer(e.target.value)}
-              className="w-28 rounded-md border border-gray-300 px-3 py-2 focus:border-brand-500 focus:outline-none"
+              className="w-28 rounded-md border border-gold px-3 py-2 focus:border-accent focus:outline-none"
             />
             <button type="button" onClick={refreshCaptcha} className="text-sm text-brand-600 hover:underline">
               Neue Frage
