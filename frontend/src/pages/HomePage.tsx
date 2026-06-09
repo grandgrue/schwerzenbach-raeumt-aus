@@ -87,7 +87,7 @@ export default function HomePage() {
               </>
             ) : (
               <>
-                <Link to="/anmelden" className="btn-primary">🧺 Stand anmelden</Link>
+                <Link to="/anmelden" className="btn-primary">🏷️ Stand anmelden</Link>
                 <Link to="/karte" className="btn-ghost">Stände entdecken</Link>
               </>
             )}
