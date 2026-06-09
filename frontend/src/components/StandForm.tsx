@@ -333,6 +333,10 @@ export default function StandForm({
           <input type="checkbox" {...register('offers_drinks')} className="rounded border-gray-300" />
           Ich biete Getränke auf Spendenbasis an
         </label>
+        <p className="text-xs text-ink-light">
+          Hinweis: Ein <strong>Verkauf</strong> von Essen und Getränken ist nicht gestattet —
+          nur auf <strong>Spendenbasis</strong>.
+        </p>
       </fieldset>
 
       <div className="border-t pt-4 space-y-4">

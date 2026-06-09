@@ -95,6 +95,20 @@ export default function RegisterPage() {
         </Link>
       </p>
 
+      <div className="card p-4 text-sm text-ink space-y-1.5">
+        <p className="font-bold text-ink-dark">Gut zu wissen — Teilnahmebedingungen</p>
+        <ul className="list-disc list-inside space-y-1">
+          <li>Nur für <strong>private Haushalte</strong> — keine gewerblichen Verkäufer:innen, keine Neu-/Handelsware.</li>
+          <li>Verkauf nur auf <strong>eigenem Privatgrund</strong> (Garage, Hof, Vorplatz) — nicht auf dem Gehweg oder öffentlichen Flächen.</li>
+          <li>Essen/Getränke nur auf <strong>Spendenbasis</strong> — kein Verkauf.</li>
+          <li>Teilnahme auf eigene Verantwortung; Mieter:innen holen die Zustimmung der Eigentümerschaft ein.</li>
+        </ul>
+        <p className="pt-1">
+          Alle Details in den{' '}
+          <Link to="/faq" className="text-accent font-bold hover:text-accent-dark">FAQ</Link>.
+        </p>
+      </div>
+
       {generalError && <ErrorNote text={generalError} />}
 
       <StandForm

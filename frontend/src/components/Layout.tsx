@@ -89,6 +89,11 @@ export default function Layout() {
             <span className="text-primary font-bold">GLP Schwerzenbach</span> · unterstützt von der
             Gemeinde Schwerzenbach.
           </div>
+          <div className="text-sm pt-1">
+            <a href="mailto:info@schwerzenbach-raeumt-aus.ch" className="text-primary hover:underline">
+              info@schwerzenbach-raeumt-aus.ch
+            </a>
+          </div>
           <div className="flex justify-center gap-5 text-sm pt-2">
             <Link to="/faq" className="text-white/70 hover:text-primary">FAQ &amp; Datenschutz</Link>
             <Link to="/anmelden" className="text-white/70 hover:text-primary">Stand anmelden</Link>

@@ -179,6 +179,18 @@ das Organisationskomitee gibt ihn frei, und Besucher:innen entdecken alle Ständ
 - **Captcha:** einfache Rechenfrage, ergänzt durch Honeypot + Rate-Limit.
 - **Verkaufszeiten pro Stand:** optional; ohne Angabe gilt das Event-Standardzeitfenster.
 
+## 8a. Teilnahmebedingungen & Kontakt (FAQ + Anmeldeseite)
+Auf der Anmeldeseite (kompakt) und in der FAQ kommuniziert:
+- Teilnahme nur für **private Haushalte**; **keine gewerblichen Verkäufer:innen / Neu- &
+  Handelsware**.
+- Verkauf nur auf **eigenem Privatgrund** (Garage/Hof/Vorplatz), **nicht** auf Gehweg/
+  öffentlichen Flächen; Mieter:innen holen die **Zustimmung der Eigentümerschaft** ein.
+- **Essen/Getränke nur auf Spendenbasis — Verkauf nicht gestattet** (Hinweis auch direkt
+  beim Formularfeld).
+- Teilnahme auf **eigene Verantwortung** (Verkehrssicherungspflicht); **keine Haftung** der
+  Gemeinde/des OK. Tipp: Stand sichtbar kennzeichnen (z. B. Luftballons).
+- **Öffentlicher Kontakt für Rückfragen:** `info@schwerzenbach-raeumt-aus.ch` (FAQ + Footer).
+
 ## 9. Glossar
 
 - **Stand:** Ein angemeldeter Verkaufsstandort einer/eines Anbieter:in.
