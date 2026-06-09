@@ -1,15 +1,93 @@
+/* Selbstgehostete Schriften (datenschutzkonform, keine externen Requests) */
+@font-face {
+  font-family: 'Bebas Neue';
+  src: url('/fonts/bebas-neue-latin-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Nunito';
+  src: url('/fonts/nunito-latin-var.woff2') format('woff2');
+  font-weight: 400 900; /* Variable Font: deckt 400–900 ab */
+  font-style: normal;
+  font-display: swap;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Leaflet-Styles werden in den Karten-Komponenten importiert. */
-
-html,
-body,
-#root {
-  height: 100%;
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+  body {
+    @apply bg-primary-bg text-ink font-body antialiased;
+  }
+  h1,
+  h2,
+  h3 {
+    @apply font-display tracking-wide;
+    color: theme('colors.ink.dark');
+  }
 }
 
-body {
-  @apply bg-gray-50 text-gray-900 antialiased;
+@layer components {
+  /* Kleiner Übertitel */
+  .eyebrow {
+    @apply text-xs font-black uppercase tracking-[0.14em] text-accent;
+  }
+
+  /* Buttons (eigenständig, kein @apply einer Komponentenklasse) */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-pill font-black px-6 py-2.5
+      border-2 bg-accent text-white border-accent transition
+      hover:bg-accent-dark hover:-translate-y-0.5 hover:shadow-md;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-pill font-black px-6 py-2.5
+      border-2 bg-transparent text-ink-dark border-ink-dark transition
+      hover:bg-ink-dark hover:text-white;
+  }
+  .btn-white {
+    @apply inline-flex items-center justify-center gap-2 rounded-pill font-black px-6 py-2.5
+      border-2 bg-white text-accent border-white transition hover:-translate-y-0.5 hover:shadow-md;
+  }
+
+  /* Karten */
+  .card {
+    @apply rounded-lg bg-surface border-[1.5px] border-gold transition;
+  }
+  .card-hover {
+    @apply hover:-translate-y-1 hover:shadow-lg;
+  }
+
+  /* Kategorie-/Tag-Pill */
+  .pill {
+    @apply inline-flex items-center gap-1.5 rounded-pill bg-primary-light text-ink-dark font-bold text-sm px-4 py-2;
+  }
+
+  /* Formularfelder */
+  .field {
+    @apply mt-1 w-full rounded-md border border-gold bg-white px-3 py-2 text-ink
+      focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30;
+  }
+}
+
+/* Bewegungsreduktion respektieren */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.001ms !important;
+  }
+  .btn-primary:hover,
+  .btn-ghost:hover,
+  .btn-white:hover,
+  .card-hover:hover {
+    transform: none !important;
+  }
 }
