@@ -131,6 +131,10 @@ das Organisationskomitee gibt ihn frei, und Besucher:innen entdecken alle Ständ
 - **AD6 — Kategorien verwalten:** Ich kann Kategorien **anlegen, umbenennen und löschen**.
   Eine Kategorie, die bereits von mindestens einem Stand genutzt wird, **kann nicht gelöscht**
   werden (Hinweis mit Anzahl betroffener Stände).
+- **AD8 — Freigabe-Mail:** Sobald ich einen Stand **freigebe** (Status → `approved`), erhält
+  die anbietende Person automatisch eine **Dankes-E-Mail** mit Hilfe-Angebot
+  (`info@schwerzenbach-raeumt-aus.ch`). Wird nur **einmal** beim Wechsel auf „freigegeben"
+  versendet.
 - **AD7 — Organisator-Benachrichtigungen:** In der Event-Konfiguration hinterlege ich
   **mehrere Organisator-E-Mail-Adressen** (eine pro Zeile). Diese werden automatisch
   benachrichtigt, sobald ein Stand von Anbieter:innen **neu angemeldet, bearbeitet oder
@@ -146,6 +150,9 @@ das Organisationskomitee gibt ihn frei, und Besucher:innen entdecken alle Ständ
   Alternativtexte.
 - **Robustheit/Kosten:** Keine kostenpflichtigen Drittdienste; Karte über
   OpenStreetMap-Tiles, Navigation über die geräteeigene Karten-App.
+- **SEO:** Keyword-optimierte Meta-Tags (Flohmarkt, Flohmi, Trödeln, Garagenflohmarkt,
+  Secondhand, Schwerzenbach), Open-Graph/Twitter-Tags, **JSON-LD `Event`**, `robots.txt` +
+  `sitemap.xml` sowie `<noscript>`-Inhalt für Crawler; Suchbegriffe auch im sichtbaren Text.
 
 ## 6. Datenschutz (CH DSG)
 

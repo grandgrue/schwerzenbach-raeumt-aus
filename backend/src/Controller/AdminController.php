@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Auth\AdminAuth;
+use App\Config;
 use App\Http\HttpException;
 use App\Http\Request;
 use App\Http\Response;
 use App\Repository\CategoryRepository;
 use App\Repository\EventRepository;
 use App\Repository\StandRepository;
+use App\Service\Mailer;
 use App\Support\OrganizerEmails;
 use App\Support\StandInput;
 use App\Support\Validator;
@@ -28,6 +30,7 @@ final class AdminController
         private readonly StandRepository $stands = new StandRepository(),
         private readonly EventRepository $events = new EventRepository(),
         private readonly CategoryRepository $categories = new CategoryRepository(),
+        private readonly Mailer $mailer = new Mailer(),
     ) {
     }
 
@@ -103,6 +106,11 @@ final class AdminController
                 throw HttpException::badRequest('Ungültiger Status', ['status' => 'unbekannt']);
             }
             $this->stands->updateStatusById($id, (string) $status);
+
+            // Freigabe-Mail an die anbietende Person (nur beim Wechsel auf "approved")
+            if ($status === 'approved' && $existing['status'] !== 'approved') {
+                $this->sendApprovalMail((string) $existing['provider_email'], (string) $existing['title']);
+            }
         } else {
             [$fields, $categoryIds] = StandInput::validate($request, $this->categories);
             $this->stands->updateFieldsById($id, $fields, $categoryIds);
@@ -121,6 +129,33 @@ final class AdminController
             throw HttpException::notFound('Stand nicht gefunden');
         }
         Response::noContent();
+    }
+
+    /** Dankes-/Freigabe-Mail an die anbietende Person. */
+    private function sendApprovalMail(string $email, string $title): void
+    {
+        if ($email === '') {
+            return;
+        }
+        $base = rtrim((string) Config::get('APP_BASE_URL', 'https://schwerzenbach-raeumt-aus.ch'), '/');
+
+        $body = "Hallo\n\n"
+            . "vielen Dank für deine Anmeldung beim Flohmarkt «Schwerzenbach räumt aus»!\n"
+            . "Dein Stand «{$title}» wurde vom Organisationskomitee geprüft und ist jetzt "
+            . "freigegeben – er erscheint ab sofort auf der Karte und in der Liste.\n\n"
+            . "Deinen persönlichen Bearbeitungs-Link hast du mit der ersten E-Mail nach der "
+            . "Anmeldung erhalten – damit kannst du deinen Stand jederzeit selbst ändern oder "
+            . "zurückziehen. Solltest du den Link einmal nicht mehr finden, kannst du dir auf der "
+            . "Webseite ganz einfach einen neuen zusenden lassen:\n"
+            . "{$base}/link-anfordern\n\n"
+            . "Hast du weitere Fragen? Melde dich jederzeit bei uns unter "
+            . "info@schwerzenbach-raeumt-aus.ch – wir helfen dir gerne weiter.\n\n"
+            . "Wir freuen uns auf einen tollen Flohmarkt-Tag mit dir!\n\n"
+            . "Herzliche Grüsse\n"
+            . "Dein Organisationskomitee\n"
+            . "Grüne Schwerzenbach & GLP Schwerzenbach";
+
+        $this->mailer->send($email, 'Dein Stand ist freigegeben – «Schwerzenbach räumt aus»', $body);
     }
 
     /** GET /admin/event — vollständige Event-Konfiguration inkl. Organisator-Adressen. */

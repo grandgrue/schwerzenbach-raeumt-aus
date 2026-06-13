@@ -42,6 +42,9 @@ Browser ───────▶ │  /            → React-SPA (statische Date
 - Konfiguration: **eigener schlanker `.env`-Parser** (`App\Config`); Reihenfolge
   **echte Umgebungsvariablen (z. B. Docker) > `.env`-Datei > Default** — keine externe
   Abhängigkeit. (So überschreiben Container-Variablen eine lokal vorhandene Produktions-`.env`.)
+- **SEO:** statische Meta-/Open-Graph-/Twitter-Tags + JSON-LD `Event` in `index.html`,
+  `public/robots.txt` und `public/sitemap.xml`, `<noscript>`-Fallback; Keywords (Flohmarkt,
+  Flohmi, Trödeln) auch im gerenderten Startseiten-Text.
 - **Composer**-Abhängigkeiten:
   - **PHPMailer** — E-Mail-Versand (Bearbeitungs-Link) über hoststar-SMTP
   - **phpunit** — Tests (Dev)
@@ -143,7 +146,7 @@ passendem HTTP-Status. Mutierende Admin-Requests erfordern Session + CSRF-Header
 | POST | `/api/admin/logout` | Logout |
 | GET | `/api/admin/event` | vollständige Event-Konfig inkl. (privater) `organizer_emails` für das Formular |
 | GET | `/api/admin/stands?status=` | alle Stände inkl. privater Felder |
-| PATCH | `/api/admin/stands/{id}` | Body mit `status` → freigeben/ablehnen; Body mit Feldern (ohne `status`) → Stand vollständig bearbeiten |
+| PATCH | `/api/admin/stands/{id}` | Body mit `status` → freigeben/ablehnen (bei Wechsel auf `approved` Dankes-Mail an die anbietende Person); Body mit Feldern (ohne `status`) → Stand vollständig bearbeiten |
 | DELETE | `/api/admin/stands/{id}` | löschen |
 | PUT | `/api/admin/event` | Event-Konfiguration speichern |
 | GET | `/api/admin/categories` | Kategorien inkl. `stand_count` |
