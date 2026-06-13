@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Auth\AdminAuth;
+use App\Config;
 use App\Http\HttpException;
 use App\Http\Request;
 use App\Http\Response;
@@ -136,14 +137,19 @@ final class AdminController
         if ($email === '') {
             return;
         }
+        $base = rtrim((string) Config::get('APP_BASE_URL', 'https://schwerzenbach-raeumt-aus.ch'), '/');
+
         $body = "Hallo\n\n"
             . "vielen Dank für deine Anmeldung beim Flohmarkt «Schwerzenbach räumt aus»!\n"
             . "Dein Stand «{$title}» wurde vom Organisationskomitee geprüft und ist jetzt "
             . "freigegeben – er erscheint ab sofort auf der Karte und in der Liste.\n\n"
-            . "Hast du noch Fragen oder möchtest du etwas anpassen? Melde dich jederzeit bei uns "
-            . "unter info@schwerzenbach-raeumt-aus.ch – wir helfen dir gerne weiter. Über deinen "
-            . "persönlichen Bearbeitungs-Link kannst du deinen Stand zudem selbst ändern oder "
-            . "zurückziehen.\n\n"
+            . "Deinen persönlichen Bearbeitungs-Link hast du mit der ersten E-Mail nach der "
+            . "Anmeldung erhalten – damit kannst du deinen Stand jederzeit selbst ändern oder "
+            . "zurückziehen. Solltest du den Link einmal nicht mehr finden, kannst du dir auf der "
+            . "Webseite ganz einfach einen neuen zusenden lassen:\n"
+            . "{$base}/link-anfordern\n\n"
+            . "Hast du weitere Fragen? Melde dich jederzeit bei uns unter "
+            . "info@schwerzenbach-raeumt-aus.ch – wir helfen dir gerne weiter.\n\n"
             . "Wir freuen uns auf einen tollen Flohmarkt-Tag mit dir!\n\n"
             . "Herzliche Grüsse\n"
             . "Dein Organisationskomitee\n"
