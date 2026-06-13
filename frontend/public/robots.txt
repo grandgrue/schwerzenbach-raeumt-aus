@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://schwerzenbach-raeumt-aus.ch/sitemap.xml

@@ -161,11 +161,11 @@ export default function HomePage() {
           <p className="eyebrow">Was ist das?</p>
           <h2 className="text-3xl sm:text-4xl mt-1">Der grosse Quartier-Flohmarkt</h2>
           <p className="mt-4 text-ink leading-relaxed">
-            Schwerzenbach räumt aus — zum ersten Mal! Bei dieser Premiere verkaufen
-            Einwohner:innen vor der eigenen Haustür, in der Garage oder auf dem Vorplatz, was sie
-            nicht mehr brauchen — und finden beim Stöbern durchs Dorf vielleicht genau das, wonach
-            sie gesucht haben. Ob es eine Wiederholung gibt, wird sich zeigen: umso schöner, beim
-            Auftakt dabei zu sein.
+            Schwerzenbach räumt aus — zum ersten Mal! Ob du es Flohmarkt, Flohmi oder
+            Trödelmarkt nennst: Bei dieser Premiere verkaufen Einwohner:innen vor der eigenen
+            Haustür, in der Garage oder auf dem Vorplatz, was sie nicht mehr brauchen — und finden
+            beim Stöbern und Trödeln durchs Dorf vielleicht genau das, wonach sie gesucht haben.
+            Ob es eine Wiederholung gibt, wird sich zeigen: umso schöner, beim Auftakt dabei zu sein.
           </p>
           <p className="mt-3 text-ink leading-relaxed">
             Ob Möbel, Kleider, Bücher oder Spielzeug: Hier bekommt alles eine zweite Chance.
