@@ -127,7 +127,10 @@ das Organisationskomitee gibt ihn frei, und Besucher:innen entdecken alle Ständ
 - **AD4 — Platz-Buchungen sehen:** Ich sehe in der Moderationsliste, welche Stände einen
   Platz am Gemeindehaus/an der Schule gebucht haben, sowie die Anzahl belegter/freier Plätze.
 - **AD5 — Stände bearbeiten:** Ich kann **alle bestehenden Stände** vollständig bearbeiten
-  (gleiche Felder wie das Anmeldeformular).
+  (gleiche Felder wie das Anmeldeformular). Bei Ständen vom Typ *Gemeindehaus/Schule* kann ich
+  die **Nadel manuell versetzen** (im Anbieter-Formular ist sie fix aufs Gemeindehaus gesetzt),
+  damit sich mehrere solche Stände auf der Karte nicht überlappen — der Platz-Typ und die
+  Kapazitätszählung bleiben dabei erhalten.
 - **AD6 — Kategorien verwalten:** Ich kann Kategorien **anlegen, umbenennen und löschen**.
   Eine Kategorie, die bereits von mindestens einem Stand genutzt wird, **kann nicht gelöscht**
   werden (Hinweis mit Anzahl betroffener Stände).

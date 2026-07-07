@@ -45,6 +45,8 @@ interface Props {
   serverFieldErrors?: Record<string, string>;
   onSubmit: (payload: StandPayload) => void;
   children?: ReactNode;
+  /** Admin-Modus: erlaubt das manuelle Verschieben der Nadel auch für Gemeindehaus-Stände. */
+  allowPublicPin?: boolean;
 }
 
 export default function StandForm({
@@ -56,6 +58,7 @@ export default function StandForm({
   serverFieldErrors,
   onSubmit,
   children,
+  allowPublicPin = false,
 }: Props) {
   const {
     register,
@@ -128,8 +131,15 @@ export default function StandForm({
     if (type === 'public') {
       setValue('needs_public_spot', true, { shouldValidate: true });
       setValue('address', PUBLIC_SPOT_ADDRESS, { shouldValidate: true });
-      setValue('lat', SCHWERZENBACH_CENTER[0], { shouldValidate: true });
-      setValue('lng', SCHWERZENBACH_CENTER[1], { shouldValidate: true });
+      // Im Admin-Modus einen bereits gesetzten Pin behalten (manuelle Position);
+      // sonst automatisch aufs Gemeindehaus setzen.
+      const curLat = getValues('lat');
+      const curLng = getValues('lng');
+      const pinExists = Number.isFinite(curLat) && Number.isFinite(curLng);
+      if (!allowPublicPin || !pinExists) {
+        setValue('lat', SCHWERZENBACH_CENTER[0], { shouldValidate: true });
+        setValue('lng', SCHWERZENBACH_CENTER[1], { shouldValidate: true });
+      }
       setGeoStatus('idle');
     } else {
       setValue('needs_public_spot', false, { shouldValidate: true });
@@ -286,10 +296,30 @@ export default function StandForm({
         </>
       )}
 
-      {needsSpot && (
+      {needsSpot && !allowPublicPin && (
         <div className="rounded-md bg-brand-50 p-3 text-sm text-gray-700">
           Dein Standplatz wird beim <strong>Gemeindehaus / an der Schule</strong> zugeteilt –
           du musst keine eigene Adresse angeben.
+        </div>
+      )}
+
+      {needsSpot && allowPublicPin && (
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            Position beim Gemeindehaus / an der Schule
+          </label>
+          <p className="text-xs text-gray-500 mt-1 mb-1">
+            Verschiebe die Nadel per Klick oder Ziehen, damit sich mehrere Gemeindehaus-Stände auf
+            der Karte nicht überlappen.
+          </p>
+          <PinPicker
+            value={hasPin ? { lat, lng } : null}
+            onChange={(v) => {
+              setValue('lat', v.lat, { shouldValidate: true });
+              setValue('lng', v.lng, { shouldValidate: true });
+            }}
+          />
+          {err('lat')}
         </div>
       )}
 

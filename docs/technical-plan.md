@@ -195,6 +195,11 @@ Das Formular bietet eine **Auswahl** (`StandForm`):
 Die **Verkaufszeiten** werden im Anmeldeformular mit den Event-Standardzeiten vorbelegt
 (überschreibbar).
 
+Im **Admin-Bereich** rendert `StandForm` mit `allowPublicPin` den Pin-Picker **auch** für
+Gemeindehaus-Stände (`needs_public_spot=1`), sodass das OK überlappende Nadeln manuell
+verteilen kann; `needs_public_spot` und die Kapazitätszählung bleiben unverändert. Backend
+speichert `lat`/`lng` über den bestehenden Feld-Edit (`PATCH /admin/stands/{id}`).
+
 ### Fuss-Navigation (Detail)
 `NavigateButton` erzeugt eine plattformfreundliche URL aus `lat`/`lng`:
 `https://www.google.com/maps/dir/?api=1&destination=<lat>,<lng>&travelmode=walking`.

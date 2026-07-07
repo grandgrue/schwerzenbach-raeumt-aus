@@ -237,6 +237,7 @@ function Dashboard({ username }: { username?: string }) {
               submitLabel="Änderungen speichern"
               busy={updateStand.isPending}
               onSubmit={saveStandEdit}
+              allowPublicPin
             />
           </div>
         </div>
