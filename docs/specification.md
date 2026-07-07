@@ -51,10 +51,11 @@ das Organisationskomitee gibt ihn frei, und Besucher:innen entdecken alle Ständ
 
 ### Besucher:in
 - **B1 — Karte:** Als Besucher:in sehe ich alle **freigegebenen** Stände als Pins auf einer
-  Karte. Ein Klick auf einen Pin zeigt eine Kurzinfo (Titel, Adresse, **Beschreibung,
-  Kategorien**, Essen/Getränke) mit Link zur Detailseite. Über diesen Link gelangt der
-  **Zurück-Knopf** auf der Detailseite wieder zur **Karte** (von der Liste entsprechend zur
-  Liste).
+  Karte. **Nahe beieinanderliegende Stände** (insbesondere beim Gemeindehaus) werden zu einer
+  **Zahl-Blase gruppiert**; ein Klick zoomt hinein bzw. **spreizt** deckungsgleiche Nadeln.
+  Ein Klick auf einen Pin zeigt eine Kurzinfo (Titel, Adresse, **Beschreibung, Kategorien**,
+  Essen/Getränke) mit Link zur Detailseite. Über diesen Link gelangt der **Zurück-Knopf** auf
+  der Detailseite wieder zur **Karte** (von der Liste entsprechend zur Liste).
 - **B2 — Liste & Filter:** Ich sehe die Stände in einer Liste und kann nach **Kategorie**,
   nach **Essen** bzw. **Getränke** und per **Freitext** filtern sowie nach Name sortieren.
 - **B3 — Detailseite:** Ich öffne eine Stand-Detailseite mit Titel, Beschreibung, Adresse,

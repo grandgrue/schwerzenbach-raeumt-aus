@@ -170,7 +170,10 @@ passendem HTTP-Status. Mutierende Admin-Requests erfordern Session + CSRF-Header
 | `/admin` | Admin-Login + Dashboard mit **drei Tabs**: Moderation (inkl. Stand-Bearbeitung im Modal), Kategorien-Verwaltung, Event-Konfiguration — jeweils mit eigener Speicherfunktion |
 
 ### Kern-Komponenten
-- **`MapView`** — Leaflet-Karte, lädt freigegebene Stände, rendert Marker
+- **`MapView`** — Leaflet-Karte, rendert Marker mit **Clustering** (`react-leaflet-cluster`,
+  `MarkerClusterGroup`): nahe/überlappende Stände (v. a. Gemeindehaus) werden zu einer
+  Zahl-Blase gruppiert, Klick zoomt/spreizt (Spiderfy). Cluster-Icon im Marktgelb-Look
+  (`.cluster-badge`)
 - **`PinPicker`** — Klick auf Karte setzt/verschiebt den Stand-Pin (im Formular)
 - **`FilterBar`** — Kategorie-, Essen-/Getränke- und Freitextfilter
 - **`StandCard`** — Listen-/Popup-Darstellung eines Stands
