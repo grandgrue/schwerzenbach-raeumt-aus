@@ -65,6 +65,16 @@
     @apply hover:-translate-y-1 hover:shadow-lg;
   }
 
+  /* Karten-Cluster-Blase (Marker-Clustering) */
+  .cluster-badge {
+    @apply flex items-center justify-center rounded-pill font-black text-ink-dark;
+    width: 42px;
+    height: 42px;
+    background: #f5b731;
+    border: 3px solid #ffffff;
+    box-shadow: 0 2px 8px rgba(90, 74, 42, 0.35);
+  }
+
   /* Kategorie-/Tag-Pill */
   .pill {
     @apply inline-flex items-center gap-1.5 rounded-pill bg-primary-light text-ink-dark font-bold text-sm px-4 py-2;
