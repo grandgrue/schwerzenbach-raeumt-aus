@@ -133,29 +133,31 @@ function Dashboard({ username }: { username?: string }) {
         cats: s.category_ids.map((id) => catName.get(id) ?? String(id)).join(', '),
       }));
       type Row = (typeof data)[number];
-      const schema = [
-        { column: 'Titel', type: String, value: (s: Row) => s.title },
-        { column: 'Beschreibung', type: String, value: (s: Row) => s.description ?? '' },
-        { column: 'Adresse', type: String, value: (s: Row) => s.address },
-        { column: 'Platz-Typ', type: String, value: (s: Row) => (s.needs_public_spot ? 'Gemeindehaus/Schule' : 'Zuhause') },
-        { column: 'Kategorien', type: String, value: (s: Row) => s.cats },
-        { column: 'Verkauf von', type: String, value: (s: Row) => s.start_time ?? '' },
-        { column: 'Verkauf bis', type: String, value: (s: Row) => s.end_time ?? '' },
-        { column: 'Essen', type: String, value: (s: Row) => (s.offers_food ? 'ja' : 'nein') },
-        { column: 'Getränke', type: String, value: (s: Row) => (s.offers_drinks ? 'ja' : 'nein') },
-        { column: 'E-Mail (privat)', type: String, value: (s: Row) => s.provider_email },
-        { column: 'Mobil (privat)', type: String, value: (s: Row) => s.provider_mobile },
-        { column: 'Öffentl. Name', type: String, value: (s: Row) => s.public_contact_name ?? '' },
-        { column: 'Öffentl. Telefon', type: String, value: (s: Row) => s.public_contact_phone ?? '' },
-        { column: 'Öffentl. Kontakt sichtbar', type: String, value: (s: Row) => (s.show_public_contact ? 'ja' : 'nein') },
-        { column: 'Breite', type: Number, value: (s: Row) => s.lat },
-        { column: 'Länge', type: Number, value: (s: Row) => s.lng },
+      // write-excel-file v4: Spalten als { header, cell }.
+      const columns = [
+        { header: 'Titel', cell: (s: Row) => s.title },
+        { header: 'Beschreibung', cell: (s: Row) => s.description ?? '' },
+        { header: 'Adresse', cell: (s: Row) => s.address },
+        { header: 'Platz-Typ', cell: (s: Row) => (s.needs_public_spot ? 'Gemeindehaus/Schule' : 'Zuhause') },
+        { header: 'Kategorien', cell: (s: Row) => s.cats },
+        { header: 'Verkauf von', cell: (s: Row) => s.start_time ?? '' },
+        { header: 'Verkauf bis', cell: (s: Row) => s.end_time ?? '' },
+        { header: 'Essen', cell: (s: Row) => (s.offers_food ? 'ja' : 'nein') },
+        { header: 'Getränke', cell: (s: Row) => (s.offers_drinks ? 'ja' : 'nein') },
+        { header: 'E-Mail (privat)', cell: (s: Row) => s.provider_email },
+        { header: 'Mobil (privat)', cell: (s: Row) => s.provider_mobile },
+        { header: 'Öffentl. Name', cell: (s: Row) => s.public_contact_name ?? '' },
+        { header: 'Öffentl. Telefon', cell: (s: Row) => s.public_contact_phone ?? '' },
+        { header: 'Öffentl. Kontakt sichtbar', cell: (s: Row) => (s.show_public_contact ? 'ja' : 'nein') },
+        { header: 'Breite', cell: (s: Row) => s.lat },
+        { header: 'Länge', cell: (s: Row) => s.lng },
       ];
+      // Browser-Variante: gibt { toBlob, toFile } zurück; Download via .toFile(name).
       const writeXlsxFile = (await import('write-excel-file/browser')).default as unknown as (
         rows: unknown,
         options: unknown,
-      ) => Promise<void>;
-      await writeXlsxFile(data, { schema, fileName: 'staende-schwerzenbach-raeumt-aus.xlsx' });
+      ) => { toFile: (fileName: string) => Promise<void> };
+      await writeXlsxFile(data, { columns }).toFile('staende-schwerzenbach-raeumt-aus.xlsx');
     } catch (e) {
       setExportError(e instanceof ApiError ? e.message : 'Export fehlgeschlagen.');
     } finally {
