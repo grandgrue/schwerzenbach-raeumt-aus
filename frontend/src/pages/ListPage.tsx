@@ -8,8 +8,11 @@ import { EmptyNote, ErrorNote, Loading } from '../components/StatusViews';
 
 export default function ListPage() {
   const location = useLocation();
-  const initialQ = (location.state as { q?: string } | null)?.q ?? '';
-  const [filters, setFilters] = useState<StandFilters>(initialQ ? { q: initialQ } : {});
+  const nav = location.state as { q?: string; category?: number } | null;
+  const [filters, setFilters] = useState<StandFilters>({
+    q: nav?.q || undefined,
+    category: nav?.category ?? undefined,
+  });
   const { data: categories = [] } = useCategories();
   const { data: stands, isLoading, isError } = useStands(filters);
 

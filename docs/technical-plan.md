@@ -183,6 +183,11 @@ passendem HTTP-Status. Mutierende Admin-Requests erfordern Session + CSRF-Header
   Fussgänger-Modus (`travelmode=walking`) und öffnet die Karten-App des Geräts
 - **`AdminStandTable`** — Moderationsliste mit Status-Aktionen + „Bearbeiten"
 - **`CategoryManager`** — Admin-Verwaltung der Kategorien (anlegen/umbenennen/löschen)
+- **`CategoryOverview`** — Startseite: Anzahl Angebote pro Kategorie als klickbare Balken
+  (clientseitig aus `useStands({})` berechnet); Klick → `/liste` mit `state.category`
+- **Admin-Export** — „Als Excel exportieren" im Moderations-Tab: lädt `GET /admin/stands?status=approved`,
+  mappt Kategorie-IDs → Namen und erzeugt ein `.xlsx` via **`write-excel-file`** (dynamischer
+  Import → eigener Chunk). Kein Backend nötig.
 - **`EventConfigForm`** — Event-Konfiguration
 
 ### Standort-Auswahl & Adress-Geocoding (Anmeldeformular)

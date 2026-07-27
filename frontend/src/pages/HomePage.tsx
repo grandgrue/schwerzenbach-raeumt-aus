@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCategories, useEvent, useStands } from '../api/hooks';
+import CategoryOverview from '../components/CategoryOverview';
 import MapView from '../components/MapView';
 import { Loading } from '../components/StatusViews';
 
@@ -196,16 +197,15 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* KATEGORIEN-PILLS */}
+      {/* KATEGORIEN-ÜBERSICHT (Anzahl pro Kategorie, klickbar) */}
       {categories.length > 0 && (
         <section className="max-w-5xl mx-auto px-4 py-12 text-center">
           <p className="eyebrow">Was dich erwartet</p>
           <h2 className="text-3xl sm:text-4xl mt-1">Tausend Schätze warten</h2>
-          <div className="mt-6 flex flex-wrap gap-2 justify-center">
-            {categories.map((c) => (
-              <span key={c.id} className="pill">{c.name}</span>
-            ))}
-          </div>
+          <p className="mt-2 text-ink text-sm">
+            Klicke eine Kategorie, um alle passenden Stände zu sehen.
+          </p>
+          <CategoryOverview categories={categories} stands={stands ?? []} />
         </section>
       )}
 

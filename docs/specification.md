@@ -58,6 +58,8 @@ das Organisationskomitee gibt ihn frei, und Besucher:innen entdecken alle Ständ
   der Detailseite wieder zur **Karte** (von der Liste entsprechend zur Liste).
 - **B2 — Liste & Filter:** Ich sehe die Stände in einer Liste und kann nach **Kategorie**,
   nach **Essen** bzw. **Getränke** und per **Freitext** filtern sowie nach Name sortieren.
+  Von der Startseite gelange ich per **Klick auf eine Kategorie** direkt in die **vorgefilterte
+  Liste**.
 - **B3 — Detailseite:** Ich öffne eine Stand-Detailseite mit Titel, Beschreibung, Adresse,
   Kategorien, Verkaufszeiten, Essen/Getränke-Hinweis und — falls von der/dem Anbieter:in
   freigegeben — öffentlichem Kontakt.
@@ -67,6 +69,10 @@ das Organisationskomitee gibt ihn frei, und Besucher:innen entdecken alle Ständ
   **„Zu Fuss hinnavigieren"**, der die Karten-App meines Geräts im Fussgänger-Modus mit den
   Koordinaten des Stands öffnet.
 - **B6 — FAQ:** Ich rufe eine FAQ-Seite mit häufigen Fragen und Datenschutz-Informationen auf.
+- **B8 — Angebote pro Kategorie (Startseite):** Auf der Startseite sehe ich unter „Tausend
+  Schätze warten" pro Kategorie die **Anzahl Angebote** als Balken; ein **Klick** führt in die
+  nach dieser Kategorie **gefilterte Liste**. (Berechnung clientseitig aus den freigegebenen
+  Ständen; ohne Stände: einfache klickbare Pills.)
 - **B7 — Markttag-Startseite:** Sobald die Anmeldung **geschlossen** ist, wird die Startseite
   zur Such-/Entdeckungs-App: such-orientierter Hero-Text, ein **Suchfeld** (springt vorbefüllt
   in die Liste), eine **eingebettete Karte** aller Stände und prominente Buttons zu Karte/Liste;
@@ -135,6 +141,9 @@ das Organisationskomitee gibt ihn frei, und Besucher:innen entdecken alle Ständ
 - **AD6 — Kategorien verwalten:** Ich kann Kategorien **anlegen, umbenennen und löschen**.
   Eine Kategorie, die bereits von mindestens einem Stand genutzt wird, **kann nicht gelöscht**
   werden (Hinweis mit Anzahl betroffener Stände).
+- **AD9 — Excel-Export:** Ich kann die **freigegebenen Stände inkl. Kontaktdaten** (Titel,
+  Adresse, Platz-Typ, Kategorien, Verkaufszeiten, Essen/Getränke, **E-Mail & Mobil (privat)**,
+  öffentlicher Kontakt, Koordinaten) als **`.xlsx`-Datei** herunterladen.
 - **AD8 — Freigabe-Mail:** Sobald ich einen Stand **freigebe** (Status → `approved`), erhält
   die anbietende Person automatisch eine **Dankes-E-Mail** mit Hilfe-Angebot
   (`info@schwerzenbach-raeumt-aus.ch`). Wird nur **einmal** beim Wechsel auf „freigegeben"

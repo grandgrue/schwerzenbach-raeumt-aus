@@ -11,7 +11,7 @@ import {
   useCategories,
   useEvent,
 } from '../api/hooks';
-import { ApiError } from '../api/client';
+import { ApiError, api } from '../api/client';
 import type { PrivateStand, StandPayload } from '../api/types';
 import AdminStandTable from '../components/AdminStandTable';
 import CategoryManager from '../components/CategoryManager';
@@ -119,6 +119,49 @@ function Dashboard({ username }: { username?: string }) {
   const [section, setSection] = useState<AdminSection>('moderation');
   const [editStand, setEditStand] = useState<PrivateStand | null>(null);
   const [editError, setEditError] = useState<string | null>(null);
+  const [exporting, setExporting] = useState(false);
+  const [exportError, setExportError] = useState<string | null>(null);
+
+  async function exportExcel() {
+    setExporting(true);
+    setExportError(null);
+    try {
+      const rows = await api.get<PrivateStand[]>('/admin/stands?status=approved');
+      const catName = new Map(categories.map((c) => [c.id, c.name]));
+      const data = rows.map((s) => ({
+        ...s,
+        cats: s.category_ids.map((id) => catName.get(id) ?? String(id)).join(', '),
+      }));
+      type Row = (typeof data)[number];
+      const schema = [
+        { column: 'Titel', type: String, value: (s: Row) => s.title },
+        { column: 'Beschreibung', type: String, value: (s: Row) => s.description ?? '' },
+        { column: 'Adresse', type: String, value: (s: Row) => s.address },
+        { column: 'Platz-Typ', type: String, value: (s: Row) => (s.needs_public_spot ? 'Gemeindehaus/Schule' : 'Zuhause') },
+        { column: 'Kategorien', type: String, value: (s: Row) => s.cats },
+        { column: 'Verkauf von', type: String, value: (s: Row) => s.start_time ?? '' },
+        { column: 'Verkauf bis', type: String, value: (s: Row) => s.end_time ?? '' },
+        { column: 'Essen', type: String, value: (s: Row) => (s.offers_food ? 'ja' : 'nein') },
+        { column: 'Getränke', type: String, value: (s: Row) => (s.offers_drinks ? 'ja' : 'nein') },
+        { column: 'E-Mail (privat)', type: String, value: (s: Row) => s.provider_email },
+        { column: 'Mobil (privat)', type: String, value: (s: Row) => s.provider_mobile },
+        { column: 'Öffentl. Name', type: String, value: (s: Row) => s.public_contact_name ?? '' },
+        { column: 'Öffentl. Telefon', type: String, value: (s: Row) => s.public_contact_phone ?? '' },
+        { column: 'Öffentl. Kontakt sichtbar', type: String, value: (s: Row) => (s.show_public_contact ? 'ja' : 'nein') },
+        { column: 'Breite', type: Number, value: (s: Row) => s.lat },
+        { column: 'Länge', type: Number, value: (s: Row) => s.lng },
+      ];
+      const writeXlsxFile = (await import('write-excel-file/browser')).default as unknown as (
+        rows: unknown,
+        options: unknown,
+      ) => Promise<void>;
+      await writeXlsxFile(data, { schema, fileName: 'staende-schwerzenbach-raeumt-aus.xlsx' });
+    } catch (e) {
+      setExportError(e instanceof ApiError ? e.message : 'Export fehlgeschlagen.');
+    } finally {
+      setExporting(false);
+    }
+  }
 
   function saveStandEdit(payload: StandPayload) {
     if (!editStand) return;
@@ -173,7 +216,8 @@ function Dashboard({ username }: { username?: string }) {
 
       {section === 'moderation' && (
       <div>
-        <div className="flex flex-wrap gap-2 mb-4">
+        <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
+          <div className="flex flex-wrap gap-2">
           {statusTabs.map((tab) => (
             <button
               key={tab.value}
@@ -185,8 +229,19 @@ function Dashboard({ username }: { username?: string }) {
               {tab.label}
             </button>
           ))}
+          </div>
+          <button
+            type="button"
+            onClick={exportExcel}
+            disabled={exporting}
+            className="btn-primary text-sm !py-2 !px-4 disabled:opacity-50"
+            title="Freigegebene Stände inkl. Kontaktdaten als Excel herunterladen"
+          >
+            {exporting ? 'Export läuft …' : '⬇ Als Excel exportieren'}
+          </button>
         </div>
 
+        {exportError && <div className="mb-3"><ErrorNote text={exportError} /></div>}
         {isError && <ErrorNote text="Die Stände konnten nicht geladen werden." />}
         {isLoading && <Loading />}
         {stands && (
