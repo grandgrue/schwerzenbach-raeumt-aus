@@ -1,5 +1,6 @@
 import { NavLink, Outlet, Link } from 'react-router-dom';
 import { useState } from 'react';
+import { useEvent } from '../api/hooks';
 
 const navItems = [
   { to: '/', label: 'Start', end: true },
@@ -10,6 +11,9 @@ const navItems = [
 
 export default function Layout() {
   const [open, setOpen] = useState(false);
+  const { data: event } = useEvent();
+  // Anmelde-Button nur zeigen, solange die Anmeldung offen ist.
+  const canRegister = !event || event.registration_open;
 
   const linkClass = ({ isActive }: { isActive: boolean }) =>
     `block px-3 py-2 rounded-md text-sm font-bold transition-colors ${
@@ -38,9 +42,11 @@ export default function Layout() {
                   {item.label}
                 </NavLink>
               ))}
-              <Link to="/anmelden" className="btn-primary ml-2 !py-2 !px-4 text-sm">
-                Stand anmelden
-              </Link>
+              {canRegister && (
+                <Link to="/anmelden" className="btn-primary ml-2 !py-2 !px-4 text-sm">
+                  Stand anmelden
+                </Link>
+              )}
             </div>
 
             <button
@@ -60,9 +66,11 @@ export default function Layout() {
                   {item.label}
                 </NavLink>
               ))}
-              <Link to="/anmelden" className="btn-primary mt-2 w-full !py-2 text-sm">
-                Stand anmelden
-              </Link>
+              {canRegister && (
+                <Link to="/anmelden" className="btn-primary mt-2 w-full !py-2 text-sm">
+                  Stand anmelden
+                </Link>
+              )}
             </div>
           )}
         </nav>
@@ -96,7 +104,9 @@ export default function Layout() {
           </div>
           <div className="flex justify-center gap-5 text-sm pt-2">
             <Link to="/faq" className="text-white/70 hover:text-primary">FAQ &amp; Datenschutz</Link>
-            <Link to="/anmelden" className="text-white/70 hover:text-primary">Stand anmelden</Link>
+            {canRegister && (
+              <Link to="/anmelden" className="text-white/70 hover:text-primary">Stand anmelden</Link>
+            )}
             <Link to="/admin" className="text-white/70 hover:text-primary">Organisator:innen</Link>
           </div>
           <div className="text-xs text-white/40 pt-2">

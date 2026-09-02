@@ -66,7 +66,7 @@ Browser ───────▶ │  /            → React-SPA (statische Date
 | `default_start_time` | TIME | Standard-Verkaufsbeginn |
 | `default_end_time` | TIME | Standard-Verkaufsende |
 | `registration_open` | TINYINT(1) | Anmeldung offen/geschlossen |
-| `public_spots_total` | INT | Anzahl Plätze am Gemeindehaus/an der Schule (Kapazität) |
+| `public_spots_total` | INT | Anzahl Plätze am Gemeindehaus (Kapazität) |
 | `info_text` | TEXT | öffentlicher Infotext (Startseite) |
 | `organizer_emails` | TEXT NULL | **privat** — OK-Adressen (eine pro Zeile) für Benachrichtigungen |
 | `created_at`, `updated_at` | TIMESTAMP | |
@@ -90,7 +90,7 @@ Browser ───────▶ │  /            → React-SPA (statische Date
 | `end_time` | TIME NULL | öffentlich | Default = Event |
 | `offers_food` | TINYINT(1) | öffentlich | Essen auf Spendenbasis |
 | `offers_drinks` | TINYINT(1) | öffentlich | Getränke auf Spendenbasis |
-| `needs_public_spot` | TINYINT(1) | – | Platz am Gemeindehaus/an der Schule gebucht |
+| `needs_public_spot` | TINYINT(1) | – | Platz am Gemeindehaus gebucht |
 | `status` | ENUM | – | `pending`,`approved`,`rejected`,`withdrawn` |
 | `edited_after_approval` | TINYINT(1) | – | Markierung „bearbeitet" fürs OK |
 | `edit_token_hash` | VARCHAR UNIQUE | – | Hash des Bearbeitungs-Tokens |
@@ -189,6 +189,10 @@ passendem HTTP-Status. Mutierende Admin-Requests erfordern Session + CSRF-Header
   mappt Kategorie-IDs → Namen und erzeugt ein `.xlsx` via **`write-excel-file`** (dynamischer
   Import → eigener Chunk). Kein Backend nötig.
 - **`EventConfigForm`** — Event-Konfiguration
+- **`lib/event.ts`** — `eventPhase(event)` leitet aus `registration_open` + `event_date` die
+  Phase `registration | pre | day | post` ab; `formatEventDate()` formatiert das Datum. Genutzt
+  von Startseite, Anmeldeseite (geschlossen) und `Layout` (blendet „Stand anmelden" aus, sobald
+  die Anmeldung geschlossen ist).
 
 ### Standort-Auswahl & Adress-Geocoding (Anmeldeformular)
 Das Formular bietet eine **Auswahl** (`StandForm`):
@@ -196,7 +200,7 @@ Das Formular bietet eine **Auswahl** (`StandForm`):
   wird mit Suffix „8603 Schwerzenbach, Schweiz" über **Nominatim (OpenStreetMap)** geocodiert
   (`https://nominatim.openstreetmap.org/search`, ausgelöst per Button und beim Verlassen des
   Adressfelds). Treffer setzt `lat`/`lng`; der Marker bleibt **verschiebbar**.
-- **„Beim Gemeindehaus / an der Schule"** → `needs_public_spot=true`, `lat`/`lng` werden
+- **„Beim Gemeindehaus"** → `needs_public_spot=true`, `lat`/`lng` werden
   automatisch auf das Gemeindehaus (`SCHWERZENBACH_CENTER`) und die Adresse auf einen festen
   Text gesetzt; Adress-/Pin-Eingabe entfällt. Auswahl nur möglich, solange Plätze frei sind.
 

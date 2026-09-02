@@ -32,7 +32,7 @@ SELECT
   '09:00:00',
   '16:00:00',
   1,               -- Anmeldung offen
-  20,              -- Plätze am Gemeindehaus/an der Schule
+  20,              -- Plätze beim Gemeindehaus
   'Willkommen beim Flohmarkt-Tag von Schwerzenbach! Das Datum und weitere Infos folgen in Kürze.'
 FROM DUAL
 WHERE NOT EXISTS (SELECT 1 FROM `event`);

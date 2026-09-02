@@ -138,7 +138,7 @@ function Dashboard({ username }: { username?: string }) {
         { header: 'Titel', cell: (s: Row) => s.title },
         { header: 'Beschreibung', cell: (s: Row) => s.description ?? '' },
         { header: 'Adresse', cell: (s: Row) => s.address },
-        { header: 'Platz-Typ', cell: (s: Row) => (s.needs_public_spot ? 'Gemeindehaus/Schule' : 'Zuhause') },
+        { header: 'Platz-Typ', cell: (s: Row) => (s.needs_public_spot ? 'Gemeindehaus' : 'Zuhause') },
         { header: 'Kategorien', cell: (s: Row) => s.cats },
         { header: 'Verkauf von', cell: (s: Row) => s.start_time ?? '' },
         { header: 'Verkauf bis', cell: (s: Row) => s.end_time ?? '' },

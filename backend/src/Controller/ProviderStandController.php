@@ -198,7 +198,7 @@ final class ProviderStandController
             throw new HttpException(
                 409,
                 'public_spots_full',
-                'Es sind leider keine Plätze am Gemeindehaus/an der Schule mehr verfügbar.'
+                'Es sind leider keine Plätze beim Gemeindehaus mehr verfügbar.'
             );
         }
     }
@@ -235,7 +235,7 @@ final class ProviderStandController
         }
 
         $adminUrl = rtrim((string) Config::get('APP_BASE_URL', ''), '/') . '/admin';
-        $ort = $needsPublicSpot ? 'Platz beim Gemeindehaus / an der Schule' : 'bei sich zuhause';
+        $ort = $needsPublicSpot ? 'Platz beim Gemeindehaus' : 'bei sich zuhause';
 
         $subject = "Flohmarkt: Stand {$action} – «{$title}»";
         $body = "Hallo Organisationskomitee\n\n"

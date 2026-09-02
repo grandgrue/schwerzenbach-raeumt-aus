@@ -5,6 +5,7 @@ import type { CaptchaChallenge, StandPayload } from '../api/types';
 import { ApiError } from '../api/client';
 import StandForm from '../components/StandForm';
 import { ErrorNote, Loading } from '../components/StatusViews';
+import { eventPhase, formatEventDate } from '../lib/event';
 
 export default function RegisterPage() {
   const { data: event, isLoading } = useEvent();
@@ -30,11 +31,35 @@ export default function RegisterPage() {
   if (isLoading) return <div className="max-w-2xl mx-auto px-4 py-6"><Loading /></div>;
 
   if (event && !event.registration_open) {
+    const phase = eventPhase(event);
+    const dateLabel = formatEventDate(event.event_date);
+    const statusText =
+      phase === 'post'
+        ? `Der Flohmarkt hat ${dateLabel ? `am ${dateLabel} ` : ''}stattgefunden. Vielen Dank fürs Mitmachen!`
+        : phase === 'day'
+          ? 'Heute ist Markttag! Alle Stände findest du auf der Karte und in der Liste.'
+          : `Die Anmeldung ist abgeschlossen — neue Stände können nicht mehr angemeldet werden. Der Flohmarkt findet ${dateLabel ? `am ${dateLabel}` : 'in Kürze'} statt; alle angemeldeten Stände findest du bereits auf der Karte.`;
+
     return (
       <div className="max-w-2xl mx-auto px-4 py-10 space-y-4">
         <h1 className="text-2xl font-bold">Stand anmelden</h1>
-        <ErrorNote text="Die Anmeldung ist derzeit geschlossen. Bitte schau zu einem späteren Zeitpunkt wieder vorbei." />
-        <Link to="/" className="text-brand-600 hover:underline">← Zur Startseite</Link>
+        <div className="rounded-md bg-brand-50 border border-brand-100 p-4 text-gray-700 space-y-2">
+          <p className="font-bold text-ink-dark">{statusText}</p>
+          {phase !== 'post' && (
+            <p className="text-sm">
+              Du hast einen Stand angemeldet und kannst doch nicht teilnehmen? Du kannst ihn
+              weiterhin über deinen{' '}
+              <Link to="/link-anfordern" className="text-brand-600 hover:underline">
+                Bearbeitungs-Link
+              </Link>{' '}
+              zurückziehen.
+            </p>
+          )}
+        </div>
+        <div className="flex flex-wrap gap-4">
+          <Link to="/karte" className="text-brand-600 hover:underline">Zur Karte</Link>
+          <Link to="/" className="text-brand-600 hover:underline">← Zur Startseite</Link>
+        </div>
       </div>
     );
   }
