@@ -19,8 +19,16 @@ const faqs: QA[] = [
     a: 'Nein. Nach der Anmeldung erhältst du per E-Mail einen persönlichen Bearbeitungs-Link, mit dem du deinen Stand jederzeit ändern oder zurückziehen kannst. Bewahre diesen Link sicher auf.',
   },
   {
+    q: 'Was, wenn ich doch nicht teilnehmen kann?',
+    a: 'Kein Problem – bitte zieh deinen Stand in diesem Fall zurück, damit keine Gäste umsonst zu deiner Adresse spazieren. Öffne dazu deinen persönlichen Bearbeitungs-Link (aus der Bestätigungs-E-Mail) und wähle «Stand zurückziehen». Den Link nicht mehr zur Hand? Fordere ihn dir auf der Seite «Bearbeitungs-Link anfordern» erneut zu. Das Zurückziehen ist auch nach Anmeldeschluss noch möglich.',
+  },
+  {
     q: 'Ich habe keinen Platz zuhause – wo kann ich verkaufen?',
-    a: 'Wer zuhause keinen Stand aufstellen kann, bucht im Anmeldeformular einen Platz auf dem Parkplatz des Gemeindehauses oder der Primarschule. Die Anzahl ist begrenzt; die Plätze werden nach Anmelde-Eingang vergeben. Ist alles vergeben, wird die Option als «ausgebucht» angezeigt.',
+    a: 'Wer zuhause keinen Stand aufstellen kann, bucht im Anmeldeformular einen Platz auf dem Parkplatz beim Gemeindehaus. Die Anzahl ist begrenzt; die Plätze werden nach Anmelde-Eingang vergeben. Ist alles vergeben, wird die Option als «ausgebucht» angezeigt.',
+  },
+  {
+    q: 'Was muss ich beim Standplatz beim Gemeindehaus beachten?',
+    a: 'Wenn dein Stand auf dem Areal des Gemeindehauses liegt, gilt zusätzlich:\n\n• Standinfrastruktur: Vor Ort wird ausschliesslich die Standfläche zur Verfügung gestellt. Bitte bring deine eigenen Tische, Decken oder Kleiderständer mit.\n• Parkplätze: Direkt auf dem Gelände gibt es keine Parkplätze. Nutze zum Ausladen und Parkieren bitte die öffentlichen Parkplätze in der Umgebung.\n• Standnummern: Die Standnummern werden vor Ort vergeben. Achte bei der Ankunft auf die Beschilderung; bei Unklarheiten wende dich an das Organisationskomitee.\n• Aufräumen: Bitte nimm deinen Abfall sowie unverkaufte Gegenstände am Ende des Tages wieder mit nach Hause.',
   },
   {
     q: 'Wer darf mitmachen?',
@@ -33,6 +41,10 @@ const faqs: QA[] = [
   {
     q: 'Darf ich Essen und Getränke verkaufen?',
     a: 'Essen und Getränke dürfen nur auf Spendenbasis angeboten werden – ein Verkauf ist nicht gestattet. Im Anmeldeformular kannst du ankreuzen, dass du Essen und/oder Getränke anbietest; das wird bei deinem Stand vermerkt.',
+  },
+  {
+    q: 'Was gilt bei schlechtem Wetter?',
+    a: 'Es gibt drei Szenarien:\n\n• Schönes/trockenes Wetter: Der Flohmarkt findet wie geplant statt.\n• Starkregen oder Gewitter: Muss der Anlass abgesagt werden, informieren wir vorab über diese Website und per E-Mail.\n• Unbeständiges Wetter (leichter Regen, unklare Lage): Jede:r entscheidet selbst, ob der Stand aufgebaut wird – z. B. im Unterstand, in der Garage oder mit Pavillon.',
   },
   {
     q: 'Wer haftet? Worauf muss ich achten?',

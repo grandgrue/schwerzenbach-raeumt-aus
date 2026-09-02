@@ -4,12 +4,7 @@ import { useCategories, useEvent, useStands } from '../api/hooks';
 import CategoryOverview from '../components/CategoryOverview';
 import MapView from '../components/MapView';
 import { Loading } from '../components/StatusViews';
-
-function formatDate(date: string | null): string | null {
-  if (!date) return null;
-  const d = new Date(date + 'T00:00:00');
-  return d.toLocaleDateString('de-CH', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-}
+import { eventPhase, formatEventDate } from '../lib/event';
 
 export default function HomePage() {
   const { data: event, isLoading } = useEvent();
@@ -17,10 +12,11 @@ export default function HomePage() {
   const navigate = useNavigate();
   const [search, setSearch] = useState('');
 
-  const marketMode = !!event && !event.registration_open;
+  const phase = eventPhase(event);
+  const marketMode = phase !== 'registration';
   const { data: stands } = useStands({});
 
-  const dateLabel = formatDate(event?.event_date ?? null);
+  const dateLabel = formatEventDate(event?.event_date ?? null);
   const timeLabel =
     event?.default_start_time && event?.default_end_time
       ? `${event.default_start_time}–${event.default_end_time} Uhr`
@@ -33,7 +29,7 @@ export default function HomePage() {
       : '5. September 2026. Bei jedem Wetter — ausser Gewitter.';
 
   const infoCards = [
-    { icon: '📍', title: 'Wo findet es statt?', text: 'Verteilt im ganzen Dorf — vor den Häusern der Anbieter:innen sowie beim Gemeindehaus / an der Schule. Alle Stände findest du auf der Karte.' },
+    { icon: '📍', title: 'Wo findet es statt?', text: 'Verteilt im ganzen Dorf — vor den Häusern der Anbieter:innen sowie beim Gemeindehaus. Alle Stände findest du auf der Karte.' },
     { icon: '🗓', title: 'Wann?', text: wannText },
     { icon: '🎫', title: 'Was kostet es?', text: 'Besuch und Teilnahme sind kostenlos. Du brauchst kein Konto, um einen Stand anzumelden.' },
     { icon: '🚲', title: 'Anreise & Navigation', text: 'Am besten zu Fuss oder mit dem Velo. Auf jeder Stand-Detailseite gibt es einen «Zu Fuss hinnavigieren»-Button.' },
@@ -65,6 +61,14 @@ export default function HomePage() {
           </h1>
           {subtitleParts.length > 0 && (
             <p className="mt-4 text-ink-dark/80 font-bold text-lg">{subtitleParts.join(' · ')}</p>
+          )}
+
+          {marketMode && (
+            <p className="mt-4 inline-block rounded-pill bg-ink-dark text-primary px-5 py-1.5 font-bold text-sm sm:text-base">
+              {phase === 'pre' && 'Anmeldung abgeschlossen · bald geht’s los'}
+              {phase === 'day' && '🎉 Heute ist Markttag!'}
+              {phase === 'post' && 'Der Flohmarkt ist vorbei — danke fürs Mitmachen!'}
+            </p>
           )}
 
           {marketMode ? (
@@ -189,7 +193,7 @@ export default function HomePage() {
         </div>
         <div className="card card-hover p-6">
           <div className="text-3xl" aria-hidden>🏛️</div>
-          <h3 className="text-2xl mt-2">Beim Gemeindehaus / an der Schule</h3>
+          <h3 className="text-2xl mt-2">Beim Gemeindehaus</h3>
           <p className="text-ink mt-2 text-sm leading-relaxed">
             Kein Platz zuhause? Reserviere einen der begrenzten Stände beim Gemeindehaus.
             Die Plätze werden nach Anmelde-Eingang vergeben.
@@ -233,13 +237,37 @@ export default function HomePage() {
         <div className="max-w-3xl mx-auto px-4 py-16 text-center">
           <img src="/logo.png" alt="" aria-hidden className="mx-auto h-20 w-20 rounded-full ring-2 ring-white/80 mb-4" />
           {marketMode ? (
-            <>
-              <h2 className="text-4xl">Heute ist Markttag!</h2>
-              <p className="mt-3 text-white/90">Finde Stände in deiner Nähe — auf der Karte oder in der Liste.</p>
-              <div className="mt-6 flex flex-wrap gap-3 justify-center">
-                <Link to="/karte" className="btn-white">🗺️ Zur Karte</Link>
-              </div>
-            </>
+            phase === 'post' ? (
+              <>
+                <h2 className="text-4xl">Der Flohmarkt ist vorbei</h2>
+                <p className="mt-3 text-white/90">
+                  Danke an alle, die ausgeräumt, gestöbert und mitgemacht haben! Die diesjährigen
+                  Stände kannst du weiterhin ansehen.
+                </p>
+                <div className="mt-6 flex flex-wrap gap-3 justify-center">
+                  <Link to="/karte" className="btn-white">🗺️ Stände ansehen</Link>
+                </div>
+              </>
+            ) : phase === 'pre' ? (
+              <>
+                <h2 className="text-4xl">Bald ist Markttag!</h2>
+                <p className="mt-3 text-white/90">
+                  Die Anmeldung ist abgeschlossen{dateLabel ? ` — am ${dateLabel} geht’s los` : ''}.
+                  Schau schon jetzt, welche Stände dabei sind.
+                </p>
+                <div className="mt-6 flex flex-wrap gap-3 justify-center">
+                  <Link to="/karte" className="btn-white">🗺️ Zur Karte</Link>
+                </div>
+              </>
+            ) : (
+              <>
+                <h2 className="text-4xl">Heute ist Markttag!</h2>
+                <p className="mt-3 text-white/90">Finde Stände in deiner Nähe — auf der Karte oder in der Liste.</p>
+                <div className="mt-6 flex flex-wrap gap-3 justify-center">
+                  <Link to="/karte" className="btn-white">🗺️ Zur Karte</Link>
+                </div>
+              </>
+            )
           ) : (
             <>
               <p className="eyebrow !text-white">Mitmachen</p>

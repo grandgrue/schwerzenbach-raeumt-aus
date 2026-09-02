@@ -9,8 +9,8 @@ import PinPicker from './PinPicker';
 
 type GeoStatus = 'idle' | 'loading' | 'found' | 'notfound' | 'error';
 
-/** Adresse/Standort für Stände beim Gemeindehaus / an der Schule. */
-const PUBLIC_SPOT_ADDRESS = 'Parkplatz Gemeindehaus / Primarschule, 8603 Schwerzenbach';
+/** Adresse/Standort für Stände beim Gemeindehaus. */
+const PUBLIC_SPOT_ADDRESS = 'Parkplatz Gemeindehaus, 8603 Schwerzenbach';
 
 const timeRegex = /^([01]\d|2[0-3]):[0-5]\d$/;
 const optionalTime = z.union([z.literal(''), z.string().regex(timeRegex, 'Zeit als HH:MM')]);
@@ -228,7 +228,7 @@ export default function StandForm({
             className="mt-1"
           />
           <span>
-            <strong>Beim Gemeindehaus / an der Schule</strong> – begrenzte Plätze, der Standort
+            <strong>Beim Gemeindehaus</strong> – begrenzte Plätze, der Standort
             wird automatisch dort gesetzt.{' '}
             <span className="text-xs text-gray-500">
               {spotsAvailable > 0
@@ -239,7 +239,7 @@ export default function StandForm({
         </label>
         <p className="text-xs text-gray-500">
           Alle, die keine Möglichkeit haben bei sich zuhause einen Stand aufzustellen, können
-          einen Platz beim Gemeindehaus oder der Primarschule buchen. Die Plätze werden nach
+          einen Platz beim Gemeindehaus buchen. Die Plätze werden nach
           Anmelde-Eingang vergeben.
         </p>
       </fieldset>
@@ -298,7 +298,7 @@ export default function StandForm({
 
       {needsSpot && !allowPublicPin && (
         <div className="rounded-md bg-brand-50 p-3 text-sm text-gray-700">
-          Dein Standplatz wird beim <strong>Gemeindehaus / an der Schule</strong> zugeteilt –
+          Dein Standplatz wird beim <strong>Gemeindehaus</strong> zugeteilt –
           du musst keine eigene Adresse angeben.
         </div>
       )}
@@ -306,7 +306,7 @@ export default function StandForm({
       {needsSpot && allowPublicPin && (
         <div>
           <label className="block text-sm font-medium text-gray-700">
-            Position beim Gemeindehaus / an der Schule
+            Position beim Gemeindehaus
           </label>
           <p className="text-xs text-gray-500 mt-1 mb-1">
             Verschiebe die Nadel per Klick oder Ziehen, damit sich mehrere Gemeindehaus-Stände auf

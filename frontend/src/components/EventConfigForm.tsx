@@ -71,7 +71,7 @@ export default function EventConfigForm({ event, busy, message, onSave }: Props)
         </label>
         <div>
           <label className="block text-sm font-medium text-gray-700">
-            Plätze Gemeindehaus/Schule
+            Plätze Gemeindehaus
           </label>
           <input
             type="number"

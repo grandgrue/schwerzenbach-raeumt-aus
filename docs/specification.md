@@ -76,12 +76,19 @@ das Organisationskomitee gibt ihn frei, und Besucher:innen entdecken alle Ständ
 - **B7 — Markttag-Startseite:** Sobald die Anmeldung **geschlossen** ist, wird die Startseite
   zur Such-/Entdeckungs-App: such-orientierter Hero-Text, ein **Suchfeld** (springt vorbefüllt
   in die Liste), eine **eingebettete Karte** aller Stände und prominente Buttons zu Karte/Liste;
-  „Stand anmelden" entfällt. Bei offener Anmeldung bleibt die werbende Vorlauf-Ansicht.
+  „Stand anmelden" entfällt (Navigation, Footer und Anmeldeseite). Bei offener Anmeldung bleibt
+  die werbende Vorlauf-Ansicht.
+- **B7a — Event-Phasen-Texte:** Bei geschlossener Anmeldung richten sich Hero-Statuszeile und
+  CTA nach dem **Event-Datum** (`event_date`): **vor** dem Tag „Anmeldung abgeschlossen · bald
+  geht's los" / „Bald ist Markttag!", **am** Tag „Heute ist Markttag!", **nach** dem Tag „Der
+  Flohmarkt ist vorbei — danke fürs Mitmachen!". Auch die geschlossene Anmeldeseite formuliert
+  entsprechend und weist darauf hin, dass **angemeldete Stände weiterhin über den
+  Bearbeitungs-Link zurückgezogen** werden können (Anmeldeschluss stoppt nur Neuanmeldungen).
 
 ### Anbieter:in
 - **A1 — Anmelden:** Ich melde über ein Formular einen Stand an mit:
   - **Standort-Auswahl** *(Pflicht)* — entweder **„bei mir zuhause"** oder
-    **„beim Gemeindehaus / an der Schule"** (siehe A1c).
+    **„beim Gemeindehaus"** (siehe A1c).
   - **Titel** und **Beschreibung** *(Pflicht / optional)*
   - **Kategorien** (Mehrfachauswahl)
   - **Verkaufszeiten** von–bis *(mit den Event-Standardzeiten **vorbelegt**, überschreibbar)*
@@ -98,7 +105,7 @@ das Organisationskomitee gibt ihn frei, und Besucher:innen entdecken alle Ständ
   zwischen zwei Optionen:
   - **„Bei mir zuhause"** → ich gebe die **Adresse** ein; der **Pin wird automatisch
     gesetzt** (Geocoding mit Suffix „8603 Schwerzenbach") und ist **manuell verschiebbar**.
-  - **„Beim Gemeindehaus / an der Schule"** → der **Standort wird automatisch beim
+  - **„Beim Gemeindehaus"** → der **Standort wird automatisch beim
     Gemeindehaus gesetzt** (keine Adresseingabe nötig). Hierfür gilt:
     - Die Anzahl Plätze ist begrenzt (`public_spots_total`, vom OK konfigurierbar).
     - Das System **zählt die Buchungen automatisch** (alle nicht abgelehnten/zurückgezogenen
@@ -108,7 +115,7 @@ das Organisationskomitee gibt ihn frei, und Besucher:innen entdecken alle Ständ
     - Die Durchsetzung erfolgt **serverseitig** (verhindert Überbuchung).
 
   Hinweistext im Formular: *„Alle, die keine Möglichkeit haben bei sich zuhause einen Stand
-  aufzustellen, können einen Platz beim Gemeindehaus oder der Primarschule buchen. Die Plätze
+  aufzustellen, können einen Platz beim Gemeindehaus buchen. Die Plätze
   werden nach Anmelde-Eingang vergeben."*
 - **A2 — Bestätigung:** Nach dem Absenden hat mein Stand den Status **„in Prüfung"**. Ich
   erhalte eine **E-Mail mit einem geheimen Bearbeitungs-Link**.
@@ -130,11 +137,11 @@ das Organisationskomitee gibt ihn frei, und Besucher:innen entdecken alle Ständ
   oder löschen**. Ich sehe die privaten Felder (E-Mail, Mobilnummer) zur Kontaktaufnahme.
 - **AD3 — Event-Konfiguration:** Ich konfiguriere Name, **Datum**, **Verkaufszeitfenster**
   (Standard), **Anmeldung offen/geschlossen**, die **Anzahl verfügbarer Plätze am
-  Gemeindehaus/an der Schule** (`public_spots_total`) und einen öffentlichen **Infotext**.
+  Gemeindehaus** (`public_spots_total`) und einen öffentlichen **Infotext**.
 - **AD4 — Platz-Buchungen sehen:** Ich sehe in der Moderationsliste, welche Stände einen
-  Platz am Gemeindehaus/an der Schule gebucht haben, sowie die Anzahl belegter/freier Plätze.
+  Platz am Gemeindehaus gebucht haben, sowie die Anzahl belegter/freier Plätze.
 - **AD5 — Stände bearbeiten:** Ich kann **alle bestehenden Stände** vollständig bearbeiten
-  (gleiche Felder wie das Anmeldeformular). Bei Ständen vom Typ *Gemeindehaus/Schule* kann ich
+  (gleiche Felder wie das Anmeldeformular). Bei Ständen vom Typ *Gemeindehaus* kann ich
   die **Nadel manuell versetzen** (im Anbieter-Formular ist sie fix aufs Gemeindehaus gesetzt),
   damit sich mehrere solche Stände auf der Karte nicht überlappen — der Platz-Typ und die
   Kapazitätszählung bleiben dabei erhalten.
@@ -210,6 +217,11 @@ Auf der Anmeldeseite (kompakt) und in der FAQ kommuniziert:
 - Teilnahme auf **eigene Verantwortung** (Verkehrssicherungspflicht); **keine Haftung** der
   Gemeinde/des OK. Tipp: Stand sichtbar kennzeichnen (z. B. Luftballons).
 - **Öffentlicher Kontakt für Rückfragen:** `info@schwerzenbach-raeumt-aus.ch` (FAQ + Footer).
+- **Weitere FAQ-Themen:** **Wetterregelung** (findet statt / Absage bei Starkregen–Gewitter mit
+  Vorab-Info über Website & E-Mail / bei unbeständigem Wetter jede:r selbst); **Standplatz beim
+  Gemeindehaus** (eigene Tische mitbringen, keine Parkplätze auf dem Gelände, Standnummern vor
+  Ort, Abfall/Unverkauftes mitnehmen); **Abmelden bei Verhinderung** (Stand über den
+  Bearbeitungs-Link zurückziehen, auch nach Anmeldeschluss).
 
 ## 9. Glossar
 

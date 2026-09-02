@@ -79,7 +79,7 @@ final class StandRepository
     }
 
     /**
-     * Anzahl belegter Plätze am Gemeindehaus/an der Schule:
+     * Anzahl belegter Plätze beim Gemeindehaus:
      * alle Stände mit needs_public_spot = 1 und Status ≠ rejected/withdrawn.
      */
     public function countActivePublicSpotBookings(?int $excludeStandId = null): int

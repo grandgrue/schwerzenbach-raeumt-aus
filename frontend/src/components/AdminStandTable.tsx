@@ -46,7 +46,7 @@ export default function AdminStandTable({ stands, busyId, onSetStatus, onEdit, o
                 )}
                 {s.needs_public_spot && (
                   <span className="text-xs px-2 py-0.5 rounded-full bg-purple-100 text-purple-800">
-                    Platz Gemeindehaus/Schule
+                    Platz Gemeindehaus
                   </span>
                 )}
               </div>

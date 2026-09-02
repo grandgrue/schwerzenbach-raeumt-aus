@@ -71,7 +71,7 @@
 ## Phase 8 — Anbieter-Features
 - ☑ `StandForm` + `PinPicker`, Pflicht-Mobilnummer, Wahl der öffentlichen Kontaktangaben,
   Datenschutz-Hinweise, Validierung (zod) *(A1, A1b)*
-- ☑ Platz-Option am Gemeindehaus/an der Schule inkl. Hinweistext + Anzeige freier Plätze;
+- ☑ Platz-Option am Gemeindehaus inkl. Hinweistext + Anzeige freier Plätze;
   Option deaktivieren wenn ausgebucht *(A1c)*
 - ☑ Bestätigungsseite nach Anmeldung *(A2)*; Honeypot + Captcha im Formular
 - ☑ Bearbeiten/Zurückziehen über `/bearbeiten/:token` *(A3)*
@@ -96,7 +96,7 @@
 - ☑ **Auto-Geocoding** des Pins aus der Adresse (Nominatim/OSM, Suffix „8603 Schwerzenbach";
   Button + onBlur), Pin bleibt verschiebbar *(A1)* — `frontend/src/lib/geocode.ts`,
   `StandForm`
-- ☑ **Standort-Auswahl** „zuhause" vs. „Gemeindehaus/Schule" als kombinierte Frage *(A1c)*
+- ☑ **Standort-Auswahl** „zuhause" vs. „Gemeindehaus" als kombinierte Frage *(A1c)*
 - ☑ **Verkaufszeiten** mit Event-Standard vorbelegt (überschreibbar)
 - ☑ **Admin-Kategorienverwaltung** (anlegen/umbenennen/löschen; Löschen gesperrt wenn genutzt)
   *(AD6)* — `AdminCategoryController`, `CategoryManager`; per curl verifiziert
@@ -118,6 +118,15 @@
   Produktions-`.env` die Docker-Dev-DB nicht überschreibt.
 - ☑ Tests: `OrganizerEmailsTest` (PHPUnit, 24 grün); Frontend-Build + Vitest (8) grün.
 - ☐ Live-Deployment: Migration `001_organizer_emails.sql` einspielen, Organisator-Adressen setzen.
+
+## Phase 12 — Anpassungen (nur Gemeindehaus, FAQ, Event-Phasen)
+- ☑ Alle **Schul-/Primarschul-Referenzen** entfernt (Frontend, Backend, Doku); Public-Spot-
+  Adresse → „Parkplatz Gemeindehaus, 8603 Schwerzenbach".
+- ☑ **FAQ** ergänzt: Wetterregelung, Standplatz beim Gemeindehaus, Abmelden bei Verhinderung.
+- ☑ **Event-Phasen-Texte** (`lib/event.ts`): Startseite/Anmeldeseite/Layout reagieren auf
+  Anmeldeschluss + `event_date` (vorher/heute/vorbei); Zurückziehen bleibt möglich.
+- ☐ Live-Deployment: Migration `002_gemeindehaus_only.sql` einspielen (Adress-Text bestehender
+  Gemeindehaus-Stände aktualisieren).
 
 ## Phase 11 — Deployment-Artefakte
 - ☑ `deploy/htaccess-root.txt`, `deploy/htaccess-api.txt` (an reale Serverstruktur angepasst)
