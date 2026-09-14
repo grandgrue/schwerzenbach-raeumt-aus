@@ -201,6 +201,13 @@ passendem HTTP-Status. Mutierende Admin-Requests erfordern Session + CSRF-Header
   `public/rueckblick/` und über die Seite verteilte Pull-Quotes; nur im Pausenmodus verlinkt.
   Startseite rendert im Pausenmodus einen Platzhalter mit Rückblick-Teaser statt Karte/Liste.
 
+### Metadaten / Link-Vorschau (SEO)
+`frontend/index.html` enthält **statische** Metadaten (`<title>`, `description`, Open Graph,
+Twitter-Card, JSON-LD `WebSite`, `<noscript>`). Diese sind bewusst **datumsneutral** – kein
+fixes Event-Datum, damit Link-Vorschauen in jeder Phase stimmen und kein vergangenes Datum
+angezeigt wird. Änderungen brauchen einen Frontend-Build; Messenger-Vorschauen müssen ggf. neu
+gescraped werden. Details/Ablauf: `docs/runbook-neue-austragung.md` (Abschnitt E).
+
 ### Standort-Auswahl & Adress-Geocoding (Anmeldeformular)
 Das Formular bietet eine **Auswahl** (`StandForm`):
 - **„Bei mir zuhause"** → Adressfeld + Pin. Der Pin wird **automatisch gesetzt**: die Adresse
