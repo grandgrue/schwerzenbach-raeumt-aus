@@ -4,6 +4,7 @@ export interface EventInfo {
   default_start_time: string | null;
   default_end_time: string | null;
   registration_open: boolean;
+  paused: boolean;
   public_spots_total: number;
   public_spots_available: number;
   info_text: string | null;
@@ -112,6 +113,7 @@ export interface AdminEvent {
   default_start_time: string | null;
   default_end_time: string | null;
   registration_open: boolean;
+  paused: boolean;
   public_spots_total: number;
   info_text: string | null;
   organizer_emails: string;

@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS `event` (
   `default_start_time` TIME            NULL,
   `default_end_time`   TIME            NULL,
   `registration_open`  TINYINT(1)      NOT NULL DEFAULT 0,
+  `paused`             TINYINT(1)      NOT NULL DEFAULT 0,
   `public_spots_total` INT UNSIGNED    NOT NULL DEFAULT 0,
   `info_text`          TEXT            NULL,
   `organizer_emails`   TEXT            NULL,

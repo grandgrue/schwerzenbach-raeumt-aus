@@ -2,18 +2,27 @@ import { NavLink, Outlet, Link } from 'react-router-dom';
 import { useState } from 'react';
 import { useEvent } from '../api/hooks';
 
-const navItems = [
+const liveNav = [
   { to: '/', label: 'Start', end: true },
   { to: '/karte', label: 'Karte' },
   { to: '/liste', label: 'Liste' },
   { to: '/faq', label: 'FAQ' },
 ];
 
+const pausedNav = [
+  { to: '/', label: 'Start', end: true },
+  { to: '/rueckblick', label: 'Rückblick' },
+  { to: '/faq', label: 'FAQ' },
+];
+
 export default function Layout() {
   const [open, setOpen] = useState(false);
   const { data: event } = useEvent();
-  // Anmelde-Button nur zeigen, solange die Anmeldung offen ist.
-  const canRegister = !event || event.registration_open;
+  // Pausenmodus: Karte/Liste/Anmeldung ausgeblendet, Rückblick statt dessen.
+  const paused = !!event?.paused;
+  const navItems = paused ? pausedNav : liveNav;
+  // Anmelde-Button nur zeigen, solange die Anmeldung offen und nicht pausiert ist.
+  const canRegister = !paused && (!event || event.registration_open);
 
   const linkClass = ({ isActive }: { isActive: boolean }) =>
     `block px-3 py-2 rounded-md text-sm font-bold transition-colors ${
@@ -93,8 +102,8 @@ export default function Layout() {
           </div>
           <div className="text-sm">Der Quartier-Flohmarkt von Schwerzenbach</div>
           <div className="text-sm text-white/70 max-w-md mx-auto pt-1">
-            Organisiert von <span className="text-primary font-bold">Grüne Schwerzenbach</span> &amp;{' '}
-            <span className="text-primary font-bold">GLP Schwerzenbach</span> · unterstützt von der
+            Organisiert von <span className="text-primary font-bold">GRÜNE Schwerzenbach-Volketswil</span> &amp;{' '}
+            <span className="text-primary font-bold">GLP Volketswil-Schwerzenbach</span> · unterstützt von der
             Gemeinde Schwerzenbach.
           </div>
           <div className="text-sm pt-1">
@@ -104,6 +113,9 @@ export default function Layout() {
           </div>
           <div className="flex justify-center gap-5 text-sm pt-2">
             <Link to="/faq" className="text-white/70 hover:text-primary">FAQ &amp; Datenschutz</Link>
+            {paused && (
+              <Link to="/rueckblick" className="text-white/70 hover:text-primary">Rückblick</Link>
+            )}
             {canRegister && (
               <Link to="/anmelden" className="text-white/70 hover:text-primary">Stand anmelden</Link>
             )}

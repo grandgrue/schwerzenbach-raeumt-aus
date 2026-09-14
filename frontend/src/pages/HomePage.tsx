@@ -42,6 +42,75 @@ export default function HomePage() {
     navigate('/liste', { state: { q: search } });
   }
 
+  // PAUSENMODUS: ruhige Platzhalter-Startseite (keine Karte/Liste/Anmeldung).
+  if (event?.paused) {
+    return (
+      <div>
+        <section className="relative bg-primary">
+          <div className="max-w-3xl mx-auto px-4 pt-14 pb-24 text-center">
+            <img
+              src="/logo.png"
+              alt="Logo Schwerzenbach räumt aus"
+              className="mx-auto h-32 w-32 sm:h-40 sm:w-40 rounded-full ring-4 ring-white shadow-lg"
+            />
+            <p className="eyebrow !text-white mt-6">Der Quartier-Flohmarkt · Schwerzenbach</p>
+            <h1
+              className="mt-2 font-display text-ink-dark leading-[0.95]"
+              style={{ fontSize: 'clamp(3rem, 10vw, 6rem)' }}
+            >
+              Schwerzenbach<br />räumt aus
+            </h1>
+            <p className="mt-5 text-ink-dark/80 font-bold text-lg">
+              Der erste Flohmarkt ist vorbei – und war ein schöner Erfolg.
+            </p>
+            <p className="mt-2 text-ink-dark/80">
+              Ob und wann es weitergeht, steht noch nicht fest. Bis dahin macht diese Seite Pause.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3 justify-center">
+              <Link to="/rueckblick" className="btn-primary">📸 Zum Rückblick</Link>
+              <Link to="/faq" className="btn-ghost">Häufige Fragen</Link>
+            </div>
+          </div>
+          <svg
+            className="absolute bottom-0 left-0 w-full"
+            style={{ height: '56px' }}
+            viewBox="0 0 1440 80"
+            preserveAspectRatio="none"
+            aria-hidden
+          >
+            <path fill="#FFF8DC" d="M0,40 C360,90 1080,-10 1440,40 L1440,80 L0,80 Z" />
+          </svg>
+        </section>
+
+        {/* Rückblick-Teaser */}
+        <section className="max-w-4xl mx-auto px-4 py-14">
+          <Link to="/rueckblick" className="card card-hover block overflow-hidden group">
+            <img
+              src="/rueckblick/rueckblick-1.jpg"
+              alt="Impression vom ersten «Schwerzenbach räumt aus»"
+              loading="lazy"
+              className="w-full h-64 object-cover"
+            />
+            <div className="p-6 text-center">
+              <p className="eyebrow">5. September 2026</p>
+              <h2 className="text-2xl sm:text-3xl mt-1">Ein Rückblick auf die Premiere</h2>
+              <p className="mt-2 text-ink text-sm">
+                Über 80 Stände, ein ganzes Dorf und viele gute Gespräche.
+                <span className="text-accent font-bold group-hover:underline"> Ansehen →</span>
+              </p>
+            </div>
+          </Link>
+        </section>
+
+        {event?.info_text && (
+          <section className="max-w-3xl mx-auto px-4 pb-14">
+            <div className="prose max-w-none text-ink whitespace-pre-line">{event.info_text}</div>
+          </section>
+        )}
+      </div>
+    );
+  }
+
   return (
     <div>
       {/* HERO */}

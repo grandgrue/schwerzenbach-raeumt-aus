@@ -84,6 +84,14 @@ das Organisationskomitee gibt ihn frei, und Besucher:innen entdecken alle Ständ
   Flohmarkt ist vorbei — danke fürs Mitmachen!". Auch die geschlossene Anmeldeseite formuliert
   entsprechend und weist darauf hin, dass **angemeldete Stände weiterhin über den
   Bearbeitungs-Link zurückgezogen** werden können (Anmeldeschluss stoppt nur Neuanmeldungen).
+- **B9 — Pausenmodus & Rückblick:** Ist im Admin der **Pausenmodus** aktiv (`paused`, z. B.
+  wenn noch kein nächster Termin feststeht), zeigt die Website **keine Karte, Liste,
+  Detailseiten oder Anmeldung** (direkte Aufrufe werden auf die Startseite umgeleitet). Die
+  Startseite wird zu einer ruhigen **Platzhalter-Seite** (Dank + „nächster Termin offen" +
+  Teaser). Zusätzlich gibt es eine **Rückblick-Seite** (`/rueckblick`) mit Fotos und
+  Textausschnitten der Premiere. Navigation/Footer zeigen dann **Start · Rückblick · FAQ**. Die
+  gesamte App und alle Daten bleiben erhalten; ein einziger Schalter wechselt zwischen „Live"
+  und „Pause".
 
 ### Anbieter:in
 - **A1 — Anmelden:** Ich melde über ein Formular einen Stand an mit:
@@ -136,7 +144,8 @@ das Organisationskomitee gibt ihn frei, und Besucher:innen entdecken alle Ständ
   abgelehnt / zurückgezogen) und kann einzelne Stände **freigeben, ablehnen, bearbeiten
   oder löschen**. Ich sehe die privaten Felder (E-Mail, Mobilnummer) zur Kontaktaufnahme.
 - **AD3 — Event-Konfiguration:** Ich konfiguriere Name, **Datum**, **Verkaufszeitfenster**
-  (Standard), **Anmeldung offen/geschlossen**, die **Anzahl verfügbarer Plätze am
+  (Standard), **Anmeldung offen/geschlossen**, den **Pausenmodus** (`paused`, kein nächster
+  Termin → Karte/Liste/Anmeldung aus, Rückblick zeigen), die **Anzahl verfügbarer Plätze am
   Gemeindehaus** (`public_spots_total`) und einen öffentlichen **Infotext**.
 - **AD4 — Platz-Buchungen sehen:** Ich sehe in der Moderationsliste, welche Stände einen
   Platz am Gemeindehaus gebucht haben, sowie die Anzahl belegter/freier Plätze.

@@ -40,6 +40,7 @@ final class EventRepository
                     `default_start_time` = :default_start_time,
                     `default_end_time` = :default_end_time,
                     `registration_open` = :registration_open,
+                    `paused` = :paused,
                     `public_spots_total` = :public_spots_total,
                     `info_text` = :info_text,
                     `organizer_emails` = :organizer_emails
@@ -51,6 +52,7 @@ final class EventRepository
             'default_start_time' => $data['default_start_time'],
             'default_end_time'   => $data['default_end_time'],
             'registration_open'  => $data['registration_open'] ? 1 : 0,
+            'paused'             => $data['paused'] ? 1 : 0,
             'public_spots_total' => $data['public_spots_total'],
             'info_text'          => $data['info_text'],
             'organizer_emails'   => $data['organizer_emails'],

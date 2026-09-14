@@ -36,6 +36,7 @@ final class EventController
             'default_start_time'     => self::time($event['default_start_time']),
             'default_end_time'       => self::time($event['default_end_time']),
             'registration_open'      => (bool) $event['registration_open'],
+            'paused'                 => (bool) $event['paused'],
             'public_spots_total'     => $total,
             'public_spots_available' => $available,
             'info_text'              => $event['info_text'],

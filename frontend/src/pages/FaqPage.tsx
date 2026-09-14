@@ -8,11 +8,15 @@ interface QA {
 const faqs: QA[] = [
   {
     q: 'Was ist «Schwerzenbach räumt aus»?',
-    a: 'Ein gemeindeweiter Flohmarkt-Tag: Einwohner:innen verkaufen Gebrauchtes vor dem Haus, in der Garage oder auf dem Vorplatz. Besucher:innen finden alle Stände auf einer Karte und in einer Liste.',
+    a: 'Ein gemeindeweiter Flohmarkt-Tag: Einwohner:innen verkaufen Gebrauchtes vor dem Haus, in der Garage oder auf dem Vorplatz – ganz im Sinne von «Wiederverwenden statt Wegwerfen». Besucher:innen finden alle Stände auf einer Karte und in einer Liste. Organisiert von GRÜNE Schwerzenbach-Volketswil und GLP Volketswil-Schwerzenbach, unterstützt von der Gemeinde.',
+  },
+  {
+    q: 'Findet «Schwerzenbach räumt aus» wieder statt?',
+    a: 'Die Premiere 2026 war ein schöner Erfolg. Ob und wann es eine Wiederholung gibt, ist noch offen. Sobald ein neuer Termin feststeht, erfährst du es hier auf der Website.',
   },
   {
     q: 'Wie melde ich einen Stand an?',
-    a: 'Über die Seite «Stand anmelden». Du setzt den Standort per Klick auf die Karte, gibst Titel, Beschreibung und Kontaktangaben an und sendest das Formular ab. Anschliessend prüft das Organisationskomitee deinen Eintrag.',
+    a: 'Über die Seite «Stand anmelden» – solange die Anmeldephase geöffnet ist. Du setzt den Standort per Klick auf die Karte, gibst Titel, Beschreibung und Kontaktangaben an und sendest das Formular ab. Anschliessend prüft das Organisationskomitee deinen Eintrag.',
   },
   {
     q: 'Brauche ich ein Benutzerkonto?',
