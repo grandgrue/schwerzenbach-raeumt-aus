@@ -14,6 +14,7 @@ export default function EventConfigForm({ event, busy, message, onSave }: Props)
   const [start, setStart] = useState(event.default_start_time ?? '');
   const [end, setEnd] = useState(event.default_end_time ?? '');
   const [open, setOpen] = useState(event.registration_open);
+  const [paused, setPaused] = useState(event.paused);
   const [spots, setSpots] = useState(String(event.public_spots_total));
   const [info, setInfo] = useState(event.info_text ?? '');
   const [organizers, setOrganizers] = useState(event.organizer_emails ?? '');
@@ -29,6 +30,7 @@ export default function EventConfigForm({ event, busy, message, onSave }: Props)
       default_start_time: start || null,
       default_end_time: end || null,
       registration_open: open,
+      paused,
       public_spots_total: Number(spots),
       info_text: info || null,
       organizer_emails: organizers,
@@ -81,6 +83,24 @@ export default function EventConfigForm({ event, busy, message, onSave }: Props)
             className={inputClass}
           />
         </div>
+      </div>
+
+      <div className="rounded-md border border-gold bg-primary-bg/60 p-3">
+        <label className="flex items-start gap-2 text-sm">
+          <input
+            type="checkbox"
+            checked={paused}
+            onChange={(e) => setPaused(e.target.checked)}
+            className="mt-1 rounded border-gray-300"
+          />
+          <span>
+            <strong>Pausenmodus – kein nächster Termin</strong>
+            <span className="block text-xs text-gray-500 mt-0.5">
+              Blendet Karte, Liste und Anmeldung aus und zeigt stattdessen eine
+              Platzhalter-Startseite mit Link zum Rückblick. Die Daten bleiben erhalten.
+            </span>
+          </span>
+        </label>
       </div>
 
       <div>

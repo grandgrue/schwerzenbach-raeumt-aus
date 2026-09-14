@@ -66,6 +66,7 @@ Browser ───────▶ │  /            → React-SPA (statische Date
 | `default_start_time` | TIME | Standard-Verkaufsbeginn |
 | `default_end_time` | TIME | Standard-Verkaufsende |
 | `registration_open` | TINYINT(1) | Anmeldung offen/geschlossen |
+| `paused` | TINYINT(1) | Pausenmodus: Karte/Liste/Anmeldung aus, Rückblick zeigen (Migration 003) |
 | `public_spots_total` | INT | Anzahl Plätze am Gemeindehaus (Kapazität) |
 | `info_text` | TEXT | öffentlicher Infotext (Startseite) |
 | `organizer_emails` | TEXT NULL | **privat** — OK-Adressen (eine pro Zeile) für Benachrichtigungen |
@@ -159,7 +160,8 @@ passendem HTTP-Status. Mutierende Admin-Requests erfordern Session + CSRF-Header
 ### Seiten (Routes)
 | Route | Inhalt |
 |-------|--------|
-| `/` | Startseite: Event-Info + CTAs. **Zwei Modi:** Vorlauf (Anmeldung bewerben) bzw. Markttag (Anmeldung geschlossen → Suchfeld + eingebettete Karte) |
+| `/` | Startseite: Event-Info + CTAs. **Modi:** Vorlauf (Anmeldung bewerben), Markttag (Anmeldung geschlossen → Suchfeld + eingebettete Karte), **Pause** (`paused` → Platzhalter + Rückblick-Teaser) |
+| `/rueckblick` | Rückblick auf die Premiere (Fotos + Textausschnitte); im Pausenmodus im Menü |
 | `/karte` | Leaflet-Karte mit Pins + Filterleiste |
 | `/liste` | filter-/sortierbare Liste der Stände |
 | `/stand/:id` | Detailseite inkl. „Zu Fuss hinnavigieren"-Button |
@@ -193,6 +195,11 @@ passendem HTTP-Status. Mutierende Admin-Requests erfordern Session + CSRF-Header
   Phase `registration | pre | day | post` ab; `formatEventDate()` formatiert das Datum. Genutzt
   von Startseite, Anmeldeseite (geschlossen) und `Layout` (blendet „Stand anmelden" aus, sobald
   die Anmeldung geschlossen ist).
+- **`SeasonRoute`** — Guard für die Saison-Seiten (`/karte`, `/liste`, `/stand/:id`,
+  `/anmelden`): leitet im Pausenmodus (`event.paused`) still auf `/` um.
+- **`RueckblickPage`** — Rückblick-Seite (`/rueckblick`): Hero, Einleitung, Fotos aus
+  `public/rueckblick/` und über die Seite verteilte Pull-Quotes; nur im Pausenmodus verlinkt.
+  Startseite rendert im Pausenmodus einen Platzhalter mit Rückblick-Teaser statt Karte/Liste.
 
 ### Standort-Auswahl & Adress-Geocoding (Anmeldeformular)
 Das Formular bietet eine **Auswahl** (`StandForm`):

@@ -13,3 +13,9 @@
 # Logs / Caches
 *.log
 /backend/.phpunit.cache/
+
+# macOS
+.DS_Store
+
+# Presse-Artikel (urheberrechtlich geschützt, nur lokale Quelle für Inhalte)
+/design-idee/Artikel/

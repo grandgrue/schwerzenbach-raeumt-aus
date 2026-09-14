@@ -128,6 +128,16 @@
 - ☐ Live-Deployment: Migration `002_gemeindehaus_only.sql` einspielen (Adress-Text bestehender
   Gemeindehaus-Stände aktualisieren).
 
+## Phase 13 — Pausenmodus & Rückblick
+- ☑ Konfig-Schalter `paused` am Event (Migration `003_site_mode.sql`, schema.sql, öffentliche
+  + Admin-API, EventConfigForm-Checkbox).
+- ☑ `SeasonRoute`-Guard: Karte/Liste/Detail/Anmeldung im Pausenmodus → Redirect auf `/`.
+- ☑ Platzhalter-Startseite + neue Seite `/rueckblick` (Fotos in `public/rueckblick/`, Zitate
+  aus den Presseberichten, anonymisiert ausser Kiki Jungfer).
+- ☑ Navigation/Footer im Pausenmodus: Start · Rückblick · FAQ.
+- ☐ Live-Deployment: Migration `003_site_mode.sql` einspielen; Fotos + Frontend hochladen;
+  Pausenmodus im Admin aktivieren.
+
 ## Phase 11 — Deployment-Artefakte
 - ☑ `deploy/htaccess-root.txt`, `deploy/htaccess-api.txt` (an reale Serverstruktur angepasst)
 - ☑ `deploy/README-deploy.md` (vollständige hoststar-Anleitung)
