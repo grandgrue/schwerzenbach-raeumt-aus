@@ -284,6 +284,9 @@ Die eigentliche Turn-by-turn-Navigation übernimmt die Karten-App des Geräts.
 6. **E-Mail:** PHPMailer auf hoststar-SMTP konfigurieren; Absenderadresse auf
    `@schwerzenbach-raeumt-aus.ch`.
 
+> **Jahreswechsel / neue Austragung** (Pause setzen, DB leeren, neu konfigurieren):
+> siehe `docs/runbook-neue-austragung.md`.
+
 ## 9. Lokale Entwicklung
 
 **Empfohlen: Docker** (`docker-compose.yml`, siehe README):

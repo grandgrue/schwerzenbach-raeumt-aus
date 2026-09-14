@@ -102,8 +102,8 @@ export default function Layout() {
           </div>
           <div className="text-sm">Der Quartier-Flohmarkt von Schwerzenbach</div>
           <div className="text-sm text-white/70 max-w-md mx-auto pt-1">
-            Organisiert von <span className="text-primary font-bold">Grüne Schwerzenbach</span> &amp;{' '}
-            <span className="text-primary font-bold">GLP Schwerzenbach</span> · unterstützt von der
+            Organisiert von <span className="text-primary font-bold">GRÜNE Schwerzenbach-Volketswil</span> &amp;{' '}
+            <span className="text-primary font-bold">GLP Volketswil-Schwerzenbach</span> · unterstützt von der
             Gemeinde Schwerzenbach.
           </div>
           <div className="text-sm pt-1">

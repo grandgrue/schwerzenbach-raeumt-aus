@@ -137,6 +137,7 @@
 - ☑ Navigation/Footer im Pausenmodus: Start · Rückblick · FAQ.
 - ☐ Live-Deployment: Migration `003_site_mode.sql` einspielen; Fotos + Frontend hochladen;
   Pausenmodus im Admin aktivieren.
+- ☑ Runbook für Jahreswechsel/neue Austragung (inkl. DB leeren): `docs/runbook-neue-austragung.md`.
 
 ## Phase 11 — Deployment-Artefakte
 - ☑ `deploy/htaccess-root.txt`, `deploy/htaccess-api.txt` (an reale Serverstruktur angepasst)

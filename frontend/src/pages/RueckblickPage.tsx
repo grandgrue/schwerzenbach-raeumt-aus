@@ -61,8 +61,8 @@ export default function RueckblickPage() {
           Am Samstag, 5. September 2026, war ganz Schwerzenbach mit Flohmarktständen übersät.
           Bei der Premiere von «Schwerzenbach räumt aus» – im Rahmen des «Openair Dorfgeflüster» –
           luden über 80 Stände in Gärten, Garagen und beim Gemeindehaus zum Stöbern ein.
-          Organisiert von den <strong>Grünen</strong> und der <strong>GLP Schwerzenbach/Volketswil</strong>,
-          unterstützt von der Gemeinde.
+          Organisiert von <strong>GRÜNE Schwerzenbach-Volketswil</strong> und
+          <strong> GLP Volketswil-Schwerzenbach</strong>, unterstützt von der Gemeinde.
         </p>
       </section>
 
