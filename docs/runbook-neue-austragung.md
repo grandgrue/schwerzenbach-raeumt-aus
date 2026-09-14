@@ -79,6 +79,21 @@ danach Frontend neu bauen und hochladen (Änderungen am Inhalt brauchen ein klei
 
 ---
 
+## E) Link-Vorschau & SEO-Metadaten
+
+Die Metadaten für **Link-Vorschauen** (WhatsApp, Signal, Telegram …) und Suchmaschinen stehen
+**statisch** in `frontend/index.html` (`<title>`, `description`, Open Graph, Twitter-Card,
+JSON-LD, `<noscript>`). Sie werden **nicht** aus der Datenbank erzeugt.
+
+- Sie sind bewusst **datumsneutral (evergreen)** gehalten – kein fixes Datum, kein Event-Schema
+  mit vergangenem Datum. Dadurch passt die Vorschau in jeder Phase (Vorlauf/Markttag/Pause).
+- **Optional für eine neue Austragung:** Wer das konkrete Datum in der Link-Vorschau möchte,
+  ergänzt es in `frontend/index.html` (dann aber nach dem Anlass wieder entfernen) – Frontend
+  neu bauen und hochladen.
+- **Wichtig – Social-Cache:** Messenger/Facebook cachen Vorschauen tage- bis wochenlang. Nach
+  einer Änderung die Vorschau neu einlesen lassen, z. B. über den Facebook Sharing Debugger
+  (`https://developers.facebook.com/tools/debug/` → „Scrape Again").
+
 ## D) Deployment-Erinnerung
 Nur nötig, wenn **Code** geändert wurde (Konfig-Änderungen im Admin brauchen **kein** Deployment):
 - Frontend `dist/` (inkl. `rueckblick/`-Fotos) → `public_html/`.

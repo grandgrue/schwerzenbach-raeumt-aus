@@ -138,6 +138,8 @@
 - ☐ Live-Deployment: Migration `003_site_mode.sql` einspielen; Fotos + Frontend hochladen;
   Pausenmodus im Admin aktivieren.
 - ☑ Runbook für Jahreswechsel/neue Austragung (inkl. DB leeren): `docs/runbook-neue-austragung.md`.
+- ☑ Metadaten/Link-Vorschau datumsneutral (evergreen) in `frontend/index.html`; kein fixes Datum
+  mehr (Event-JSON-LD → `WebSite`).
 
 ## Phase 11 — Deployment-Artefakte
 - ☑ `deploy/htaccess-root.txt`, `deploy/htaccess-api.txt` (an reale Serverstruktur angepasst)
